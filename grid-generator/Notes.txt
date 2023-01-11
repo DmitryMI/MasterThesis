@@ -1,0 +1,26 @@
+https://sumo.dlr.de/docs/netgenerate.html
+
+--grid.number <INT> 		The number of junctions in both dirs; default: 5
+
+--grid.length <FLOAT> 		The length of streets in both dirs; default: 100
+
+--grid.x-number <INT> 		The number of junctions in x-dir; Overrides --grid-number; default: 5
+
+--grid.y-number <INT> 		The number of junctions in y-dir; Overrides --grid-number; default: 5
+
+--grid.x-length <FLOAT> 	The length of horizontal streets; Overrides --grid-length; default: 100
+
+--grid.y-length <FLOAT> 	The length of vertical streets; Overrides --grid-length; default: 100
+
+--grid.attach-length <FLOAT> 	The length of streets attached at the boundary; 0 means no streets are attached; default: 0
+
+--grid.x-attach-length <FLOAT> 	The length of streets attached at the boundary in x direction; 0 means no streets are attached; default: 0
+
+--grid.y-attach-length <FLOAT> 	The length of streets attached at the boundary in y direction; 0 means no streets are attached; default: 0
+
+
+Naming conventions:
+
+name.net.xml			Road network
+name.poly.xml			Polygons (e.g. buildings)
+name.rou.xml			Vehicle routes (how to make them random?)
