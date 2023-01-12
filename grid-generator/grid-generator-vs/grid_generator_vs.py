@@ -116,12 +116,12 @@ if __name__ == "__main__":
     else:
         junctions_x = 5
 
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 3:
         junctions_y = int(sys.argv[3])
     else:
         junctions_y = 5
 
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 4:
         street_length = float(sys.argv[4])
     else:
         street_length = 100
