@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.11
+
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import sys
