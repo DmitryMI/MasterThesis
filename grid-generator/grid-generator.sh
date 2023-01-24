@@ -1,4 +1,4 @@
-PROJ_NAME="generated-grid"
+PROJ_NAME="drones"
 GRID_SIZE=7
 SUMO_TOOLS_PATH="/home/dmitriy/software/sumo-1.8.0/tools"
 PROJ_DIR="./generated/"
@@ -12,6 +12,8 @@ TRIPS_PERIOD=1		# Must be positive!
 TRIPS_INTERMEDIATES=64
 
 mkdir $PROJ_DIR
+
+dir_backup=$(pwd)
 cd $PROJ_DIR
 
 # Generating a grid-network of roads
@@ -28,3 +30,5 @@ duarouter -n $PROJ_NAME.net.xml --route-files $PROJ_NAME.trips.xml -o $PROJ_NAME
 
 # Visualize the road network and buildings
 # netedit -s $PROJ_NAME.net.xml -a $PROJ_NAME.poly.xml
+
+cd $dir_backup
