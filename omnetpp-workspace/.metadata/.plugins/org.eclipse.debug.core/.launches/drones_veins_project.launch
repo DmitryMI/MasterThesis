@@ -6,7 +6,7 @@
     <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN_SYMBOL" value="main"/>
     <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="/drones_veins_project"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-        <listEntry value="/drones_veins_project/examples/drones_veins_project/omnetpp.ini"/>
+        <listEntry value="/drones_veins_project/src/drones_veins_project/omnetpp.ini"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="1"/>
@@ -14,13 +14,26 @@
     <stringAttribute key="org.omnetpp.launch.ADDITIONAL_ARG" value=""/>
     <intAttribute key="org.omnetpp.launch.BATCH_SIZE" value="1"/>
     <intAttribute key="org.omnetpp.launch.BUILD_BEFORE_LAUNCH" value="0"/>
+    <stringAttribute key="org.omnetpp.launch.CMDENV_EXPRESS_MODE" value=""/>
+    <stringAttribute key="org.omnetpp.launch.CONFIG_NAME" value=""/>
     <stringAttribute key="org.omnetpp.launch.EXECUTABLE" value=""/>
-    <stringAttribute key="org.omnetpp.launch.IMAGE_PATH" value="${opp_image_path:/drones_veins_project/examples/drones_veins_project}"/>
-    <stringAttribute key="org.omnetpp.launch.INI_FILES" value="omnetpp.ini"/>
-    <stringAttribute key="org.omnetpp.launch.NED_PATH" value="${opp_ned_path:/drones_veins_project/examples/drones_veins_project}"/>
+    <stringAttribute key="org.omnetpp.launch.IMAGE_PATH" value="${opp_image_path:/drones_veins_project/src}"/>
+    <stringAttribute key="org.omnetpp.launch.INI_FILES" value="drones_veins_project/omnetpp.ini"/>
+    <stringAttribute key="org.omnetpp.launch.NED_PATH" value="${opp_ned_path:/drones_veins_project/src}"/>
     <intAttribute key="org.omnetpp.launch.NUM_CONCURRENT_PROCESSES" value="1"/>
+    <stringAttribute key="org.omnetpp.launch.OPP_CPU_TIME_LIMIT" value=""/>
     <stringAttribute key="org.omnetpp.launch.OPP_DEBUGMODE_DEBUG_ON_ERRORS" value="true"/>
-    <stringAttribute key="org.omnetpp.launch.SHARED_LIBS" value="${opp_shared_libs:/drones_veins_project/examples/drones_veins_project}"/>
+    <stringAttribute key="org.omnetpp.launch.OPP_SIM_TIME_LIMIT" value=""/>
+    <stringAttribute key="org.omnetpp.launch.RECORD_EVENTLOG" value=""/>
+    <stringAttribute key="org.omnetpp.launch.RECORD_SCALARS" value=""/>
+    <stringAttribute key="org.omnetpp.launch.RECORD_VECTORS" value=""/>
+    <stringAttribute key="org.omnetpp.launch.REDIRECT_STDOUT" value=""/>
+    <stringAttribute key="org.omnetpp.launch.RUN" value=""/>
+    <stringAttribute key="org.omnetpp.launch.SHARED_LIBS" value="${opp_shared_libs:/drones_veins_project/src}"/>
+    <booleanAttribute key="org.omnetpp.launch.SILENT" value="false"/>
+    <stringAttribute key="org.omnetpp.launch.STOP_BATCH_ON_ERROR" value=""/>
     <intAttribute key="org.omnetpp.launch.SWITCH_CONFIG_BEFORE_BUILD" value="0"/>
-    <stringAttribute key="org.omnetpp.launch.WORKING_DIRECTORY" value="/drones_veins_project/examples/drones_veins_project"/>
+    <stringAttribute key="org.omnetpp.launch.USER_INTERFACE" value="Qtenv"/>
+    <booleanAttribute key="org.omnetpp.launch.USE_BATCHING" value="false"/>
+    <stringAttribute key="org.omnetpp.launch.WORKING_DIRECTORY" value="/drones_veins_project/src"/>
 </launchConfiguration>

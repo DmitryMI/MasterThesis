@@ -18,4 +18,4 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-package drones_veins_project.examples.drones_veins_project;
+package org.car2x.veins.subprojects.drones_veins_project;

@@ -11,13 +11,16 @@ USE_PLEXE="1"
 USE_SIMULTE="1"
 USE_SIMU5G="1"
 
+# Copy .ned and sumo configs?
+COPY_SIMULATION_CONFIG_FILES=1
+
 # To remove a git repository created by cookiecutter
 REMOVE_GIT_REPO=1
 
 # To remove duplicate example files
 REMOVE_REDUNDANT_EXAMPLES=1
 
-# To force project regeneration
+# To force project regeneration. Can be set by -f cmd arg
 FORCE_REGENERATION=0
 
 
@@ -56,28 +59,49 @@ fi
 printf "\n"
 
 
-# Copying template files to the project
-mkdir $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/simulation-environment
+simulation_env_path=./$PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/simulation/$PROJ_NAME_AS_FILE_NAME/
 
-cp -R ./simulation-environment-template/* $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/simulation-environment
-
-if [[ $? != 0 ]];
+if [[ $COPY_SIMULATION_CONFIG_FILES == 1 ]];
 then
-	exit
-fi
+
+	# Copying template files to the project
+	
+	mkdir -p $simulation_env_path
+
+	cp ./simulation-environment-template/* $simulation_env_path
+
+	if [[ $? != 0 ]];
+	then
+		exit
+	fi
 
 
 
-# Calling Grid Gnerator to create a Manhattan Grid
-cd ./grid-generator
-source ./grid-generator.sh
-cd ..
+	# Calling Grid Gnerator to create a Manhattan Grid
+	
+	cd ./grid-generator
+	source ./grid-generator.sh
+	cd ..
 
-mv ./grid-generator/generated/* $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/simulation-environment
+	# Copying Manhatten Grid files
+	
+	mv ./grid-generator/generated/* $simulation_env_path
 
-if [[ $? != 0 ]];
-then
-	exit
+	if [[ $? != 0 ]];
+	then
+		exit
+	fi
+
+	printf "\n"
+	
+	echo "Adding simulation config directoy to .nedfolders..."
+	echo "simulation/drones_veins_project" >> $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/.nedfolders
+	echo "Simulation config added to .nedfoldes"
+	printf "\n"
+	
+else
+	echo "Simulation files copying skipped"
+	printf "\n"
 fi
 
 
@@ -102,6 +126,12 @@ then
 	echo "Removing $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/examples..."
 	rm -rf $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/examples
 	echo "Exaple files removed"
+	
+	echo "Patching .nedfolders to remove examples directory..."
+	# examples/drones_veins_project
+	# POTENTIALLY DANGEROUS! Relies on line order
+	sed -i '2d' $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/.nedfolders
+	echo "Examples removed from .nedfolders"
 else
 	echo "Removing example files skipped"
 fi
