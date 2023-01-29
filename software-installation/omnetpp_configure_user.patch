@@ -1,0 +1,11 @@
+--- configure.user	2023-01-13 18:52:44.004643890 +0100
++++ configure.user.default	2023-01-29 23:34:11.292446876 +0100
+@@ -78,7 +78,7 @@
+ #
+ # Set to "yes" to enable osgEarth support in Qtenv (requires OpenScreenGraph enabled)
+ #
+-WITH_OSGEARTH=no
++WITH_OSGEARTH=yes
+ 
+ #
+ # Set to "yes" to enable simulation executables to load NED files dynamically.
