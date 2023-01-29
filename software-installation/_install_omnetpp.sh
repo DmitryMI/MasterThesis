@@ -1,19 +1,28 @@
 OMPP_LINK="https://github.com/omnetpp/omnetpp/releases/download/omnetpp-5.7/omnetpp-5.7-linux-x86_64.tgz"
 
-wget --directory-prefix=~/Downloads/ $OMPP_LINK
+if test -f "$INSTALLATION_DIR/omnetpp-5.7/bin/omnetpp"; then
+	echo "OMNeT++ already installed."
+else
+	wget --continue --directory-prefix=$DOWNLOADS_DIR $OMPP_LINK
 
-tar -xzf ~/Downloads/omnetpp-5.7-linux-x86_64.tgz -C $INSTALLATION_DIR
+	tar -xzf ~/Downloads/omnetpp-5.7-linux-x86_64.tgz -C $INSTALLATION_DIR
 
-backup_wd = $(pwd)
+	backup_wd=$(pwd)
 
-cd $INSTALLATION_DIR/omnetpp-5.7
+	patch -u $INSTALLATION_DIR/omnetpp-5.7/configure.user -i omnetpp_configure_user.patch
 
-source setenv
+	cd $INSTALLATION_DIR/omnetpp-5.7
 
-./configure
+	source setenv
 
-make -j 16
+	./configure
 
-echo "export PATH=\$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin" >> ~/.profile
+	make -j 16
 
-cd $backup_wd
+	echo "export PATH=\$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin" >> ~/.profile
+
+	cd $backup_wd	
+fi
+
+
+
