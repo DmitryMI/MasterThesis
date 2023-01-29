@@ -45,9 +45,9 @@ module Drone
    	    {
    	        parameters:
    	            @display("p=130,172;i=block/cogwheel");
-   	            speed = uniform(17mps, 26mps);
+   	            speed = uniform(5mps, 20mps);
    	            angle = uniform(0deg, 360deg);
-   	            acceleration = 20mpss;
+   	            acceleration = 0mpss;
    	            updateInterval = default(1s);
    	            
    	            z = default(300);	// Drone's height
