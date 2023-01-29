@@ -26,37 +26,39 @@
 
 #include "veins/modules/application/ieee80211p/DemoBaseApplLayer.h"
 
-namespace drones_veins_project {
+namespace drones_veins_project
+{
 
-/**
- * @brief
- * A tutorial demo for TraCI. When the car is stopped for longer than 10 seconds
- * it will send a message out to other cars containing the blocked road id.
- * Receiving cars will then trigger a reroute via TraCI.
- * When channel switching between SCH and CCH is enabled on the MAC, the message is
- * instead send out on a service channel following a Service Advertisement
- * on the CCH.
- *
- * @author Christoph Sommer : initial DemoApp
- * @author David Eckhoff : rewriting, moving functionality to DemoBaseApplLayer, adding WSA
- *
- */
+	/**
+	 * @brief
+	 * A tutorial demo for TraCI. When the car is stopped for longer than 10 seconds
+	 * it will send a message out to other cars containing the blocked road id.
+	 * Receiving cars will then trigger a reroute via TraCI.
+	 * When channel switching between SCH and CCH is enabled on the MAC, the message is
+	 * instead send out on a service channel following a Service Advertisement
+	 * on the CCH.
+	 *
+	 * @author Christoph Sommer : initial DemoApp
+	 * @author David Eckhoff : rewriting, moving functionality to DemoBaseApplLayer, adding WSA
+	 *
+	 */
 
-class DRONES_VEINS_PROJECT_API ApplicationLayerTest : public veins::DemoBaseApplLayer {
-public:
-    void initialize(int stage) override;
+	class DRONES_VEINS_PROJECT_API ApplicationLayerTest : public veins::DemoBaseApplLayer
+	{
+	public:
+		void initialize(int stage) override;
 
-protected:
-    simtime_t lastDroveAt;
-    bool sentMessage;
-    int currentSubscribedServiceId;
+	protected:
+		simtime_t lastDroveAt;
+		bool sentMessage;
+		int currentSubscribedServiceId;
 
-protected:
-    void onWSM(veins::BaseFrame1609_4* wsm) override;
-    void onWSA(veins::DemoServiceAdvertisment* wsa) override;
+	protected:
+		void onWSM(veins::BaseFrame1609_4 *wsm) override;
+		void onWSA(veins::DemoServiceAdvertisment *wsa) override;
 
-    void handleSelfMsg(cMessage* msg) override;
-    void handlePositionUpdate(cObject* obj) override;
-};
+		void handleSelfMsg(cMessage *msg) override;
+		void handlePositionUpdate(cObject *obj) override;
+	};
 
 } // namespace drones_veins_project

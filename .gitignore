@@ -399,3 +399,5 @@ FodyWeavers.xsd
 
 # Generated files
 **/grid-generator/generated/**
+
+**/omnetpp-workspace/**

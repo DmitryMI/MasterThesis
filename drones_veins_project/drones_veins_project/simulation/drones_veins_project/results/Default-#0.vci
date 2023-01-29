@@ -1,0 +1,218 @@
+file 21791 1675024594                                           
+version 2
+run Default-0-20230129-21:36:25-8871
+attr configname Default
+attr datetime 20230129-21:36:25
+attr experiment Default
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network DronesScenario
+attr processid 8871
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param *.playgroundSizeX 2500m
+param *.playgroundSizeY 2500m
+param *.playgroundSizeZ 50m
+param *.annotations.draw true
+param *.obstacles.obstacles "xmldoc(\"drones-config.xml\", \"//AnalogueModel[@type='SimpleObstacleShadowing']/obstacles\")"
+param *.manager.updateInterval 1s
+param *.manager.host "\"localhost\""
+param *.manager.port 9999
+param *.manager.autoShutdown true
+param *.manager.launchConfig "xmldoc(\"drones.launchd.xml\")"
+param *.connectionManager.sendDirect true
+param *.connectionManager.maxInterfDist 2600m
+param *.connectionManager.drawMaxIntfDist false
+param *.**.nic.mac1609_4.useServiceChannel false
+param *.**.nic.mac1609_4.txPower 20mW
+param *.**.nic.mac1609_4.bitrate 6Mbps
+param *.**.nic.phy80211p.minPowerLevel -110dBm
+param *.**.nic.phy80211p.useNoiseFloor true
+param *.**.nic.phy80211p.noiseFloor -98dBm
+param *.**.nic.phy80211p.decider "xmldoc(\"drones-config.xml\")"
+param *.**.nic.phy80211p.analogueModels "xmldoc(\"drones-config.xml\")"
+param *.**.nic.phy80211p.usePropagationDelay true
+param *.**.nic.phy80211p.antenna "xmldoc(\"drones-antenna.xml\", \"/root/Antenna[@id='monopole']\")"
+param *.node[*].nic.phy80211p.antennaOffsetY "0 m"
+param *.node[*].nic.phy80211p.antennaOffsetZ "1.895 m"
+param *.node[*].applType "\"ApplicationLayerTest\""
+param *.node[*].appl.headerLength "80 bit"
+param *.node[*].appl.sendBeacons false
+param *.node[*].appl.dataOnSch false
+param *.node[*].appl.beaconInterval 1s
+param *.node[*].veinsmobility.x 0
+param *.node[*].veinsmobility.y 0
+param *.node[*].veinsmobility.z 0
+param *.node[*].veinsmobility.setHostSpeed false
+param *.node[*0].veinsmobility.accidentCount 1
+param *.node[*0].veinsmobility.accidentStart 73s
+param *.node[*0].veinsmobility.accidentDuration 50s
+param *.drones[*].mobility.x 200
+param *.drones[*].mobility.y 200
+param *.drones[*].mobility.z 0
+param *.drones[*].mobility.updateInterval 1s
+
+vector 0 DronesScenario.node[0].veinsmobility posx ETV
+vector 1 DronesScenario.node[0].veinsmobility posy ETV
+vector 2 DronesScenario.node[1].veinsmobility posx ETV
+vector 3 DronesScenario.node[1].veinsmobility posy ETV
+vector 4 DronesScenario.node[0].veinsmobility speed ETV
+vector 5 DronesScenario.node[2].veinsmobility posx ETV
+vector 6 DronesScenario.node[2].veinsmobility posy ETV
+vector 7 DronesScenario.node[0].veinsmobility acceleration ETV
+vector 8 DronesScenario.node[0].veinsmobility co2emission ETV
+vector 9 DronesScenario.node[1].veinsmobility speed ETV
+vector 10 DronesScenario.node[3].veinsmobility posx ETV
+vector 11 DronesScenario.node[3].veinsmobility posy ETV
+vector 12 DronesScenario.node[1].veinsmobility acceleration ETV
+vector 13 DronesScenario.node[1].veinsmobility co2emission ETV
+vector 14 DronesScenario.node[2].veinsmobility speed ETV
+vector 15 DronesScenario.node[4].veinsmobility posx ETV
+vector 16 DronesScenario.node[4].veinsmobility posy ETV
+vector 17 DronesScenario.node[2].veinsmobility acceleration ETV
+vector 18 DronesScenario.node[2].veinsmobility co2emission ETV
+vector 19 DronesScenario.node[3].veinsmobility speed ETV
+vector 20 DronesScenario.node[5].veinsmobility posx ETV
+vector 21 DronesScenario.node[5].veinsmobility posy ETV
+vector 22 DronesScenario.node[3].veinsmobility acceleration ETV
+vector 23 DronesScenario.node[3].veinsmobility co2emission ETV
+vector 24 DronesScenario.node[4].veinsmobility speed ETV
+vector 25 DronesScenario.node[6].veinsmobility posx ETV
+vector 26 DronesScenario.node[6].veinsmobility posy ETV
+vector 27 DronesScenario.node[4].veinsmobility acceleration ETV
+vector 28 DronesScenario.node[4].veinsmobility co2emission ETV
+vector 29 DronesScenario.node[5].veinsmobility speed ETV
+vector 30 DronesScenario.node[7].veinsmobility posx ETV
+vector 31 DronesScenario.node[7].veinsmobility posy ETV
+vector 32 DronesScenario.node[5].veinsmobility acceleration ETV
+vector 33 DronesScenario.node[5].veinsmobility co2emission ETV
+vector 34 DronesScenario.node[6].veinsmobility speed ETV
+vector 35 DronesScenario.node[8].veinsmobility posx ETV
+vector 36 DronesScenario.node[8].veinsmobility posy ETV
+vector 37 DronesScenario.node[6].veinsmobility acceleration ETV
+vector 38 DronesScenario.node[6].veinsmobility co2emission ETV
+vector 39 DronesScenario.node[7].veinsmobility speed ETV
+vector 40 DronesScenario.node[9].veinsmobility posx ETV
+vector 41 DronesScenario.node[9].veinsmobility posy ETV
+vector 42 DronesScenario.node[7].veinsmobility acceleration ETV
+vector 43 DronesScenario.node[7].veinsmobility co2emission ETV
+vector 44 DronesScenario.node[8].veinsmobility speed ETV
+vector 45 DronesScenario.node[10].veinsmobility posx ETV
+vector 46 DronesScenario.node[10].veinsmobility posy ETV
+vector 47 DronesScenario.node[8].veinsmobility acceleration ETV
+vector 48 DronesScenario.node[8].veinsmobility co2emission ETV
+vector 49 DronesScenario.node[9].veinsmobility speed ETV
+vector 50 DronesScenario.node[11].veinsmobility posx ETV
+vector 51 DronesScenario.node[11].veinsmobility posy ETV
+vector 52 DronesScenario.node[9].veinsmobility acceleration ETV
+vector 53 DronesScenario.node[9].veinsmobility co2emission ETV
+vector 54 DronesScenario.node[10].veinsmobility speed ETV
+vector 55 DronesScenario.node[12].veinsmobility posx ETV
+vector 56 DronesScenario.node[12].veinsmobility posy ETV
+vector 57 DronesScenario.node[10].veinsmobility acceleration ETV
+vector 58 DronesScenario.node[10].veinsmobility co2emission ETV
+vector 59 DronesScenario.node[11].veinsmobility speed ETV
+vector 60 DronesScenario.node[13].veinsmobility posx ETV
+vector 61 DronesScenario.node[13].veinsmobility posy ETV
+vector 62 DronesScenario.node[11].veinsmobility acceleration ETV
+vector 63 DronesScenario.node[11].veinsmobility co2emission ETV
+vector 64 DronesScenario.node[12].veinsmobility speed ETV
+vector 65 DronesScenario.node[14].veinsmobility posx ETV
+vector 66 DronesScenario.node[14].veinsmobility posy ETV
+vector 67 DronesScenario.node[12].veinsmobility acceleration ETV
+vector 68 DronesScenario.node[12].veinsmobility co2emission ETV
+vector 69 DronesScenario.node[13].veinsmobility speed ETV
+vector 70 DronesScenario.node[13].veinsmobility acceleration ETV
+vector 71 DronesScenario.node[13].veinsmobility co2emission ETV
+vector 72 DronesScenario.node[14].veinsmobility speed ETV
+vector 73 DronesScenario.node[15].veinsmobility posx ETV
+vector 74 DronesScenario.node[15].veinsmobility posy ETV
+vector 75 DronesScenario.node[16].veinsmobility posx ETV
+vector 76 DronesScenario.node[16].veinsmobility posy ETV
+vector 77 DronesScenario.node[14].veinsmobility acceleration ETV
+vector 78 DronesScenario.node[14].veinsmobility co2emission ETV
+0	6918 225 3 37 1 17 17 323.4 323.4 5497.8 1777988.52
+1	7143 393 3 37 1 17 17 138.3542798892 340.74001053086 3816.6802935061 931492.49646767
+2	7536 322 5 37 2 17 16 138.40664110269 226.6 3096.1214840466 617196.97799519
+3	7858 282 5 37 2 17 16 364.55798283854 426.6 6645.8594495354 2766299.6076267
+4	8140 372 5 37 2 17 16 4.2049491528357 15.499258993726 208.42871458139 2935.8480425384
+5	8512 351 7 37 3 17 15 383.67591697233 511.60279509975 6784.8224327351 3094901.1629411
+6	8863 201 7 37 3 17 15 223.4 223.4 3351 748613.4
+7	9064 371 7 37 3 17 15 -0.059511350004469 2.0269456627453 11.29430984089 21.273694940665
+8	9435 347 7 37 3 17 15 1.9689761720725 8.7910946333409 59.844498996876 326.03766247903
+9	9782 349 7 37 3 17 15 4.4217668174019 14.526685867521 152.29795312355 1680.7525228639
+10	10131 329 9 37 4 17 14 231.37528037684 311.63394409284 3722.8863258324 1001886.3765637
+11	10460 199 9 37 4 17 14 23.4 26.6 339.85018691789 8276.892238457
+12	10659 340 9 37 4 17 14 -4.5 2.0469760103524 10.078808124714 49.909350470249
+13	10999 311 9 37 4 17 14 0.973 8.2039569108502 63.987260699876 393.56561487012
+14	11310 341 9 37 4 17 14 4.1105820955232 13.913773134978 132.6136440206 1351.8684385028
+15	11651 320 11 37 5 17 13 430.83133547678 512.55238606378 6123.8208266819 2897062.8670413
+16	11971 200 11 37 5 17 13 223.4 226.6 2909.4626709536 651164.13599352
+17	12171 313 11 37 5 17 13 -4.5 2.1160040063946 8.4387965164481 48.055769072728
+18	12484 299 11 37 5 17 13 0.973 8.0725749588101 56.425228570131 324.25003257812
+19	12783 316 11 37 5 17 13 3.5899497418559 13.985210998473 104.79829463471 989.6851541905
+20	13099 290 14 37 6 17 12 538.34889534617 618.9244864992 6960.9437494041 4048716.8731396
+21	13389 186 14 37 6 17 12 423.4 426.6 5113.5496576661 2179046.0920983
+22	13575 288 14 37 6 17 12 -4.5 2.0600549351308 4.8408725165138 70.473791294424
+23	13863 254 14 37 6 17 12 0.973 8.6421348344942 50.162369683839 295.05461642799
+24	14117 295 14 37 6 17 12 2.7475277348422 12.150716281666 88.127343496428 795.01656017994
+25	14412 270 17 37 7 17 11 338.3603929441 419.3749545554 4145.6500997063 1571855.8633355
+26	14682 171 17 37 7 17 11 425.0500908892 426.6 4691.0500908892 2000543.1797649
+27	14853 283 17 37 7 17 11 -4.4005287449954 2.0249618256348 1.287861615368 50.937339857946
+28	15136 242 17 37 7 17 11 0.973 6.8302789060015 35.198810247311 166.26402107121
+29	15378 270 17 37 7 17 11 3.9333552709927 13.53432968681 89.072534878231 843.19473952071
+30	15648 148 19 37 8 17 10 523.4 523.4 5234 2739475.6
+31	15796 247 19 37 8 17 10 238.34783391533 315.64436354785 2716.1840423367 744532.61043379
+32	16043 240 19 37 8 17 10 -4.5 2.1463236127212 1.3632336447957 50.88628710578
+33	16283 207 19 37 8 17 10 0.973 7.936540598722 37.578263207005 212.8100635574
+34	16490 246 19 37 8 17 10 3.4030346238232 13.126030379816 82.777254386267 803.89643076207
+35	16736 134 21 37 9 17 9 626.6 626.6 5639.4 3533648.04
+36	16870 223 21 37 9 17 9 336.79123381725 411.64269395982 3432.4987032698 1314929.2999142
+37	17093 230 21 37 9 17 9 -4.3731894486287 2.0527585388301 -0.55663895356531 51.505097025224
+38	17323 194 21 37 9 17 9 0.973 7.6760496323611 33.992709605612 184.82461527052
+39	17517 222 21 37 9 17 9 4.0445249643002 10.608700212528 80.907123626927 773.81112412569
+40	17739 199 23 37 10 17 8 38.358196533256 99.99817816296 501.05789217181 34821.644384473
+41	17938 120 23 37 10 17 8 126.6 126.6 1012.8 128220.48
+42	18058 209 23 37 10 17 8 -0.095750848152674 2.1307360917423 6.4684244000746 12.131576412229
+43	18267 200 23 37 10 17 8 1.4818845852137 6.4925858691765 26.098672626335 110.21609517757
+44	18467 198 23 37 10 17 8 4.0186940901658 14.321190362488 77.820482698726 851.73863805279
+45	18665 173 25 37 11 17 7 365.01352833135 411.6014494579 2750.8304527145 1082762.9699073
+46	18838 105 25 37 11 17 7 223.4 223.4 1563.8 349352.92
+47	18943 176 25 37 11 17 7 -4.4143918025486 2.1724535532296 5.8881044697741 39.345151541153
+48	19119 164 25 37 11 17 7 0.973 8.8208101791715 36.709500288009 234.76414991416
+49	19283 174 25 37 11 17 7 3.9997665032128 13.765424110071 65.818915040824 699.10887251009
+50	19457 90 27 37 12 17 6 123.4 123.4 740.4 91365.36
+51	19547 148 27 37 12 17 6 38.353467257142 73.633167426675 316.81964260469 17632.851192507
+52	19695 151 27 37 12 17 6 -0.98716930502404 2.0716864781943 8.7784883018342 20.099271782308
+53	19846 140 27 37 12 17 6 0.973 8.8392849737105 32.639879252401 214.6543021255
+54	19986 150 27 37 12 17 6 3.9251376416345 13.369398636452 51.661267403751 507.77224396604
+55	20136 125 29 37 13 17 5 388.46260846461 411.69057715898 2009.8561929257 808253.49341916
+56	20261 75 29 37 13 17 5 423.4 423.4 2117 896337.8
+57	20336 125 29 37 13 17 5 1.7891269959556 1.9688236032636 9.4442609948176 17.859142706987
+58	20461 125 29 37 13 17 5 3.8667671861164 8.0566678412322 30.185418889122 193.38087791908
+59	20586 124 29 37 13 17 5 4.148373576156 11.750877398062 39.56686776819 349.15305948256
+60	20710 60 31 37 14 17 4 523.4 523.4 2093.6 1095790.24
+61	20770 100 31 37 14 17 4 338.37009030052 353.59723776704 1379.8016219145 476095.85659295
+62	20870 100 31 37 14 17 4 1.8439618778601 1.9791416809475 7.6025038219057 14.460055738025
+63	20970 99 31 37 14 17 4 4.081910520378 7.4316090443457 22.757931011645 135.50515259068
+64	21069 100 31 37 14 17 4 3.8767396866718 9.5044585068246 26.617174125542 195.21214244568
+65	21169 45 33 37 15 17 3 123.4 123.4 370.2 45682.68
+66	21214 75 33 37 15 17 3 438.34369462921 446.60044609117 1326.4071930605 586486.77965148
+67	21289 75 33 37 15 17 3 1.6799352005054 2.1226261576917 5.6277188201528 10.658923844147
+68	21364 75 33 37 15 17 3 3.6436033243183 5.8284691283654 14.922725492537 76.956516126155
+69	21439 74 33 37 15 17 3 3.8799905943332 8.164264049851 18.003206842944 117.2186457949
+70	21513 50 35 37 16 17 2 2.0789616044261 2.2053118510917 4.2842734555178 9.1854817132436
+71	21563 50 35 37 16 17 2 4.4026192674344 5.8932601582058 10.29587942564 54.11357170628
+72	21613 49 35 37 16 17 2 4.006369467963 5.9561204858902 9.9624899538533 51.526367556268
+73	21662 25 37 37 17 17 1 237.67067503912 237.67067503912 237.67067503912 56487.34977355
+74	21687 14 37 37 17 17 1 26.6 26.6 26.6 707.56
+75	21701 15 37 37 17 17 1 226.6 226.6 226.6 51347.56
+76	21716 24 37 37 17 17 1 111.6443732235 111.6443732235 111.6443732235 12464.466072469
+77	21740 25 37 37 17 17 1 1.9497510179272 1.9497510179272 1.9497510179272 3.8015290319081
+78	21765 25 37 37 17 17 1 4.2155639290107 4.2155639290107 4.2155639290107 17.770979239576
+
