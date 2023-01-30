@@ -58,6 +58,8 @@ while getopts ":hpfsm-:" optchar; do
 		 	echo "-f to force project regeneration"
 		 	echo "-s to copy SUMO template files"
 		 	echo "-m to genetate road network"
+		 	echo "\t--grid_size to set the grid size"
+		 	echo "\t--street_length to set streets length"
 		 	exit;;
 		 	
 		p)
