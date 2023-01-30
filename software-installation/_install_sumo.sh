@@ -2,6 +2,8 @@ SUMO_LINK="https://sourceforge.net/projects/sumo/files/sumo/version%201.8.0/sumo
 
 ASSUME_DOWNLOADED=1
 
+printf "Installing SUMO...\n\n"
+
 if test -f "$INSTALLATION_DIR/sumo-1.8.0/bin/sumo"; then
 	printf "SUMO already installed.\n\n"
 else

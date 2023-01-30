@@ -1,5 +1,7 @@
 VEINS_GIT_LINK="https://github.com/sommer/veins.git"
 
+printf "Installing Veins...\n\n"
+
 if test -f "$INSTALLATION_DIR/veins/bin/veins_launchd"; then
 	echo "Veins is already installed"
 else

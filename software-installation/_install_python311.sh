@@ -1,3 +1,5 @@
+printf "Installing Python3.11...\n\n"
+
 sudo apt install -y software-properties-common -y
 
 sudo add-apt-repository --yes ppa:deadsnakes/ppa

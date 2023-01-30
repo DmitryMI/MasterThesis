@@ -1,3 +1,5 @@
+printf "Installing R...\n\n"
+
 sudo apt -y update
 sudo apt -y install r-recommended
 sudo apt -y install libssl-dev

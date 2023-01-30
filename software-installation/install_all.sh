@@ -1,79 +1,41 @@
+#!/bin/bash
+
 INSTALLATION_DIR="/home/$(whoami)/Software"
 DOWNLOADS_DIR="/home/$(whoami)/Downloads"
 SLEEP_SEC=2
 
+function run_installation_script () {
+	echo "Running $1..."
+	source $1
+	sleep $SLEEP_SEC 
+	
+	if [[ $? != 0 ]];
+	then
+		exit -1
+	fi
+	
+	printf "\n\n"
+}
+
 pwd
 
-mkdir $INSTALLATION_DIR
-
-printf "Installing prerequisites...\n\n"
-sleep $SLEEP_SEC
-
-source ./_install_prereq.sh
-
-if [[ $? != 0 ]];
-then
-	exit -1
+if test -f "$INSTALLATION_DIR"; then
+	printf "Installation directory already exists."
+else
+	mkdir $INSTALLATION_DIR
 fi
 
-printf "\n\n"
+run_installation_script "./_install_prereq.sh"
 
+run_installation_script "./_install_python311.sh"
 
-printf "Installing Python 3.11...\n\n"
-sleep $SLEEP_SEC
-source ./_install_python311.sh
+run_installation_script "./_install_omnetpp.sh"
 
-if [[ $? != 0 ]];
-then
-	exit -1
-fi
+run_installation_script "./_install_sumo.sh"
 
-printf "\n\n"
+run_installation_script "./_install_veins.sh"
 
+run_installation_script "./_install_r.sh"
 
-printf "Installing OMNeT++...\n\n"
-sleep $SLEEP_SEC
-source ./_install_omnetpp.sh
-
-if [[ $? != 0 ]];
-then
-	exit -1
-fi
-
-printf "\n\n"
-
-
-printf "Installing SUMO...\n\n"
-sleep $SLEEP_SEC
-source ./_install_sumo.sh
-
-if [[ $? != 0 ]];
-then
-	exit -1
-fi
-
-printf "\n\n"
-
-
-printf "Installing veins...\n\n"
-sleep $SLEEP_SEC
-source ./_install_veins.sh
-
-if [[ $? != 0 ]];
-then
-	exit -1
-fi
-
-printf "\n\n"
-
-
-printf "Installing R...\n\n"
-sleep $SLEEP_SEC
-source ./_install_r.sh
-
-if [[ $? != 0 ]];
-then
-	exit -1
-fi
 
 printf "All done! Reboot required for changes in .profile to be applied.\n\n"

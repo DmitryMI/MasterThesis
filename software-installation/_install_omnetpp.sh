@@ -1,5 +1,7 @@
 OMPP_LINK="https://github.com/omnetpp/omnetpp/releases/download/omnetpp-5.7/omnetpp-5.7-linux-x86_64.tgz"
 
+printf "Installing OMNeT++...\n\n"
+
 if test -f "$INSTALLATION_DIR/omnetpp-5.7/bin/omnetpp"; then
 	printf "OMNeT++ already installed.\n"
 else
