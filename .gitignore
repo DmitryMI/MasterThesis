@@ -401,3 +401,7 @@ FodyWeavers.xsd
 **/grid-generator/generated/**
 
 **/omnetpp-workspace/**
+
+**/.settings/language.settings.xml
+
+**/results/**

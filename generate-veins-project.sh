@@ -11,8 +11,8 @@ USE_PLEXE="1"
 USE_SIMULTE="1"
 USE_SIMU5G="1"
 
-# Copy .ned and sumo configs?
-COPY_SIMULATION_CONFIG_FILES=1
+# To copy SUMO templates. -s
+COPY_SIMULATION_CONFIG_FILES=0
 
 # To remove a git repository created by cookiecutter
 REMOVE_GIT_REPO=1
@@ -20,43 +20,99 @@ REMOVE_GIT_REPO=1
 # To remove duplicate example files
 REMOVE_REDUNDANT_EXAMPLES=1
 
-# To force project regeneration. Can be set by -f cmd arg
+# To run cookiecutter. -p
+RUN_COOKIECUTTER=0
+
+# To force project regeneration. -f
 FORCE_REGENERATION=0
+
+# To generate and copy road network. -m
+GENERATE_ROAD_NET=0
 
 
 ECHO_MSG="$PROJ_NAME\n$PROJ_BRIEF\n$PROJ_NAME_AS_FILE_NAME\n$PROJ_NAME_AS_MACRO_NAME"
 ECHO_MSG="$ECHO_MSG\n$USE_INET\n$USE_INET3\n$USE_VEINS_VLC\n$USE_PLEXE\n$USE_SIMULTE"
 ECHO_MSG="$ECHO_MSG\n$USE_SIMU5G\n"
 
-while getopts ":hf" option; do
+while getopts ":hpfsm" option; do
 	case $option in
       		h) # display Help
 		 	echo "-f to force project regeneration"
 		 	echo "-h to show this help message"
 		 	exit;;
-     		f) # force regeneration
+		 	
+		p)
+     			echo "Cookiecutter invocation enabled"
+     			RUN_COOKIECUTTER=1     	
+     			;;
+     		f)
      			echo "Force regeneration enabled"
-     			FORCE_REGENERATION=1     			
+     			FORCE_REGENERATION=1   
+     			;;  	
+     		s)
+     			echo "SUMO config copying enabled"
+     			COPY_SIMULATION_CONFIG_FILES=1	
+     			;;
+     		m)
+     			echo "Road network generation enabled"
+     			GENERATE_ROAD_NET=1	
+     			;;		
 	esac
 done
 
-if [[ $FORCE_REGENERATION == 1 ]];
-then
-	echo "Removing project files..."
-	rm -rf $PROJ_NAME_AS_FILE_NAME
-	echo "Project files removed"
+if [[ $RUN_COOKIECUTTER ]] then;
+
+	if [[ $FORCE_REGENERATION == 1 ]];
+	then
+		echo "Removing project files..."
+		rm -rf $PROJ_NAME_AS_FILE_NAME
+		echo "Project files removed"
+	fi
+
+	printf "$ECHO_MSG" | cookiecutter ./veins-project-generator
+
+	cookiecutter_code=$?
+
+	if [[ $cookiecutter_code != 0 ]]
+	then
+		exit
+	fi
+
+	printf "\n"
+	
+	if [[ $REMOVE_GIT_REPO == 1 ]];
+	then
+
+		echo "Removing internal git repository..."
+		
+		cd $PROJ_NAME_AS_FILE_NAME
+		rm -rf .git
+		cd ..
+		
+		echo "Internal git repository removed"
+	else
+		echo "Removing internal git repository skipped"
+	fi
+
+	printf "\n"
+
+	if [[ $REMOVE_REDUNDANT_EXAMPLES == 1 ]];
+	then
+		echo "Removing $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/examples..."
+		rm -rf $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/examples
+		echo "Exaple files removed"
+		
+		echo "Patching .nedfolders to remove examples directory..."
+		# examples/drones_veins_project
+		# POTENTIALLY DANGEROUS! Relies on line order
+		sed -i '2d' $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/.nedfolders
+		echo "Examples removed from .nedfolders"
+	else
+		echo "Removing example files skipped"
+	fi
+else
+	echo "Cookiecutter skipped"
 fi
-
-printf "$ECHO_MSG" | cookiecutter ./veins-project-generator
-
-cookiecutter_code=$?
-
-if [[ $cookiecutter_code != 0 ]]
-then
-	exit
-fi
-
-printf "\n"
 
 
 simulation_env_path=./$PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/simulation/$PROJ_NAME_AS_FILE_NAME/
@@ -75,9 +131,18 @@ then
 		exit
 	fi
 
+	echo "Adding simulation config directoy to .nedfolders..."
+	echo "simulation/drones_veins_project" >> $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/.nedfolders
+	echo "Simulation config added to .nedfoldes"
+	printf "\n"
+	
+else
+	echo "Simulation files copying skipped"
+	printf "\n"
+fi
 
-
-	# Calling Grid Gnerator to create a Manhattan Grid
+if [[ $GENERATE_ROAD_NET ]] then;
+	echo "Calling Grid Gnerator to create a Manhattan Grid"
 	
 	cd ./grid-generator
 	source ./grid-generator.sh
@@ -93,48 +158,12 @@ then
 	fi
 
 	printf "\n"
-	
-	echo "Adding simulation config directoy to .nedfolders..."
-	echo "simulation/drones_veins_project" >> $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/.nedfolders
-	echo "Simulation config added to .nedfoldes"
-	printf "\n"
-	
 else
-	echo "Simulation files copying skipped"
-	printf "\n"
+	echo "Road network generation skipped"
 fi
 
 
-if [[ $REMOVE_GIT_REPO == 1 ]];
-then
 
-	echo "Removing internal git repository..."
-	
-	cd $PROJ_NAME_AS_FILE_NAME
-	rm -rf .git
-	cd ..
-	
-	echo "Internal git repository removed"
-else
-	echo "Removing internal git repository skipped"
-fi
-
-printf "\n"
-
-if [[ $REMOVE_REDUNDANT_EXAMPLES == 1 ]];
-then
-	echo "Removing $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/examples..."
-	rm -rf $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/examples
-	echo "Exaple files removed"
-	
-	echo "Patching .nedfolders to remove examples directory..."
-	# examples/drones_veins_project
-	# POTENTIALLY DANGEROUS! Relies on line order
-	sed -i '2d' $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/.nedfolders
-	echo "Examples removed from .nedfolders"
-else
-	echo "Removing example files skipped"
-fi
 
 printf "\n"
 
