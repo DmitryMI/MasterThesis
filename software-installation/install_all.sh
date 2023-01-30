@@ -76,4 +76,4 @@ then
 	exit -1
 fi
 
-printf "All done!\n\n"
+printf "All done! Reboot required for changes in .profile to be applied.\n\n"
