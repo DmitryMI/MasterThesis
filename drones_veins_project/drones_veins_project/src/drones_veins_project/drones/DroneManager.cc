@@ -31,13 +31,15 @@ DroneManager::DroneManager()
 
 DroneManager::~DroneManager()
 {
-	if (spawnDronesTrigger && !spawnDronesTrigger->isScheduled())
+	if (spawnDronesTrigger)
 	{
-		delete spawnDronesTrigger;
+		cancelAndDelete(spawnDronesTrigger);
+		spawnDronesTrigger = nullptr;
 	}
-	if (updateDronesMobilityTrigger && !updateDronesMobilityTrigger->isScheduled())
+	if (updateDronesMobilityTrigger)
 	{
-		delete updateDronesMobilityTrigger;
+		cancelAndDelete(updateDronesMobilityTrigger);
+		updateDronesMobilityTrigger = nullptr;
 	}
 }
 
