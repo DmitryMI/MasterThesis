@@ -26,7 +26,8 @@ netgenerate --grid --grid.number $GRID_SIZE --output-file $PROJ_NAME.net.xml
 python3 $SUMO_TOOLS_PATH/randomTrips.py -n $PROJ_NAME.net.xml -b $TRIPS_START_TIME -e $TRIPS_END_TIME -p $TRIPS_PERIOD --random -i $TRIPS_INTERMEDIATES -o $PROJ_NAME.trips.xml
 
 # Applying duarouter-randomTrips bugfix
-sed -i 's/search_string/replace_string/' $PROJ_NAME.trips.xml
+str_to_replace=' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd"'
+sed -i -e "s/<routes.*>/<routes>/g" $PROJ_NAME.trips.xml
 
 # Generating actual vehicle routes based on trips
 duarouter -n $PROJ_NAME.net.xml --route-files $PROJ_NAME.trips.xml -o $PROJ_NAME.rou.xml

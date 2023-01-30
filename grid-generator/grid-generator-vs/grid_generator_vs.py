@@ -85,7 +85,7 @@ class GridGenerator:
         building_width = scene_width /  self._junctions_count_x
         building_height = scene_height /  self._junctions_count_y
 
-        print("Building size: ({building_width}, {building_height})")
+        print(f"Building size: ({building_width}, {building_height})")
 
         buildings_count_x = self._junctions_count_x - 1
         buildings_count_y = self._junctions_count_y - 1
