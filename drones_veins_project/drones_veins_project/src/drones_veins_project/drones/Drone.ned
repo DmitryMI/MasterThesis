@@ -41,16 +41,15 @@ module Drone
    	            @display("p=60, 150");
    	    }
    	    
-   	    mobility: LinearMobility
+   	    mobility: DroneMobility
    	    {
    	        parameters:
    	            @display("p=130,172;i=block/cogwheel");
-   	            speed = uniform(5mps, 20mps);
+   	            speed = uniform(10mps, 30mps);
    	            angle = uniform(0deg, 360deg);
-   	            acceleration = 0mpss;
-   	            updateInterval = default(1s);
-   	            
-   	            z = default(300);	// Drone's height
+   	            x = default(0);		// Will be overwritten by Drone Manager if drone is spawned dynamically
+   	            y = default(0);		// Will be overwritten by Drone Manager if drone is spawned dynamically
+   	            z = default(300);	// Drone's altitude
    	    }
    	    
 	connections:

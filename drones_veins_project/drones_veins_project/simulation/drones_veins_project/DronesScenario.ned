@@ -23,11 +23,16 @@
 
 package org.car2x.veins.subprojects.drones_veins_project;
 import org.car2x.veins.subprojects.drones_veins_project.drones.Drone;
+import org.car2x.veins.subprojects.drones_veins_project.drones.DroneManager;
 
 network DronesScenario extends org.car2x.veins.nodes.Scenario
 {
     submodules:
-        drones[1]: Drone {
-            @display("p=100,100;i=veins/node/drone_s;");
+        drones[0]: Drone {            
+        }
+        
+        droneManager : DroneManager{
+             parameters:
+                @display("p=570,128");
         }
 }
