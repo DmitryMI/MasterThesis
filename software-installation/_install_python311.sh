@@ -15,3 +15,17 @@ else
 	echo "Failed to install Python 3.11"
 	exit -1
 fi
+
+sudo apt -y install python3-pip
+
+pip_version=$(pip3 --version)
+
+if [[ "$pip_version" == *"pip"* ]];
+then
+	echo "$pip_version installed successfully"
+else
+	echo "Failed to install Pip 3"
+	exit -1
+fi
+
+

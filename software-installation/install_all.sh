@@ -29,6 +29,8 @@ run_installation_script "./_install_prereq.sh"
 
 run_installation_script "./_install_python311.sh"
 
+run_installation_script "./_install_cookiecutter.sh"
+
 run_installation_script "./_install_omnetpp.sh"
 
 run_installation_script "./_install_sumo.sh"

@@ -181,6 +181,9 @@ if [[ $GENERATE_ROAD_NET != 0 ]]; then
 	then
 		exit
 	fi
+	
+	echo "Updating playground size in omnetpp.ini..."
+	
 
 else
 	echo "Road network generation skipped"
