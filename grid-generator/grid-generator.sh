@@ -1,6 +1,6 @@
 PROJ_NAME="drones"
 GRID_SIZE=7
-SUMO_TOOLS_PATH="/home/dmitriy/software/sumo-1.8.0/tools"
+SUMO_TOOLS_PATH="/home/$(whoami)/Software/sumo-1.8.0/tools"
 PROJ_DIR="./generated/"
 
 # Number of trips (vehicles) will be (TRIPS_END_TIME - TRIPS_START_TIME) / TRIPS_PERIOD
