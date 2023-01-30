@@ -28,17 +28,36 @@ FORCE_REGENERATION=0
 
 # To generate and copy road network. -m
 GENERATE_ROAD_NET=0
+GENERATE_ROAD_NET_GRID_SIZE=7
+GENERATE_ROAD_NET_STREET_LENGTH=100
 
 
 ECHO_MSG="$PROJ_NAME\n$PROJ_BRIEF\n$PROJ_NAME_AS_FILE_NAME\n$PROJ_NAME_AS_MACRO_NAME"
 ECHO_MSG="$ECHO_MSG\n$USE_INET\n$USE_INET3\n$USE_VEINS_VLC\n$USE_PLEXE\n$USE_SIMULTE"
 ECHO_MSG="$ECHO_MSG\n$USE_SIMU5G\n"
 
-while getopts ":hpfsm" option; do
-	case $option in
-      		h) # display Help
-		 	echo "-f to force project regeneration"
+while getopts ":hpfsm-:" optchar; do
+	case ${optchar} in
+		-)
+			case "${OPTARG}" in
+				grid_size)
+					val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+				    	GENERATE_ROAD_NET_GRID_SIZE=${val}
+					echo "Manhatten Grid size set to $GENERATE_ROAD_NET_GRID_SIZE"
+				    	;;
+				street_length)
+					val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+				    	GENERATE_ROAD_NET_STREET_LENGTH=${val}
+				    	echo "Manhatten Grid street length set to $GENERATE_ROAD_NET_STREET_LENGTH"
+				    	;;
+			esac;;
+		
+      		h) # display Help		 	
 		 	echo "-h to show this help message"
+		 	echo "-p to run cookiecutter"
+		 	echo "-f to force project regeneration"
+		 	echo "-s to copy SUMO template files"
+		 	echo "-m to genetate road network"
 		 	exit;;
 		 	
 		p)
@@ -56,11 +75,12 @@ while getopts ":hpfsm" option; do
      		m)
      			echo "Road network generation enabled"
      			GENERATE_ROAD_NET=1	
-     			;;		
+     			;;
+     			
 	esac
 done
 
-if [[ $RUN_COOKIECUTTER ]] then;
+if [[ $RUN_COOKIECUTTER != 0 ]]; then
 
 	if [[ $FORCE_REGENERATION == 1 ]];
 	then
@@ -80,7 +100,7 @@ if [[ $RUN_COOKIECUTTER ]] then;
 
 	printf "\n"
 	
-	if [[ $REMOVE_GIT_REPO == 1 ]];
+	if [[ $REMOVE_GIT_REPO != 0 ]];
 	then
 
 		echo "Removing internal git repository..."
@@ -96,7 +116,7 @@ if [[ $RUN_COOKIECUTTER ]] then;
 
 	printf "\n"
 
-	if [[ $REMOVE_REDUNDANT_EXAMPLES == 1 ]];
+	if [[ $REMOVE_REDUNDANT_EXAMPLES != 0 ]];
 	then
 		echo "Removing $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/examples..."
 		rm -rf $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/examples
@@ -111,13 +131,15 @@ if [[ $RUN_COOKIECUTTER ]] then;
 		echo "Removing example files skipped"
 	fi
 else
-	echo "Cookiecutter skipped"
+	echo "Cookiecutter skipped"	
 fi
+
+printf "\n"
 
 
 simulation_env_path=./$PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/simulation/$PROJ_NAME_AS_FILE_NAME/
 
-if [[ $COPY_SIMULATION_CONFIG_FILES == 1 ]];
+if [[ $COPY_SIMULATION_CONFIG_FILES != 0 ]];
 then
 
 	# Copying template files to the project
@@ -134,21 +156,22 @@ then
 	echo "Adding simulation config directoy to .nedfolders..."
 	echo "simulation/drones_veins_project" >> $PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/.nedfolders
 	echo "Simulation config added to .nedfoldes"
-	printf "\n"
 	
 else
 	echo "Simulation files copying skipped"
-	printf "\n"
 fi
 
-if [[ $GENERATE_ROAD_NET ]] then;
+printf "\n"
+
+
+if [[ $GENERATE_ROAD_NET != 0 ]]; then
 	echo "Calling Grid Gnerator to create a Manhattan Grid"
 	
 	cd ./grid-generator
-	source ./grid-generator.sh
+	./grid-generator.sh --grid_size $GENERATE_ROAD_NET_GRID_SIZE --street_length $GENERATE_ROAD_NET_STREET_LENGTH
 	cd ..
 
-	# Copying Manhatten Grid files
+	echo "Moving Manhatten Grid files to veins project..."
 	
 	mv ./grid-generator/generated/* $simulation_env_path
 
@@ -157,12 +180,9 @@ if [[ $GENERATE_ROAD_NET ]] then;
 		exit
 	fi
 
-	printf "\n"
 else
 	echo "Road network generation skipped"
 fi
-
-
 
 
 printf "\n"

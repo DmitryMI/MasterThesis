@@ -1,5 +1,6 @@
 PROJ_NAME="drones"
 GRID_SIZE=7
+STREET_LENGTH=100
 SUMO_TOOLS_PATH="/home/$(whoami)/Software/sumo-1.8.0/tools"
 PROJ_DIR="./generated/"
 
@@ -11,16 +12,39 @@ TRIPS_PERIOD=1		# Must be positive!
 # Number of intermediate points in a trip
 TRIPS_INTERMEDIATES=64
 
+while getopts ":h-:" optchar; do
+	case ${optchar} in
+		-)
+			case "${OPTARG}" in
+				grid_size)
+					val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+				    	GRID_SIZE=${val}
+					echo "Grid Generator: Manhatten Grid size set to $GRID_SIZE"
+				    	;;
+				street_length)
+					val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+				    	STREET_LENGTH=${val}
+				    	echo "Grid Generator: Manhatten Grid street length set to $STREET_LENGTH"
+				    	;;
+			esac;;
+		h)
+			echo "--grid_size to set number of joints in the Grid"
+			echo "--street_length to set length of a street in meters"
+			exit;;
+
+	esac
+done
+
 mkdir $PROJ_DIR
 
 dir_backup=$(pwd)
 cd $PROJ_DIR
 
 # Generating a grid-network of roads
-netgenerate --grid --grid.number $GRID_SIZE --output-file $PROJ_NAME.net.xml
+netgenerate --grid --grid.number $GRID_SIZE --grid.length $STREET_LENGTH --output-file $PROJ_NAME.net.xml
 
 # Generating buildings
-../grid-generator-vs/grid_generator_vs.py $PROJ_NAME $GRID_SIZE $GRID_SIZE
+../grid-generator-vs/grid_generator_vs.py $PROJ_NAME $GRID_SIZE $GRID_SIZE $STREET_LENGTH
 
 # Generating random trips
 python3 $SUMO_TOOLS_PATH/randomTrips.py -n $PROJ_NAME.net.xml -b $TRIPS_START_TIME -e $TRIPS_END_TIME -p $TRIPS_PERIOD --random -i $TRIPS_INTERMEDIATES -o $PROJ_NAME.trips.xml
