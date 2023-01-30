@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package org.car2x.veins.subprojects.drones_veins_project;
+package org.car2x.veins.subprojects.drones_veins_project.drones;
 
 import org.car2x.veins.base.modules.*;
 import org.car2x.veins.modules.nic.Nic80211p;

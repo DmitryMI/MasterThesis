@@ -20,7 +20,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-package org.car2x.veins.subprojects.drones_veins_project;
+package org.car2x.veins.subprojects.drones_veins_project.drones;
 import org.car2x.veins.modules.application.ieee80211p.DemoBaseApplLayer;
 
 simple DroneApplicationLayer extends DemoBaseApplLayer
