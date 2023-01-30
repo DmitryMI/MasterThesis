@@ -39,3 +39,41 @@ if [[ $? != 0 ]];
 then
 	exit -1
 fi
+
+printf "\n\n"
+
+
+printf "Installing SUMO...\n\n"
+sleep $SLEEP_SEC
+source ./_install_sumo.sh
+
+if [[ $? != 0 ]];
+then
+	exit -1
+fi
+
+printf "\n\n"
+
+
+printf "Installing veins...\n\n"
+sleep $SLEEP_SEC
+source ./_install_veins.sh
+
+if [[ $? != 0 ]];
+then
+	exit -1
+fi
+
+printf "\n\n"
+
+
+printf "Installing R...\n\n"
+sleep $SLEEP_SEC
+source ./_install_r.sh
+
+if [[ $? != 0 ]];
+then
+	exit -1
+fi
+
+printf "\n\n"
