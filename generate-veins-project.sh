@@ -169,8 +169,12 @@ printf "\n"
 if [[ $GENERATE_ROAD_NET != 0 ]]; then
 	echo "Calling Grid Gnerator to create a Manhattan Grid"
 	
+	omnetpp_ini_path_rel=$PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/simulation/$PROJ_NAME_AS_FILE_NAME/omnetpp.ini
+	
+	omnetpp_ini_path=$(realpath $omnetpp_ini_path_rel)
+	
 	cd ./grid-generator
-	./grid-generator.sh --grid_size $GENERATE_ROAD_NET_GRID_SIZE --street_length $GENERATE_ROAD_NET_STREET_LENGTH
+	./grid-generator.sh --grid_size $GENERATE_ROAD_NET_GRID_SIZE --street_length $GENERATE_ROAD_NET_STREET_LENGTH --omnetpp_ini $omnetpp_ini_path
 	cd ..
 
 	echo "Moving Manhatten Grid files to veins project..."
@@ -181,9 +185,7 @@ if [[ $GENERATE_ROAD_NET != 0 ]]; then
 	then
 		exit
 	fi
-	
-	echo "Updating playground size in omnetpp.ini..."
-	
+
 
 else
 	echo "Road network generation skipped"

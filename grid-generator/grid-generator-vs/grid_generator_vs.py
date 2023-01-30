@@ -4,6 +4,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 import sys
 import os
+import re
 
 class GridGenerator:
     def __init__(self, proj_dir: str, proj_name: str, junctions_count_x: int, junctions_count_y: int, street_length: float):
@@ -105,6 +106,19 @@ class GridGenerator:
         tree = ET.ElementTree(element_additional)
         ET.indent(tree, space="\t", level=0)
         tree.write(polygons_filepath, xml_declaration=True)
+        
+    def set_omnetpp_playground_size(self, omnetpp_ini_path):
+        factor = 1.05
+        playground_width = (self._junctions_count_x - 1) * self._street_length * factor
+        playground_height = (self._junctions_count_y - 1) * self._street_length * factor
+
+        with open(omnetpp_ini_path, "r") as omnetpp_ini:
+            text = omnetpp_ini.read()
+        text = re.sub('\*\.playgroundSizeX.*', f"*.playgroundSizeX = {playground_width:.2f}m", text)
+        text = re.sub('\*\.playgroundSizeY.*', f"*.playgroundSizeY = {playground_height:.2f}m", text)
+        with open(omnetpp_ini_path, "w") as omnetpp_ini:
+            omnetpp_ini.write(text)
+        print(f"Playground size updated in file {omnetpp_ini_path}")
 
 
 if __name__ == "__main__":
@@ -125,6 +139,13 @@ if __name__ == "__main__":
         street_length = float(sys.argv[4])
     else:
         street_length = 100
+        
+    ini_path = None
+    if len(sys.argv) > 5:
+    	ini_path = sys.argv[5]
 
     grid_generator = GridGenerator(proj_dir, proj_name, junctions_x, junctions_y, street_length)
     grid_generator.generate_buildings()
+    
+    if ini_path is not None:
+    	grid_generator.set_omnetpp_playground_size(ini_path)

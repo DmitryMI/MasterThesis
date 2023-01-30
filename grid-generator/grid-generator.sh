@@ -2,6 +2,7 @@ PROJ_NAME="drones"
 GRID_SIZE=7
 STREET_LENGTH=100
 SUMO_TOOLS_PATH="/home/$(whoami)/Software/sumo-1.8.0/tools"
+OMNETPP_INI_PATH=""
 PROJ_DIR="./generated/"
 
 # Number of trips (vehicles) will be (TRIPS_END_TIME - TRIPS_START_TIME) / TRIPS_PERIOD
@@ -26,6 +27,11 @@ while getopts ":h-:" optchar; do
 				    	STREET_LENGTH=${val}
 				    	echo "Grid Generator: Manhatten Grid street length set to $STREET_LENGTH"
 				    	;;
+				omnetpp_ini)
+				    val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+				    	OMNETPP_INI_PATH=${val}
+				    	echo "Grid Generator: omnetpp.ini path set to $OMNETPP_INI_PATH"
+				    	;;
 			esac;;
 		h)
 			echo "--grid_size to set number of joints in the Grid"
@@ -37,6 +43,8 @@ done
 
 mkdir $PROJ_DIR
 
+pwd
+
 dir_backup=$(pwd)
 cd $PROJ_DIR
 
@@ -44,7 +52,7 @@ cd $PROJ_DIR
 netgenerate --grid --grid.number $GRID_SIZE --grid.length $STREET_LENGTH --output-file $PROJ_NAME.net.xml
 
 # Generating buildings
-../grid-generator-vs/grid_generator_vs.py $PROJ_NAME $GRID_SIZE $GRID_SIZE $STREET_LENGTH
+../grid-generator-vs/grid_generator_vs.py $PROJ_NAME $GRID_SIZE $GRID_SIZE $STREET_LENGTH $OMNETPP_INI_PATH
 
 # Generating random trips
 python3 $SUMO_TOOLS_PATH/randomTrips.py -n $PROJ_NAME.net.xml -b $TRIPS_START_TIME -e $TRIPS_END_TIME -p $TRIPS_PERIOD --random -i $TRIPS_INTERMEDIATES -o $PROJ_NAME.trips.xml
