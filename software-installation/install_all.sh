@@ -76,4 +76,4 @@ then
 	exit -1
 fi
 
-printf "\n\n"
+printf "All done!\n\n"

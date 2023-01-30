@@ -61,14 +61,12 @@ class GridGenerator:
 
     # Generating simple rectangle building that fills the entire cell
     def _generate_simple_building(self, index_x, index_y, cell_width, cell_height):
-        print(f"Generating building with index ({index_x}, {index_y}): ", end="")
         scale = 0.9
 
         cell_center_x = cell_width * index_x + cell_width / 2
         cell_center_y = cell_height * index_y + cell_height / 2
 
         coords = self._get_rectangle_coords(cell_center_x, cell_center_y, cell_width, cell_height, scale)
-        print(coords)
 
         poly_id = f"building-simple-{index_x}_{index_y}";
 
