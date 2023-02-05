@@ -14,6 +14,7 @@
 // 
 
 #include "CarApplicationLayer.h"
+#include "../CarJammingAnnouncement_m.h"
 #include <cassert>
 
 Define_Module(drones_veins_project::CarApplicationLayer);
@@ -56,6 +57,13 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 	if (jammed)
 	{
 		EV << "Car " << getCarDescriptor() << " jammed!";
+
+		CarJammingAnnouncement* msg = new CarJammingAnnouncement();
+		populateWSM(msg);
+
+		msg->setCarPosition(curPosition);
+		msg->setCarRoadId(mobility->getRoadId().c_str());
+		sendDown(msg);
 	}
 	else
 	{
