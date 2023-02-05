@@ -14,7 +14,6 @@
 // 
 
 #include "CarApplicationLayer.h"
-#include "../CarJammingAnnouncement_m.h"
 #include <cassert>
 
 Define_Module(drones_veins_project::CarApplicationLayer);
@@ -58,7 +57,7 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 	{
 		EV << "Car " << getCarDescriptor() << " jammed!";
 
-		CarJammingAnnouncement* msg = new CarJammingAnnouncement();
+		CarJammingAnnouncement *msg = new CarJammingAnnouncement();
 		populateWSM(msg);
 
 		msg->setCarPosition(curPosition);
@@ -76,14 +75,29 @@ void CarApplicationLayer::updateJammingDetector()
 	jammingDetector.updateJammingDetector(mobility->getSpeed());
 }
 
+void CarApplicationLayer::setIconColor(std::string color)
+{
+	cModule *hostModule = findHost();
+	assert(hostModule);
+	hostModule->getDisplayString().setTagArg("i", 1, color.c_str());
+}
+
 void CarApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
 {
-
+	if (CarJammingAnnouncement *jamAnnouncement = dynamic_cast<CarJammingAnnouncement*>(wsm))
+	{
+		handleCarJammingAnnouncement(jamAnnouncement);
+	}
 }
 
 void CarApplicationLayer::onWSA(veins::DemoServiceAdvertisment *wsa)
 {
 	// Never used
+}
+
+void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *msg)
+{
+	//setIconColor("green");
 }
 
 void CarApplicationLayer::handleSelfMsg(cMessage *msg)
