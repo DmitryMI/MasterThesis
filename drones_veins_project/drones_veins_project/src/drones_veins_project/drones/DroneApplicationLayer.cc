@@ -33,7 +33,7 @@ void DroneApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
 
 void DroneApplicationLayer::onWSA(veins::DemoServiceAdvertisment *wsa)
 {
-
+	// Never used
 }
 
 void DroneApplicationLayer::handleSelfMsg(cMessage *msg)
