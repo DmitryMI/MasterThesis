@@ -28,7 +28,7 @@ import org.car2x.veins.subprojects.drones_veins_project.drones.DroneManager;
 network DronesScenario extends org.car2x.veins.nodes.Scenario
 {
     submodules:
-        drones[0]: Drone {            
+        drone[0]: Drone {            
         }
         
         droneManager : DroneManager{

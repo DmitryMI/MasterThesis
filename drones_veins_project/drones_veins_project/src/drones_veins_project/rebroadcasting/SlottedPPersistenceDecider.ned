@@ -13,12 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package org.car2x.veins.subprojects.drones_veins_project.cars;
-import org.car2x.veins.subprojects.drones_veins_project.BaseApplicationLayer;
+package org.car2x.veins.subprojects.drones_veins_project.rebroadcasting;
 
-module CarApplicationLayer extends BaseApplicationLayer
+simple SlottedPPersistenceDecider like IRebroadcastDecider
 {
     parameters:
-        @class(drones_veins_project::CarApplicationLayer);
-        @display("i=block/app2");       
+        @class(drones_veins_project::SlottedPPersistenceDecider);
+        @display("i=block/app2");  
 }

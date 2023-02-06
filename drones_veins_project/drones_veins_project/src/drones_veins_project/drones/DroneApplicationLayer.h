@@ -8,12 +8,12 @@
 #pragma once
 
 #include "drones_veins_project/drones_veins_project.h"
-#include "veins/modules/application/ieee80211p/DemoBaseApplLayer.h"
+#include "../BaseApplicationLayer.h"
 
 namespace drones_veins_project
 {
 
-	class DRONES_VEINS_PROJECT_API DroneApplicationLayer : public veins::DemoBaseApplLayer
+	class DRONES_VEINS_PROJECT_API DroneApplicationLayer : public BaseApplicationLayer
 	{
 	public:
 		DroneApplicationLayer();

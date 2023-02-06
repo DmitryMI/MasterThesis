@@ -17,14 +17,14 @@
 #define DRONES_VEINS_PROJECT_CARAPPLICATIONLAYER_H_
 
 #include "drones_veins_project/drones_veins_project.h"
-#include "veins/modules/application/ieee80211p/DemoBaseApplLayer.h"
+#include "../BaseApplicationLayer.h"
 #include "CarJammingDetector.h"
 #include "../CarJammingAnnouncement_m.h"
 
 namespace drones_veins_project
 {
 
-	class DRONES_VEINS_PROJECT_API CarApplicationLayer : public veins::DemoBaseApplLayer
+	class DRONES_VEINS_PROJECT_API CarApplicationLayer : public BaseApplicationLayer
 	{
 	private:
 		CarJammingDetector jammingDetector;
@@ -33,9 +33,8 @@ namespace drones_veins_project
 		void updateJammingDetector();
 
 		std::string getCarDescriptor();
-		void handleCarJammingAnnouncement(CarJammingAnnouncement* msg);
+		virtual void handleCarJammingAnnouncement(CarJammingAnnouncement* msg) override;
 
-		void setIconColor(std::string color);
 	public:
 		CarApplicationLayer();
 		virtual ~CarApplicationLayer();

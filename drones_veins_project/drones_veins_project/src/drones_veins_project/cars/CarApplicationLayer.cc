@@ -29,7 +29,7 @@ CarApplicationLayer::CarApplicationLayer()
 
 CarApplicationLayer::~CarApplicationLayer()
 {
-	// TODO Auto-generated destructor stub
+
 }
 
 void CarApplicationLayer::initialize(int stage)
@@ -75,19 +75,9 @@ void CarApplicationLayer::updateJammingDetector()
 	jammingDetector.updateJammingDetector(mobility->getSpeed());
 }
 
-void CarApplicationLayer::setIconColor(std::string color)
-{
-	cModule *hostModule = findHost();
-	assert(hostModule);
-	hostModule->getDisplayString().setTagArg("i", 1, color.c_str());
-}
-
 void CarApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
 {
-	if (CarJammingAnnouncement *jamAnnouncement = dynamic_cast<CarJammingAnnouncement*>(wsm))
-	{
-		handleCarJammingAnnouncement(jamAnnouncement);
-	}
+	BaseApplicationLayer::onWSM(wsm);
 }
 
 void CarApplicationLayer::onWSA(veins::DemoServiceAdvertisment *wsa)
@@ -97,12 +87,12 @@ void CarApplicationLayer::onWSA(veins::DemoServiceAdvertisment *wsa)
 
 void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *msg)
 {
-	//setIconColor("green");
+	BaseApplicationLayer::handleCarJammingAnnouncement(msg);
 }
 
 void CarApplicationLayer::handleSelfMsg(cMessage *msg)
 {
-
+	BaseApplicationLayer::handleSelfMsg(msg);
 }
 
 void CarApplicationLayer::handlePositionUpdate(cObject *obj)

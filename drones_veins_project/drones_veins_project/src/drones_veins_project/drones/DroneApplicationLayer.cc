@@ -23,12 +23,12 @@ DroneApplicationLayer::~DroneApplicationLayer() {
 
 void DroneApplicationLayer::initialize(int stage)
 {
-
+	BaseApplicationLayer::initialize(stage);
 }
 
 void DroneApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
 {
-
+	BaseApplicationLayer::onWSM(wsm);
 }
 
 void DroneApplicationLayer::onWSA(veins::DemoServiceAdvertisment *wsa)
@@ -38,11 +38,11 @@ void DroneApplicationLayer::onWSA(veins::DemoServiceAdvertisment *wsa)
 
 void DroneApplicationLayer::handleSelfMsg(cMessage *msg)
 {
-
+	BaseApplicationLayer::handleSelfMsg(msg);
 }
 
 void DroneApplicationLayer::handlePositionUpdate(cObject *obj)
 {
-
+	BaseApplicationLayer::handlePositionUpdate(obj);
 }
 

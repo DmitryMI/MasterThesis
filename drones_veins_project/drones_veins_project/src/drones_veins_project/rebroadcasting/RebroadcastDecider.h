@@ -13,12 +13,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package org.car2x.veins.subprojects.drones_veins_project.cars;
-import org.car2x.veins.subprojects.drones_veins_project.BaseApplicationLayer;
+#ifndef REBROADCASTING_REBROADCASTDECIDER_H_
+#define REBROADCASTING_REBROADCASTDECIDER_H_
 
-module CarApplicationLayer extends BaseApplicationLayer
+#include "drones_veins_project/drones_veins_project.h"
+
+namespace drones_veins_project
 {
-    parameters:
-        @class(drones_veins_project::CarApplicationLayer);
-        @display("i=block/app2");       
+
+	class RebroadcastDecider : public cSimpleModule
+	{
+	private:
+
+	public:
+		virtual void initialize(int stage) override;
+
+		RebroadcastDecider();
+		virtual ~RebroadcastDecider();
+
+
+		virtual bool shouldRebroadcast();
+	};
+
 }
+
+#endif /* REBROADCASTING_REBROADCASTDECIDER_H_ */

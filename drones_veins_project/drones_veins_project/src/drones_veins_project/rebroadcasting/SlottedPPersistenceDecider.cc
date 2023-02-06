@@ -13,12 +13,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package org.car2x.veins.subprojects.drones_veins_project.cars;
-import org.car2x.veins.subprojects.drones_veins_project.BaseApplicationLayer;
+#include "SlottedPPersistenceDecider.h"
 
-module CarApplicationLayer extends BaseApplicationLayer
+using namespace drones_veins_project;
+
+Define_Module(drones_veins_project::SlottedPPersistenceDecider);
+
+
+SlottedPPersistenceDecider::SlottedPPersistenceDecider() : RebroadcastDecider()
 {
-    parameters:
-        @class(drones_veins_project::CarApplicationLayer);
-        @display("i=block/app2");       
+
 }
+
+SlottedPPersistenceDecider::~SlottedPPersistenceDecider()
+{
+	// TODO Auto-generated destructor stub
+}
+
