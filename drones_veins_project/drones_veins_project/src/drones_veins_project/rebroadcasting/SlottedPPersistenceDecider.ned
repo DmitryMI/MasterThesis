@@ -15,7 +15,7 @@
 
 package org.car2x.veins.subprojects.drones_veins_project.rebroadcasting;
 
-simple SlottedPPersistenceDecider like IRebroadcastDecider
+simple SlottedPPersistenceDecider extends RebroadcastDecider
 {
     parameters:
         @class(drones_veins_project::SlottedPPersistenceDecider);

@@ -19,7 +19,6 @@ using namespace drones_veins_project;
 
 Define_Module(drones_veins_project::RebroadcastDecider);
 
-
 RebroadcastDecider::RebroadcastDecider()
 {
 
@@ -33,6 +32,18 @@ RebroadcastDecider::~RebroadcastDecider()
 void RebroadcastDecider::initialize(int stage)
 {
 	cSimpleModule::initialize(stage);
+
+	parentInGate = findGate("parentInGate");
+}
+
+int RebroadcastDecider::getParentInGate()
+{
+	return parentInGate;
+}
+
+void RebroadcastDecider::handleMessage(omnetpp::cMessage *msg)
+{
+	EV << "Message [" << msg->getName() << "] received";
 }
 
 bool RebroadcastDecider::shouldRebroadcast()

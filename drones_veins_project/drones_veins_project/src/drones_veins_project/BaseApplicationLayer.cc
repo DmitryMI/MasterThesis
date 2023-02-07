@@ -15,7 +15,7 @@
 
 #include "BaseApplicationLayer.h"
 #include "veins/base/utils/FindModule.h"
-//#include "rebroadcasting/RebroadcastDeciderBaseMessage_m.h"
+#include "PeriodicSafetyMessage_m.h"
 #include <cassert>
 
 using namespace drones_veins_project;
@@ -31,21 +31,26 @@ BaseApplicationLayer::~BaseApplicationLayer()
 	// TODO Auto-generated destructor stub
 }
 
-void BaseApplicationLayer::handleMessage(cMessage* msg)
+void BaseApplicationLayer::handleMessage(cMessage *msg)
 {
-	//if()
+	//DemoBaseApplLayer::handleMessage(msg);
+
+	if (msg->arrivedOn("rebroadcastDeciderInGate"))
+	{
+		sendDown(msg);
+	}
+	else
+	{
+		DemoBaseApplLayer::handleMessage(msg);
+	}
+
 }
 
 void BaseApplicationLayer::initialize(int stage)
 {
 	DemoBaseApplLayer::initialize(stage);
 
-	rebroadcastDeciderIoGate = findGate("rebroadcastDeciderIoGate");
-}
-
-int BaseApplicationLayer::getRebroadcastDeciderIoGate()
-{
-	return rebroadcastDeciderIoGate;
+	rebroadcastDeciderInGate = findGate("rebroadcastDeciderInGate");
 }
 
 void BaseApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
@@ -56,6 +61,24 @@ void BaseApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
 	{
 		handleCarJammingAnnouncement(jamAnnouncement);
 	}
+	else
+	{
+		RebroadcastDecider *rd = getRebroadcastDecider();
+		if (rd)
+		{
+			sendDirect(wsm->dup(), rd, rd->getParentInGate());
+		}
+	}
+}
+
+void BaseApplicationLayer::onBSM(veins::DemoSafetyMessage *bsm)
+{
+	DemoBaseApplLayer::onBSM(bsm);
+	RebroadcastDecider *rd = getRebroadcastDecider();
+	if (rd)
+	{
+		sendDirect(bsm->dup(), rd, rd->getParentInGate());
+	}
 }
 
 void BaseApplicationLayer::handleSelfMsg(cMessage *msg)
@@ -63,6 +86,15 @@ void BaseApplicationLayer::handleSelfMsg(cMessage *msg)
 	if (CarJammingAnnouncement *jamAnnouncement = dynamic_cast<CarJammingAnnouncement*>(msg))
 	{
 		sendDown(jamAnnouncement->dup());
+	}
+	else if (msg->getKind() == SEND_BEACON_EVT)
+	{
+		// Overriding beaconing
+		PeriodicSafetyMessage *bsm = new PeriodicSafetyMessage();
+		populateWSM(bsm);
+		// TODO Set heading
+		sendDown(bsm);
+		scheduleAt(simTime() + beaconInterval, sendBeaconEvt);
 	}
 	else
 	{
@@ -103,6 +135,11 @@ std::string BaseApplicationLayer::getIconColor()
 
 RebroadcastDecider* BaseApplicationLayer::getRebroadcastDecider()
 {
-	return veins::FindModule<RebroadcastDecider*>::findSubModule(this);
+	return veins::FindModule<RebroadcastDecider*>::findSubModule(this);;
+}
+
+int BaseApplicationLayer::getRebroadcastDeciderInGate()
+{
+	return rebroadcastDeciderInGate;
 }
 

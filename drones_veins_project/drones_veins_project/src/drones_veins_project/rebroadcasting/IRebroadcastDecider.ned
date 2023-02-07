@@ -17,5 +17,6 @@ package org.car2x.veins.subprojects.drones_veins_project.rebroadcasting;
 
 moduleinterface IRebroadcastDecider
 {
-    
+    gates:
+        input parentInGate;
 }

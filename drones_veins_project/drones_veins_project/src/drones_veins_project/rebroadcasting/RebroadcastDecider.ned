@@ -22,4 +22,7 @@ simple RebroadcastDecider like IRebroadcastDecider
         @display("i=block/app2");  
         
         double rebroadcastProbability = default(0.5);
+        
+    gates:
+    	input parentInGate @directIn;
 }

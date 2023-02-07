@@ -24,15 +24,16 @@ namespace drones_veins_project
 	class RebroadcastDecider : public cSimpleModule
 	{
 	private:
-
+		int parentInGate;
 	public:
-		virtual void initialize(int stage) override;
 
 		RebroadcastDecider();
 		virtual ~RebroadcastDecider();
 
-
+		virtual void initialize(int stage) override;
 		virtual bool shouldRebroadcast();
+		virtual void handleMessage(omnetpp::cMessage* msg) override;
+		int getParentInGate();
 	};
 
 }

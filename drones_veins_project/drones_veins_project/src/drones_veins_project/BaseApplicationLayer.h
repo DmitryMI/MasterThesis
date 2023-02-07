@@ -25,14 +25,13 @@ namespace drones_veins_project
 	class BaseApplicationLayer : public veins::DemoBaseApplLayer
 	{
 	private:
-		int rebroadcastDeciderIoGate;
+		int rebroadcastDeciderInGate;
 
 	protected:
 		RebroadcastDecider* getRebroadcastDecider();
 
-		int getRebroadcastDeciderIoGate();
-
 		virtual void onWSM(veins::BaseFrame1609_4 *wsm) override;
+		virtual void onBSM(veins::DemoSafetyMessage* bsm) override;
 		virtual void handleCarJammingAnnouncement(CarJammingAnnouncement* msg);
 		virtual void handleSelfMsg(cMessage* msg) override;
 		void setIconColor(std::string color);
@@ -45,6 +44,8 @@ namespace drones_veins_project
 		virtual void handleMessage(cMessage* msg) override;
 
 		virtual void initialize(int stage) override;
+
+		int getRebroadcastDeciderInGate();
 	};
 
 }
