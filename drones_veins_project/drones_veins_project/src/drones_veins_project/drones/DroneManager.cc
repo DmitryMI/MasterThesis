@@ -57,7 +57,14 @@ void DroneManager::handleMessage(cMessage *msg)
 	if (msgNameStr == "SpawnDronesTrigger")
 	{
 		spawnDrones();
+		if(drones.size() > 0)
+		{
 		scheduleAt(simTime() + par("updateInterval").doubleValue(), updateDronesMobilityTrigger);
+		}
+		else
+		{
+			EV << "No drones spawned! Disabling updates for DroneManager.";
+		}
 	}
 	else if (msgNameStr == "UpdateDronesMobilityTrigger")
 	{

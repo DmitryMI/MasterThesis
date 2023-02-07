@@ -15,6 +15,7 @@
 
 #include "BaseApplicationLayer.h"
 #include "veins/base/utils/FindModule.h"
+//#include "rebroadcasting/RebroadcastDeciderBaseMessage_m.h"
 #include <cassert>
 
 using namespace drones_veins_project;
@@ -30,9 +31,21 @@ BaseApplicationLayer::~BaseApplicationLayer()
 	// TODO Auto-generated destructor stub
 }
 
+void BaseApplicationLayer::handleMessage(cMessage* msg)
+{
+	//if()
+}
+
 void BaseApplicationLayer::initialize(int stage)
 {
 	DemoBaseApplLayer::initialize(stage);
+
+	rebroadcastDeciderIoGate = findGate("rebroadcastDeciderIoGate");
+}
+
+int BaseApplicationLayer::getRebroadcastDeciderIoGate()
+{
+	return rebroadcastDeciderIoGate;
 }
 
 void BaseApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)

@@ -25,6 +25,9 @@ module BaseApplicationLayer extends DemoBaseApplLayer
        
        	string rebroadcastDeciderTypePrefix = default("org.car2x.veins.subprojects.drones_veins_project.rebroadcasting");
         string rebroadcastDeciderClassName = default("RebroadcastDecider");        
+        
+    gates:
+        inout rebroadcastDeciderIoGate;
        
     submodules:
    	    rebroadcastDecider: <rebroadcastDeciderTypePrefix + "." + rebroadcastDeciderClassName> like org.car2x.veins.subprojects.drones_veins_project.rebroadcasting.IRebroadcastDecider
