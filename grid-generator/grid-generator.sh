@@ -8,7 +8,7 @@ PROJ_DIR="./generated/"
 # Number of trips (vehicles) will be (TRIPS_END_TIME - TRIPS_START_TIME) / TRIPS_PERIOD
 TRIPS_START_TIME=0
 TRIPS_END_TIME=60
-TRIPS_PERIOD=1		# Must be positive!
+TRIPS_PERIOD=30		# Must be positive!
 
 # Number of intermediate points in a trip
 TRIPS_INTERMEDIATES=64
