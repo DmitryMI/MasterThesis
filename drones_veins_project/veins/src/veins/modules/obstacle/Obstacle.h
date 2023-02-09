@@ -44,7 +44,7 @@ public:
     const Coords& getShape() const;
     const Coord getBboxP1() const;
     const Coord getBboxP2() const;
-    bool containsPoint(Coord Point) const;
+    virtual bool containsPoint(Coord Point) const;
 
     std::string getType() const;
     std::string getId() const;
@@ -54,7 +54,7 @@ public:
     /**
      * get a list of points (in [0, 1]) along the line between sender and receiver where the beam intersects with this obstacle
      */
-    std::vector<double> getIntersections(const Coord& senderPos, const Coord& receiverPos) const;
+    virtual std::vector<double> getIntersections(const Coord& senderPos, const Coord& receiverPos) const;
 
     AnnotationManager::Annotation* visualRepresentation;
 
