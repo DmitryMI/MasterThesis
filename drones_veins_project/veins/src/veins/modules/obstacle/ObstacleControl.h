@@ -52,9 +52,9 @@ public:
     void handleMessage(cMessage* msg) override;
     void handleSelfMsg(cMessage* msg);
 
-    void addFromXml(cXMLElement* xml);
-    void addFromTypeAndShape(std::string id, std::string typeId, std::vector<Coord> shape);
-    void add(Obstacle obstacle);
+    virtual void addFromXml(cXMLElement* xml);
+    virtual void addFromTypeAndShape(std::string id, std::string typeId, std::vector<Coord> shape);
+    virtual void add(Obstacle obstacle);
     void erase(const Obstacle* obstacle);
     bool isTypeSupported(std::string type);
     double getAttenuationPerCut(std::string type);

@@ -20,9 +20,9 @@ import org.car2x.veins.modules.obstacle.ObstacleControl;
 //
 // ObstacleControl models obstacles that block radio transmissions
 //
-simple ObstacleControl extends ObstacleControl
+simple ObstacleControl3d extends ObstacleControl
 {
     parameters:
-        @class(ObstacleControl3d);
+        @class(drones_veins_project::ObstacleControl3d);
         double buildingsHeightDefault @unit(m) = 10m;        
 }

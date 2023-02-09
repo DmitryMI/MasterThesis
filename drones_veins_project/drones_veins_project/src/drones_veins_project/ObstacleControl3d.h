@@ -17,6 +17,7 @@
 #define DRONES_VEINS_PROJECT_OBSTACLECONTROL3D_H_
 
 #include "veins/modules/obstacle/ObstacleControl.h"
+#include "Obstacle3d.h"
 
 namespace drones_veins_project
 {
@@ -26,6 +27,14 @@ namespace drones_veins_project
 	public:
 		ObstacleControl3d();
 		virtual ~ObstacleControl3d();
+
+		virtual void initialize(int stage) override;
+
+		virtual void add3d(Obstacle3d obstacle3d);
+		virtual void add(veins::Obstacle obstacle) override;
+
+		virtual void addFromXml(cXMLElement* xml) override;
+		virtual void addFromTypeAndShape(std::string id, std::string typeId, std::vector<veins::Coord> shape) override;
 	};
 }
 #endif /* DRONES_VEINS_PROJECT_OBSTACLECONTROL3D_H_ */

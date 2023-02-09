@@ -41,7 +41,7 @@ network DronesScenario
         double playgroundSizeZ @unit(m); // z size of the area the nodes are in (in meters)
         @display("bgb=$playgroundSizeX,$playgroundSizeY");
         
-        string obstacleControlType = default("org.car2x.veins.modules.obstacle.ObstacleControl");
+        string obstacleControlType = default("ObstacleControl3d");
         
     submodules:
         drone[0]: Drone {            

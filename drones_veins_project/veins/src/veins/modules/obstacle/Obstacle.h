@@ -39,6 +39,7 @@ public:
     using Coords = std::vector<Coord>;
 
     Obstacle(std::string id, std::string type, double attenuationPerCut, double attenuationPerMeter);
+    virtual ~Obstacle(){}
 
     void setShape(Coords shape);
     const Coords& getShape() const;
