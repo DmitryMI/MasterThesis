@@ -25,13 +25,8 @@ package org.car2x.veins.modules.obstacle;
 //
 // ObstacleControl models obstacles that block radio transmissions
 //
-simple ObstacleControl like IObstacleControl
+moduleinterface IObstacleControl
 {
-    parameters:
-        @class(veins::ObstacleControl);
-        xml obstacles = default(xml("<obstacles/>")); // list of obstacle types and obstacles to load
-        int gridCellSize = default(250); // size of square grid tiles for obstacle store
-        @display("i=misc/town");
-        @labels(node);
+    
 }
 
