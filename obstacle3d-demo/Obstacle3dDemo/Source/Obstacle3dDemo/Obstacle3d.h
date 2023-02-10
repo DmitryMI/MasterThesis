@@ -17,7 +17,7 @@ private:
 	TArray<FVector2f> shapeCoords;
 
 	UPROPERTY(EditAnywhere)
-	float height;
+	float height;	
 
 
 protected:

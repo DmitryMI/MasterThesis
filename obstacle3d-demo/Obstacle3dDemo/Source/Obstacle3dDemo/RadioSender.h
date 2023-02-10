@@ -20,6 +20,11 @@ private:
 	UPROPERTY()
 	TArray<AObstacle3d*> radioObstacles;
 
+	UPROPERTY(EditAnywhere)
+	float movementSpeed = 1000;
+
+	FVector nextLocation;
+
 	void DrawLineOfSight(ARadioReceiver* receiver);
 
 protected:

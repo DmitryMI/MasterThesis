@@ -55,6 +55,8 @@ void ARadioSender::BeginPlay()
 	{
 		radioObstacles.Add(Cast<AObstacle3d>(actor));
 	}
+
+	nextLocation = GetActorLocation();
 }
 
 // Called every frame
@@ -71,5 +73,19 @@ void ARadioSender::Tick(float DeltaTime)
 		DrawLineOfSight(receiver);
 	}
 
+	FVector location = GetActorLocation();
+
+	if (FVector::Dist(nextLocation, location) < movementSpeed * DeltaTime)
+	{
+		float x = FMath::RandRange(-5000, 5000);
+		float y = FMath::RandRange(-5000, 5000);
+		float z = FMath::RandRange(-1000, 2000);
+		nextLocation = FVector(x, y, z);
+	}
+	
+	FVector dir = nextLocation - location;
+	FVector movementVec = dir.GetUnsafeNormal() * movementSpeed * DeltaTime;
+	location += movementVec;
+	SetActorLocation(location);
 }
 
