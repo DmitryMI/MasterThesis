@@ -29,7 +29,7 @@ ObstacleControl3d::ObstacleControl3d()
 
 ObstacleControl3d::~ObstacleControl3d()
 {
-	// TODO Auto-generated destructor stub
+
 }
 
 void ObstacleControl3d::initialize(int stage)
@@ -54,6 +54,8 @@ void ObstacleControl3d::add3d(Obstacle3d obstacle3d)
 
 void ObstacleControl3d::add(Obstacle obstacle)
 {
+	throw cRuntimeError("ObstacleControl3d::add() call detected!");
+
 	double heightDefault = par("buildingsHeightDefault");
 	Obstacle3d obstacle3d = Obstacle3d(obstacle.getId(), obstacle.getType(), obstacle.getAttenuationPerCut(),
 			obstacle.getAttenuationPerMeter(), heightDefault);
@@ -139,7 +141,7 @@ void ObstacleControl3d::addFromXml(cXMLElement *xml)
 				sh.push_back(Coord(xya[0], xya[1]));
 			}
 			obs.setShape(sh);
-			add(obs);
+			add3d(obs);
 		}
 		else
 		{
