@@ -27,11 +27,14 @@ protected:
 	void DrawObstracle();
 
 	static bool GetLineToLineIntersection(const FVector2f& line1Start, const FVector2f& line1End, const FVector2f& line2Start, const FVector2f& line2End, FVector2f& outIntersection);
+	static bool GetHorizonToLineIntersection(const FVector2f& lineStart, const FVector2f& lineEnd, float horizonY, FVector2f& outIntersection);
 
 	bool GetWallIntersection(const FVector& lineStart, const FVector& lineEnd, int wallStartIndex, int wallEndIndex, FVector& intersectionPoint);
 
 	void GetWallIntersections(const FVector& lineStart, const FVector& lineEnd, TArray<FVector>& outIntersections);
 	
+	bool GetHorizontalIntersection(const FVector& lineStart, const FVector& lineEnd, float intersectionZ, FVector& intersectionPoint);
+
 public:	
 	float GetScaledHeight();
 

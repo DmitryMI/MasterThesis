@@ -53,6 +53,7 @@ void AObstacle3d::DrawObstracle()
 	}
 }
 
+
 bool AObstacle3d::GetLineToLineIntersection(const FVector2f& line1Start, const FVector2f& line1End, const FVector2f& line2Start, const FVector2f& line2End, FVector2f& outIntersection)
 {
 	float x1 = line1Start.X;
@@ -86,6 +87,25 @@ bool AObstacle3d::GetLineToLineIntersection(const FVector2f& line1Start, const F
 	return true;
 }
 
+bool AObstacle3d::GetHorizonToLineIntersection(const FVector2f& lineStart, const FVector2f& lineEnd, float horizonY, FVector2f& outIntersection)
+{
+	if (lineStart.Y == lineEnd.Y)
+	{
+		return false;
+	}
+
+	float k = (horizonY - lineStart.Y) / (lineEnd.Y - lineStart.Y);
+	if (k < 0 || k > 1)
+	{
+		return false;
+	}
+
+	float x = lineStart.X + k * (lineEnd.X - lineStart.X);	
+	outIntersection.X = x;
+	outIntersection.Y = horizonY;
+	return true;
+}
+
 bool AObstacle3d::GetWallIntersection(const FVector& lineStart, const FVector& lineEnd, int wallStartIndex, int wallEndIndex, FVector& intersectionPoint)
 {
 	FVector location = GetActorLocation();
@@ -109,7 +129,10 @@ bool AObstacle3d::GetWallIntersection(const FVector& lineStart, const FVector& l
 		return false;
 	}
 
-	check(lineEnd.X != lineStart.X);
+	if (lineEnd.X == lineStart.X)
+	{
+		return false;
+	}
 	float k = (xyIntersection.X - lineStart.X) / (lineEnd.X - lineStart.X);
 	float intersectionZ = lineStart.Z + k * (lineEnd.Z - lineStart.Z);
 
@@ -137,6 +160,51 @@ void AObstacle3d::GetWallIntersections(const FVector& lineStart, const FVector& 
 	}
 }
 
+bool AObstacle3d::GetHorizontalIntersection(const FVector& lineStart, const FVector& lineEnd, float intersectionZ, FVector& intersectionPoint)
+{
+	if (lineEnd.Z == lineStart.Z)
+	{
+		return false;
+	}
+
+	float k = (intersectionZ - lineStart.Z) / (lineEnd.Z - lineStart.Z);
+	if (k < 0 || k > 1)
+	{
+		return false;
+	}
+
+	FVector location = GetActorLocation();
+
+	float x = lineStart.X + k * (lineEnd.X - lineStart.X);
+	float y = lineStart.Y + k * (lineEnd.Y - lineStart.Y);
+
+	FVector2f lineStartXy = FVector2f(lineStart.X, lineStart.Y);
+	FVector2f lineEndXy = FVector2f(lineEnd.X, lineEnd.Y);
+
+	int intersectionCount = 0;
+	for (int i = 0; i < shapeCoords.Num() - 1; i++)
+	{
+		FVector edgeStart3d = location + FVector(shapeCoords[i].X, shapeCoords[i].Y, 0) * GetActorScale();
+		FVector edgeEnd3d = location + FVector(shapeCoords[i + 1].X, shapeCoords[i + 1].Y, 0) * GetActorScale();
+		FVector2f edgeStart = FVector2f(edgeStart3d.X, edgeStart3d.Y);
+		FVector2f edgeEnd = FVector2f(edgeEnd3d.X, edgeEnd3d.Y);
+
+		FVector2f edgeIntersection;
+		if (GetHorizonToLineIntersection(edgeStart, edgeEnd, y, edgeIntersection))
+		{
+			if (edgeIntersection.X > x)
+			{
+				intersectionCount++;
+			}
+		}
+	}
+	intersectionPoint.X = x;
+	intersectionPoint.Y = y;
+	intersectionPoint.Z = intersectionZ;
+
+	return intersectionCount % 2 == 1;
+}
+
 // Called every frame
 void AObstacle3d::Tick(float DeltaTime)
 {
@@ -154,4 +222,14 @@ void AObstacle3d::GetIntersections(const FVector& lineStart, const FVector& line
 
 	// Find intersections with the side walls
 	GetWallIntersections(lineStart, lineEnd, outIntersections);
+	FVector floorIntersection;
+	FVector ceilingIntersection;
+	if (GetHorizontalIntersection(lineStart, lineEnd, GetActorLocation().Z - GetScaledHeight() / 2, floorIntersection))
+	{
+		outIntersections.Add(floorIntersection);
+	}
+	if (GetHorizontalIntersection(lineStart, lineEnd, GetActorLocation().Z + GetScaledHeight() / 2, ceilingIntersection))
+	{
+		outIntersections.Add(ceilingIntersection);
+	}
 }
