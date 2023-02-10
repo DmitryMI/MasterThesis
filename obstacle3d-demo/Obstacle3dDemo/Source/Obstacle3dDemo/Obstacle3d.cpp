@@ -97,38 +97,31 @@ bool AObstacle3d::GetWallIntersection(const FVector& lineStart, const FVector& l
 	FVector2f wallEnd = location2d + shapeCoords[wallEndIndex] * scale2d;
 
 	// Walls are always vertical rects
-	// Inresection can be decomposed to XY and YZ projections. If line intersects both, than we have an intersection in XYZ
+
 	FVector2f xyWallStart = FVector2f(wallStart.X, wallStart.Y);
 	FVector2f xyWallEnd = FVector2f(wallEnd.X, wallEnd.Y);
 	FVector2f xyLineStart = FVector2f(lineStart.X, lineStart.Y);
 	FVector2f xyLineEnd = FVector2f(lineEnd.X, lineEnd.Y);
 	FVector2f xyIntersection;
-	DrawDebugLine(GetWorld(), FVector(xyWallStart.X, xyWallStart.Y, location.Z), FVector(xyWallEnd.X, xyWallEnd.Y, location.Z), FColor::Silver);
-	DrawDebugLine(GetWorld(), FVector(xyLineStart.X, xyLineStart.Y, location.Z), FVector(xyLineEnd.X, xyLineEnd.Y, location.Z), FColor::Cyan);
-
 
 	if (!GetLineToLineIntersection(xyLineStart, xyLineEnd, xyWallStart, xyWallEnd, xyIntersection))
 	{
 		return false;
 	}
 
-	FVector2f yzWallStart = FVector2f(wallStart.Y, location.Z - GetScaledHeight() / 2);
-	FVector2f yzWallEnd = FVector2f(wallEnd.Y, location.Z + GetScaledHeight() / 2);
-	FVector2f yzLineStart = FVector2f(lineStart.Y, lineStart.Z);
-	FVector2f yzLineEnd = FVector2f(lineEnd.Y, lineEnd.Z);
-	FVector2f yzIntersection;
-	DrawDebugLine(GetWorld(), FVector(location.X, yzWallStart.X, yzWallStart.Y), FVector(location.X, yzWallEnd.X, yzWallEnd.Y), FColor::Orange);
-	DrawDebugLine(GetWorld(), FVector(location.X, yzLineStart.X, yzLineStart.Y), FVector(location.X, yzLineEnd.X, yzLineEnd.Y), FColor::Magenta);
+	check(lineEnd.X != lineStart.X);
+	float k = (xyIntersection.X - lineStart.X) / (lineEnd.X - lineStart.X);
+	float intersectionZ = lineStart.Z + k * (lineEnd.Z - lineStart.Z);
 
-	if (!GetLineToLineIntersection(yzLineStart, yzLineEnd, yzWallStart, yzWallEnd, yzIntersection))
+	if (location.Z - GetScaledHeight() / 2 <= intersectionZ && intersectionZ <= location.Z + GetScaledHeight() / 2)
 	{
-		return false;
+		intersectionPoint.X = xyIntersection.X;
+		intersectionPoint.Y = xyIntersection.Y;
+		intersectionPoint.Z = intersectionZ;
+		return true;
 	}
-		
-	intersectionPoint.X = xyIntersection.X;
-	intersectionPoint.Y = xyIntersection.Y;
-	intersectionPoint.Z = yzIntersection.Y;
-	return true;
+
+	return false;
 }
 
 void AObstacle3d::GetWallIntersections(const FVector& lineStart, const FVector& lineEnd, TArray<FVector>& outIntersections)
