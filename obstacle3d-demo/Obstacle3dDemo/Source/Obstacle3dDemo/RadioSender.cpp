@@ -31,7 +31,7 @@ void ARadioSender::DrawLineOfSight(ARadioReceiver* receiver)
 
 		for (FVector intersection : intersections)
 		{
-			DrawDebugSphere(GetWorld(), intersection, 2.0f, 8, FColor::Red);
+			DrawDebugSphere(GetWorld(), intersection, 10.0f, 8, FColor::Red);
 		}
 	}
 }

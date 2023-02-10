@@ -89,37 +89,45 @@ bool AObstacle3d::GetLineToLineIntersection(const FVector2f& line1Start, const F
 bool AObstacle3d::GetWallIntersection(const FVector& lineStart, const FVector& lineEnd, int wallStartIndex, int wallEndIndex, FVector& intersectionPoint)
 {
 	FVector location = GetActorLocation();
+	FVector2f location2d = FVector2f(location.X, location.Y);
 
 	FVector2f scale2d = FVector2f(GetActorScale().X, GetActorScale().Y);
 
-	FVector2f wallStart = shapeCoords[wallStartIndex] * scale2d;
-	FVector2f wallEnd = shapeCoords[wallEndIndex] * scale2d;
+	FVector2f wallStart = location2d + shapeCoords[wallStartIndex] * scale2d;
+	FVector2f wallEnd = location2d + shapeCoords[wallEndIndex] * scale2d;
 
 	// Walls are always vertical rects
-	// Inresection can be decomposed to XY and XZ projections. If line intersects both, than we have an intersection in XYZ
-	FVector2f xyWallStart = FVector2f(wallStart.X + location.X, wallStart.Y + location.Y);
-	FVector2f xyWallEnd = FVector2f(wallEnd.X + location.X, wallEnd.Y + location.Y);
+	// Inresection can be decomposed to XY and YZ projections. If line intersects both, than we have an intersection in XYZ
+	FVector2f xyWallStart = FVector2f(wallStart.X, wallStart.Y);
+	FVector2f xyWallEnd = FVector2f(wallEnd.X, wallEnd.Y);
 	FVector2f xyLineStart = FVector2f(lineStart.X, lineStart.Y);
 	FVector2f xyLineEnd = FVector2f(lineEnd.X, lineEnd.Y);
 	FVector2f xyIntersection;
+	DrawDebugLine(GetWorld(), FVector(xyWallStart.X, xyWallStart.Y, location.Z), FVector(xyWallEnd.X, xyWallEnd.Y, location.Z), FColor::Silver);
+	DrawDebugLine(GetWorld(), FVector(xyLineStart.X, xyLineStart.Y, location.Z), FVector(xyLineEnd.X, xyLineEnd.Y, location.Z), FColor::Cyan);
+
+
 	if (!GetLineToLineIntersection(xyLineStart, xyLineEnd, xyWallStart, xyWallEnd, xyIntersection))
 	{
 		return false;
 	}
 
-	FVector2f xzWallStart = FVector2f(wallStart.X + location.X, location.Z - GetScaledHeight() / 2);
-	FVector2f xzWallEnd = FVector2f(wallEnd.X + location.X, location.Z + GetScaledHeight() / 2);
-	FVector2f xzLineStart = FVector2f(lineStart.X, lineStart.Z);
-	FVector2f xzLineEnd = FVector2f(lineEnd.X, lineEnd.Z);
-	FVector2f xzIntersection;
-	if (!GetLineToLineIntersection(xzLineStart, xzLineEnd, xzWallStart, xzWallEnd, xzIntersection))
+	FVector2f yzWallStart = FVector2f(wallStart.Y, location.Z - GetScaledHeight() / 2);
+	FVector2f yzWallEnd = FVector2f(wallEnd.Y, location.Z + GetScaledHeight() / 2);
+	FVector2f yzLineStart = FVector2f(lineStart.Y, lineStart.Z);
+	FVector2f yzLineEnd = FVector2f(lineEnd.Y, lineEnd.Z);
+	FVector2f yzIntersection;
+	DrawDebugLine(GetWorld(), FVector(location.X, yzWallStart.X, yzWallStart.Y), FVector(location.X, yzWallEnd.X, yzWallEnd.Y), FColor::Orange);
+	DrawDebugLine(GetWorld(), FVector(location.X, yzLineStart.X, yzLineStart.Y), FVector(location.X, yzLineEnd.X, yzLineEnd.Y), FColor::Magenta);
+
+	if (!GetLineToLineIntersection(yzLineStart, yzLineEnd, yzWallStart, yzWallEnd, yzIntersection))
 	{
 		return false;
 	}
-
+		
 	intersectionPoint.X = xyIntersection.X;
 	intersectionPoint.Y = xyIntersection.Y;
-	intersectionPoint.Z = xzIntersection.Y;
+	intersectionPoint.Z = yzIntersection.Y;
 	return true;
 }
 

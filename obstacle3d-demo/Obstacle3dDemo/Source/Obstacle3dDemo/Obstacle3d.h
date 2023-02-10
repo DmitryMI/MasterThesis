@@ -19,12 +19,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	float height;
 
-	UPROPERTY(EditAnywhere)
-	float mouseRotationSensitivity = 50.0f;
-
-	UPROPERTY(EditAnywhere)
-	float mouseWheelSensitivity = 1000.0f;
-
 
 protected:
 	virtual void BeginPlay() override;
