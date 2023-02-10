@@ -23,6 +23,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	float movementSpeed = 1000;
 
+	UPROPERTY(EditAnywhere)
+	bool bMovementPaused = false;
+
 	FVector nextLocation;
 
 	void DrawLineOfSight(ARadioReceiver* receiver);
@@ -36,5 +39,11 @@ public:
 	ARadioSender();
 
 	virtual void Tick(float DeltaTime) override;
+	UFUNCTION(BlueprintCallable)
+	void SetMovementPaused(bool bPaused);
+	UFUNCTION(BlueprintCallable)
+	bool IsMovementPaused();
 
+	UFUNCTION(BlueprintCallable)
+	void ToggleMovementPaused();
 };

@@ -83,9 +83,27 @@ void ARadioSender::Tick(float DeltaTime)
 		nextLocation = FVector(x, y, z);
 	}
 	
-	FVector dir = nextLocation - location;
-	FVector movementVec = dir.GetUnsafeNormal() * movementSpeed * DeltaTime;
-	location += movementVec;
-	SetActorLocation(location);
+	if (!bMovementPaused)
+	{
+		FVector dir = nextLocation - location;
+		FVector movementVec = dir.GetUnsafeNormal() * movementSpeed * DeltaTime;
+		location += movementVec;
+		SetActorLocation(location);
+	}
+}
+
+void ARadioSender::SetMovementPaused(bool bPaused)
+{
+	bMovementPaused = bPaused;
+}
+
+void ARadioSender::ToggleMovementPaused()
+{
+	bMovementPaused = !bMovementPaused;
+}
+
+bool ARadioSender::IsMovementPaused()
+{
+	return bMovementPaused;
 }
 
