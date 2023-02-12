@@ -30,6 +30,7 @@ import org.car2x.veins.modules.obstacle.IObstacleControl;
 import org.car2x.veins.modules.world.annotations.AnnotationManager;
 import org.car2x.veins.nodes.Car;
 import org.car2x.veins.visualizer.roads.RoadsCanvasVisualizer;
+import org.car2x.veins.visualizer.roads.RoadsOsgVisualizer;
 import org.car2x.veins.subprojects.drones_veins_project.drones.Drone;
 import org.car2x.veins.subprojects.drones_veins_project.drones.DroneManager;
 
@@ -80,6 +81,10 @@ network DronesScenario
         
         roadsCanvasVisualizer: RoadsCanvasVisualizer {
             @display("p=300,0");
+        }
+        
+        roadsOsgVisualizer: RoadsOsgVisualizer {
+            @display("p=350,0");
         }
         
         node[0]: Car {

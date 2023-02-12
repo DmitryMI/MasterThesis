@@ -39,6 +39,14 @@
 #define VEINS_VERSION_PATCH 0
 #define VEINS_VERSION_ALPHA 0
 
+#ifndef WITH_OSG
+	#define WITH_OSG 1
+#endif
+
+#if WITH_OSG == 0
+	#define WITH_OSG 1
+#endif
+
 // Explicitly check OMNeT++ version number
 #if OMNETPP_VERSION < 0x500
 #error At least OMNeT++/OMNEST version 5.0.0 required

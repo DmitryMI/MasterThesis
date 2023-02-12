@@ -22,6 +22,14 @@
 
 #pragma once
 
+#ifndef WITH_OSG
+	#define WITH_OSG 1
+#endif
+
+#if WITH_OSG == 0
+	#define WITH_OSG 1
+#endif
+
 #include "veins/veins.h"
 
 // Version number of last release ("major.minor.patch") or an alpha version, if nonzero
