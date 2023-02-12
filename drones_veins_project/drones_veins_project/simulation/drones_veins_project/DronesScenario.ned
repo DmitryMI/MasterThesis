@@ -77,6 +77,7 @@ network DronesScenario
         manager: TraCIScenarioManagerLaunchd {
             parameters:
                 @display("p=512,128");
+                moduleType = default("org.car2x.veins.subprojects.drones_veins_project.cars.Car3d");
         }
         
         roadsCanvasVisualizer: RoadsCanvasVisualizer {
