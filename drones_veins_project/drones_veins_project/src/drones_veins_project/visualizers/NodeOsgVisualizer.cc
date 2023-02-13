@@ -106,7 +106,6 @@ void NodeOsgVisualizer::initDrawables(osg::Vec4 colorVec)
 	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 	stateSet->setAttribute(lineWidth);
 
-
 	std::string modelPath = par("modelPath").stringValue();
 	if (modelPath.empty())
 	{
@@ -123,11 +122,47 @@ void NodeOsgVisualizer::initDrawables(osg::Vec4 colorVec)
 		osg::ref_ptr<osg::Node> model = osgDB::readNodeFile(modelPath);
 		ASSERT(model);
 
-		//osgGeode->addChild(model);
+		setModelColor(model, colorVec);
 		osgTransform->addChild(model);
 	}
 
 	osgTransform->setStateSet(stateSet);
+}
+
+osg::Node* NodeOsgVisualizer::findNodeWithName(osg::Node *node, const std::string &name)
+{
+	if (!node)
+	{
+		return nullptr;
+	}
+
+	if (node->getName() == name)
+	{
+		return node;
+	}
+
+	osg::Group *group = dynamic_cast<osg::Group*>(node);
+	if (!group)
+	{
+		return nullptr;
+	}
+	int numChildren = group->getNumChildren();
+	for (int i = 0; i < numChildren; i++)
+	{
+		osg::Node *child = group->getChild(i);
+		osg::Node *result = findNodeWithName(child, name);
+		if (result)
+		{
+			return result;
+		}
+	}
+
+	return nullptr;
+}
+
+void NodeOsgVisualizer::setModelColor(osg::Node *modelRoot, const osg::Vec4 &colorVec)
+{
+	// Not implementeed
 }
 
 void NodeOsgVisualizer::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj, cObject *details)

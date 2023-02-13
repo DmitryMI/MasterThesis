@@ -27,6 +27,7 @@ RUN_COOKIECUTTER=0
 FORCE_REGENERATION=0
 
 # To generate and copy road network. -m
+GENERATE_ROAD_NET_NAME="drones"
 GENERATE_ROAD_NET=0
 GENERATE_ROAD_NET_GRID_SIZE=7
 GENERATE_ROAD_NET_STREET_LENGTH=100
@@ -49,6 +50,11 @@ while getopts ":hpfsm-:" optchar; do
 					val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
 				    	GENERATE_ROAD_NET_STREET_LENGTH=${val}
 				    	echo "Manhatten Grid street length set to $GENERATE_ROAD_NET_STREET_LENGTH"
+				    	;;
+				grid_name)
+					val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+				    	GENERATE_ROAD_NET_NAME=${val}
+				    	echo "Manhatten Grid map name set to $GENERATE_ROAD_NET_NAME"
 				    	;;
 			esac;;
 		
@@ -174,7 +180,7 @@ if [[ $GENERATE_ROAD_NET != 0 ]]; then
 	omnetpp_ini_path=$(realpath $omnetpp_ini_path_rel)
 	
 	cd ./grid-generator
-	./grid-generator.sh --grid_size $GENERATE_ROAD_NET_GRID_SIZE --street_length $GENERATE_ROAD_NET_STREET_LENGTH --omnetpp_ini $omnetpp_ini_path
+	./grid-generator.sh --grid_size $GENERATE_ROAD_NET_GRID_SIZE --street_length $GENERATE_ROAD_NET_STREET_LENGTH --omnetpp_ini $omnetpp_ini_path --proj_name $GENERATE_ROAD_NET_NAME
 	cd ..
 
 	echo "Moving Manhatten Grid files to veins project..."

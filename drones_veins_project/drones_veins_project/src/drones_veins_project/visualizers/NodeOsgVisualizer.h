@@ -41,10 +41,13 @@ namespace drones_veins_project
 	private:
 		osg::ref_ptr<osg::MatrixTransform> osgTransform;
 		osg::ref_ptr<osg::Geode> osgGeode;
+		osg::Node* findNodeWithName(osg::Node* node, const std::string& name);
+
 public:
 		virtual void initialize(int stage) override;
 
 		virtual void initDrawables(osg::Vec4 colorVec);
+		virtual void setModelColor(osg::Node* modelRoot, const osg::Vec4& colorVec);
 
 		void setTransform(const veins::Coord& location, double angleZ);
 #endif

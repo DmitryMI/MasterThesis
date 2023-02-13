@@ -21,6 +21,7 @@ module NodeOsgVisualizer
         @class(drones_veins_project::NodeOsgVisualizer);
         
         string modelPath = default("");
+        string modelMainPartName = default("");
         string color = default("green");
         double lineWidth = default(2);
         double scale = default(1);

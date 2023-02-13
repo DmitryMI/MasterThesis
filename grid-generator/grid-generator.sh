@@ -1,4 +1,4 @@
-PROJ_NAME="drones-simple"
+PROJ_NAME="drones"
 GRID_SIZE=7
 STREET_LENGTH=100
 SUMO_TOOLS_PATH="/home/$(whoami)/Software/sumo-1.8.0/tools"
@@ -8,7 +8,7 @@ PROJ_DIR="./generated/"
 # Number of trips (vehicles) will be (TRIPS_END_TIME - TRIPS_START_TIME) / TRIPS_PERIOD
 TRIPS_START_TIME=0
 TRIPS_END_TIME=60
-TRIPS_PERIOD=30		# Must be positive!
+TRIPS_PERIOD=1		# Must be positive!
 
 # Number of intermediate points in a trip
 TRIPS_INTERMEDIATES=64
@@ -32,10 +32,17 @@ while getopts ":h-:" optchar; do
 				    	OMNETPP_INI_PATH=${val}
 				    	echo "Grid Generator: omnetpp.ini path set to $OMNETPP_INI_PATH"
 				    	;;
+				proj_name)
+				    val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+				    	PROJ_NAME=${val}
+				    	echo "Grid Generator: project name set to $PROJ_NAME"
+				    	;;
 			esac;;
 		h)
 			echo "--grid_size to set number of joints in the Grid"
 			echo "--street_length to set length of a street in meters"
+			echo "--omnetpp_ini to set path to omnetpp.ini file (to patch playground size)"
+			echo "--proj_name to set project name"
 			exit;;
 
 	esac
@@ -49,7 +56,7 @@ dir_backup=$(pwd)
 cd $PROJ_DIR
 
 # Generating a grid-network of roads
-netgenerate --grid --grid.number $GRID_SIZE --grid.length $STREET_LENGTH --output-file $PROJ_NAME.net.xml
+netgenerate --grid --grid.number $GRID_SIZE --grid.length $STREET_LENGTH --default.lanenumber 1 --output-file $PROJ_NAME.net.xml
 
 # Generating buildings
 ../grid-generator-vs/grid_generator_vs.py $PROJ_NAME --grid.x-number $GRID_SIZE --grid.y-number $GRID_SIZE --grid.length $STREET_LENGTH --ini_path $OMNETPP_INI_PATH

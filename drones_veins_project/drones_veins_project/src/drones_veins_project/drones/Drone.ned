@@ -55,6 +55,8 @@ module Drone
    	    nodeOsgVisualizer: NodeOsgVisualizer
         {
             modelPath = "../../models/Drone.osgb";
+            modelMainPartName = "Cube";
+            color = "green";
         }
    	    
    	    
