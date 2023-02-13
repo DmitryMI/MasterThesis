@@ -34,6 +34,7 @@ import org.car2x.veins.visualizer.roads.RoadsOsgVisualizer;
 import org.car2x.veins.subprojects.drones_veins_project.cars.Car3d;
 import org.car2x.veins.subprojects.drones_veins_project.drones.Drone;
 import org.car2x.veins.subprojects.drones_veins_project.drones.DroneManager;
+import org.car2x.veins.subprojects.drones_veins_project.ObstacleControl3d;
 
 network DronesScenario
 {
@@ -55,7 +56,7 @@ network DronesScenario
                 @display("p=570,128");
         }
         
-        obstacles: <obstacleControlType> like IObstacleControl {
+        obstacles: ObstacleControl3d {
             @display("p=240,50");
         }
         

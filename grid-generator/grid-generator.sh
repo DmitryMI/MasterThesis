@@ -52,7 +52,7 @@ cd $PROJ_DIR
 netgenerate --grid --grid.number $GRID_SIZE --grid.length $STREET_LENGTH --output-file $PROJ_NAME.net.xml
 
 # Generating buildings
-../grid-generator-vs/grid_generator_vs.py $PROJ_NAME $GRID_SIZE $GRID_SIZE $STREET_LENGTH $OMNETPP_INI_PATH
+../grid-generator-vs/grid_generator_vs.py $PROJ_NAME --grid.x-number $GRID_SIZE --grid.y-number $GRID_SIZE --grid.length $STREET_LENGTH --ini_path $OMNETPP_INI_PATH
 
 # Generating random trips
 python3 $SUMO_TOOLS_PATH/randomTrips.py -n $PROJ_NAME.net.xml -b $TRIPS_START_TIME -e $TRIPS_END_TIME -p $TRIPS_PERIOD --random -i $TRIPS_INTERMEDIATES -o $PROJ_NAME.trips.xml
@@ -65,6 +65,6 @@ sed -i -e "s/<routes.*>/<routes>/g" $PROJ_NAME.trips.xml
 duarouter -n $PROJ_NAME.net.xml --route-files $PROJ_NAME.trips.xml -o $PROJ_NAME.rou.xml
 
 # Visualize the road network and buildings
-# netedit -s $PROJ_NAME.net.xml -a $PROJ_NAME.poly.xml
+netedit -s $PROJ_NAME.net.xml -a $PROJ_NAME.poly.xml
 
 cd $dir_backup

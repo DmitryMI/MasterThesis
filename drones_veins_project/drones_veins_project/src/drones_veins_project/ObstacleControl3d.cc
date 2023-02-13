@@ -13,8 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+#include "veins/veins.h"
 #include "ObstacleControl3d.h"
 #include <string>
+#include "veins/modules/mobility/traci/TraCIScenarioManager.h"
+#include "veins/modules/mobility/traci/TraCIConnection.h"
 
 using namespace drones_veins_project;
 using namespace veins;
@@ -35,10 +38,20 @@ ObstacleControl3d::~ObstacleControl3d()
 void ObstacleControl3d::initialize(int stage)
 {
 	ObstacleControl::initialize(stage);
+
 }
 
 void ObstacleControl3d::add3d(Obstacle3d obstacle3d)
 {
+	for (auto &obstacle : obstacleOwner)
+	{
+		if (obstacle->getId() == obstacle3d.getId())
+		{
+			EV << "Obstacle with ID " << obstacle3d.getId() << " already exists";
+			return;
+		}
+	}
+
 	Obstacle3d *o = new Obstacle3d(obstacle3d);
 	obstacleOwner.emplace_back(o);
 
@@ -50,7 +63,7 @@ void ObstacleControl3d::add3d(Obstacle3d obstacle3d)
 
 	std::string colorStr = par("obstaclesColor").stringValue();
 
-	cOsgCanvas* canvas = getParentModule()->getOsgCanvas();
+	cOsgCanvas *canvas = getParentModule()->getOsgCanvas();
 	o->drawOnOsgCanvas(canvas, colorStr);
 
 	cacheEntries.clear();
@@ -74,18 +87,65 @@ void ObstacleControl3d::addFromTypeAndShape(std::string id, std::string typeId, 
 	{
 		throw cRuntimeError("Unsupported obstacle type: \"%s\"", typeId.c_str());
 	}
-	double heightDefault = par("buildingsHeightDefault");
-	Obstacle3d obs(id, typeId, getAttenuationPerCut(typeId), getAttenuationPerMeter(typeId), heightDefault);
+
+	cXMLElement *additionalObstaclesXml = par("additionalObstaclesXml");
+	double height;
+	if (!getHeightFromXml(additionalObstaclesXml, id, height))
+	{
+		height = par("buildingsHeightDefault");
+	}
+
+	Obstacle3d obs(id, typeId, getAttenuationPerCut(typeId), getAttenuationPerMeter(typeId), height);
 	obs.setShape(shape);
+
 	add3d(obs);
+}
+
+bool ObstacleControl3d::getHeightFromXml(cXMLElement *xml, std::string polyId, double &height)
+{
+	std::string rootTag = xml->getTagName();
+	if (rootTag != "obstacles" && rootTag != "additional")
+	{
+		throw cRuntimeError("Obstacle definition root tag was \"%s\", but expected \"obstacles\" or \"additional\"",
+				rootTag.c_str());
+	}
+
+	cXMLElementList list = xml->getChildren();
+	for (cXMLElementList::const_iterator i = list.begin(); i != list.end(); ++i)
+	{
+		cXMLElement *e = *i;
+
+		std::string tag = e->getTagName();
+
+		if (tag != "poly")
+		{
+			continue;
+		}
+
+		ASSERT(e->getAttribute("id"));
+		std::string id = e->getAttribute("id");
+		if (id != polyId)
+		{
+			continue;
+		}
+		const char *heightAttribute = e->getAttribute("height");
+		if (heightAttribute != nullptr)
+		{
+			height = std::stoi(heightAttribute);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void ObstacleControl3d::addFromXml(cXMLElement *xml)
 {
 	std::string rootTag = xml->getTagName();
-	if (rootTag != "obstacles")
+	if (rootTag != "obstacles" && rootTag != "additional")
 	{
-		throw cRuntimeError("Obstacle definition root tag was \"%s\", but expected \"obstacles\"", rootTag.c_str());
+		throw cRuntimeError("Obstacle definition root tag was \"%s\", but expected \"obstacles\" or \"additional\"",
+				rootTag.c_str());
 	}
 
 	cXMLElementList list = xml->getChildren();
@@ -143,7 +203,16 @@ void ObstacleControl3d::addFromXml(cXMLElement *xml)
 				std::string xy = st.nextToken();
 				std::vector<double> xya = cStringTokenizer(xy.c_str(), ",").asDoubleVector();
 				ASSERT(xya.size() == 2);
-				sh.push_back(Coord(xya[0], xya[1]));
+
+				TraCICoord traci_coord = TraCICoord(xya[0], xya[1]);
+
+				auto scenarioManager = veins::FindModule<veins::TraCIScenarioManager*>::findGlobalModule();
+				ASSERT(scenarioManager);
+				veins::TraCIConnection *connection = scenarioManager->getConnection();
+				ASSERT(connection);
+				Coord omnet_coord = connection->traci2omnet(traci_coord);
+
+				sh.push_back(omnet_coord);
 			}
 			obs.setShape(sh);
 			add3d(obs);
