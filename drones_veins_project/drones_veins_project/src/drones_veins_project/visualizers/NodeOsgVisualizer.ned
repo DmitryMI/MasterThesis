@@ -23,5 +23,5 @@ module NodeOsgVisualizer
         string modelPath = default("");
         string color = default("green");
         double lineWidth = default(2);
-        double scale = 1;
+        double scale = default(1);
 }

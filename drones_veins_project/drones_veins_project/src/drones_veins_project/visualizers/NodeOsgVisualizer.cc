@@ -125,15 +125,6 @@ void NodeOsgVisualizer::initDrawables(osg::Vec4 colorVec)
 	}
 	else
 	{
-		char cwd[256];
-		if (getcwd(cwd, sizeof(cwd)) != NULL)
-		{
-			printf("Current working dir: %s\n", cwd);
-		}
-		else
-		{
-			perror("getcwd() error");
-		}
 		osg::ref_ptr<osg::Node> model = osgDB::readNodeFile(modelPath);
 		ASSERT(model);
 		osgGeode->addChild(model);
@@ -170,9 +161,11 @@ void NodeOsgVisualizer::setTransform(const veins::Coord &location, double angleZ
 	osg::Vec3 posVec3(location.x, location.y, location.z);
 
 	const osg::Vec3d axis(0, 0, 1);
+	double scale = par("scale").doubleValue();
+	auto matrixScale = osg::Matrix::scale(osg::Vec3(scale, scale, scale));
 	auto matrixTranslate = osg::Matrix::translate(posVec3);
 	auto matrixRotate = osg::Matrix::rotate(angleZ, axis);
-	auto matrix = matrixRotate * matrixTranslate;
+	auto matrix = matrixScale * matrixRotate * matrixTranslate;
 	osgTransform->setMatrix(matrix);
 }
 

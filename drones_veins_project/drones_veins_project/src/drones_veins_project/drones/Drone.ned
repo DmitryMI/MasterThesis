@@ -18,6 +18,7 @@ package org.car2x.veins.subprojects.drones_veins_project.drones;
 import org.car2x.veins.base.modules.*;
 import org.car2x.veins.modules.nic.Nic80211p;
 import org.car2x.veins.modules.mobility.LinearMobility;
+import org.car2x.veins.subprojects.drones_veins_project.visualizers.*;
 
 module Drone
 {
@@ -49,8 +50,13 @@ module Drone
    	            angle = uniform(0deg, 360deg);
    	            x = default(0);		// Will be overwritten by Drone Manager if drone is spawned dynamically
    	            y = default(0);		// Will be overwritten by Drone Manager if drone is spawned dynamically
-   	            z = default(300);	// Drone's altitude
+   	            z = default(50);	// Drone's altitude
    	    }
+   	    nodeOsgVisualizer: NodeOsgVisualizer
+        {
+            modelPath = "../../models/Drone.osgb";
+        }
+   	    
    	    
 	connections:
         nic.upperLayerOut --> appl.lowerLayerIn;

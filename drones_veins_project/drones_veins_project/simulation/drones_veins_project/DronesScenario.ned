@@ -31,6 +31,7 @@ import org.car2x.veins.modules.world.annotations.AnnotationManager;
 import org.car2x.veins.nodes.Car;
 import org.car2x.veins.visualizer.roads.RoadsCanvasVisualizer;
 import org.car2x.veins.visualizer.roads.RoadsOsgVisualizer;
+import org.car2x.veins.subprojects.drones_veins_project.cars.Car3d;
 import org.car2x.veins.subprojects.drones_veins_project.drones.Drone;
 import org.car2x.veins.subprojects.drones_veins_project.drones.DroneManager;
 
@@ -43,6 +44,7 @@ network DronesScenario
         @display("bgb=$playgroundSizeX,$playgroundSizeY");
         
         string obstacleControlType = default("ObstacleControl3d");
+        string carType = default("org.car2x.veins.subprojects.drones_veins_project.cars.Car3d");
         
     submodules:
         drone[0]: Drone {            
@@ -77,7 +79,7 @@ network DronesScenario
         manager: TraCIScenarioManagerLaunchd {
             parameters:
                 @display("p=512,128");
-                moduleType = default("org.car2x.veins.subprojects.drones_veins_project.cars.Car3d");
+                moduleType = carType;
         }
         
         roadsCanvasVisualizer: RoadsCanvasVisualizer {
@@ -88,7 +90,7 @@ network DronesScenario
             @display("p=350,0");
         }
         
-        node[0]: Car {
+        node[0]: Car3d {
         }
 
     connections allowunconnected:
