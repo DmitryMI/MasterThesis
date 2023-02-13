@@ -150,7 +150,7 @@ class GridGenerator:
                 building_center_x = building_right + building_size_x / 2
                 building_center_y = building_bot + building_size_y / 2
 
-                poly_id = f"building-{int(cell_x)}{(i)}_{int(cell_y)}{(j)}"
+                poly_id = f"building-{int(cell_x)}_{i}-{int(cell_y)}_{j}"
 
                 building_xml_element = self._generate_building(
                     building_center_x,
