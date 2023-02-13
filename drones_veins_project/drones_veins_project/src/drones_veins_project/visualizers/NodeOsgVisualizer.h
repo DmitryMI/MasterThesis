@@ -39,7 +39,6 @@ namespace drones_veins_project
 
 #ifdef WITH_OSG
 	private:
-		//static osg::Group* nodeVisualizerGroup;
 		osg::ref_ptr<osg::MatrixTransform> osgTransform;
 		osg::ref_ptr<osg::Geode> osgGeode;
 public:

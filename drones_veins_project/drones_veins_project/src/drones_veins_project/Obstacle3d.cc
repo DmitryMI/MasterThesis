@@ -15,6 +15,10 @@
 
 #include "Obstacle3d.h"
 
+#ifdef WITH_OSG
+#include "veins/base/utils/FindModule.h"
+#endif
+
 using namespace veins;
 using namespace drones_veins_project;
 
@@ -36,9 +40,116 @@ bool Obstacle3d::containsPoint(veins::Coord Point) const
 	return Obstacle::containsPoint(Point);
 }
 
-std::vector<double> Obstacle3d::getIntersections(const Coord& senderPos, const Coord& receiverPos) const
+std::vector<double> Obstacle3d::getIntersections(const Coord &senderPos, const Coord &receiverPos) const
 {
 	// TODO Check z
 	return Obstacle::getIntersections(senderPos, receiverPos);
 }
 
+osg::Geode* Obstacle3d::createWall(int wallIndex1, int wallIndex2)
+{
+	Coord coord1 = coords[wallIndex1];
+	Coord coord2 = coords[wallIndex2];
+
+	auto verts = new osg::Vec3Array();
+	verts->push_back(osg::Vec3(coord1.x, coord1.y, 0));
+	verts->push_back(osg::Vec3(coord2.x, coord2.y, 0));
+	verts->push_back(osg::Vec3(coord2.x, coord2.y, height));
+	verts->push_back(osg::Vec3(coord1.x, coord1.y, height));
+
+	auto primitiveSet = new osg::DrawArrays(osg::PrimitiveSet::POLYGON);
+	primitiveSet->setFirst(0);
+	primitiveSet->setCount(verts->size());
+
+	auto geometry = new osg::Geometry();
+	geometry->setVertexArray(verts);
+	geometry->addPrimitiveSet(primitiveSet);
+	auto geode = new osg::Geode();
+	geode->addDrawable(geometry);
+
+	return geode;
+}
+
+osg::Geode* Obstacle3d::createHorizontalPolygon(float height)
+{
+	auto verts = new osg::Vec3Array();
+	for (auto &coord : coords)
+	{
+		verts->push_back(osg::Vec3(coord.x, coord.y, height));
+	}
+
+	auto primitiveSet = new osg::DrawArrays(osg::PrimitiveSet::POLYGON);
+	primitiveSet->setFirst(0);
+	primitiveSet->setCount(verts->size());
+
+	auto geometry = new osg::Geometry();
+	geometry->setVertexArray(verts);
+	geometry->addPrimitiveSet(primitiveSet);
+	auto geode = new osg::Geode();
+	geode->addDrawable(geometry);
+
+	return geode;
+}
+
+void Obstacle3d::createOsgGeometry(const cFigure::Color &color)
+{
+
+	for (int i = 0; i < coords.size(); i++)
+	{
+		int j;
+		if (i == coords.size() - 1)
+		{
+			j = 0;
+		}
+		else
+		{
+			j = i + 1;
+		}
+
+		osg::Geode *wall = createWall(i, j);
+		osgNode->addChild(wall);
+	}
+
+	osg::Geode *polyFloor = createHorizontalPolygon(0);
+	osgNode->addChild(polyFloor);
+	osg::Geode *polyCeil = createHorizontalPolygon(height);
+	osgNode->addChild(polyCeil);
+
+	auto material = new osg::Material();
+	osg::Vec4 colorVec(color.red / 255.0, color.green / 255.0, color.blue / 255.0, 1.0);
+	material->setAmbient(osg::Material::FRONT_AND_BACK, colorVec);
+	material->setDiffuse(osg::Material::FRONT_AND_BACK, colorVec);
+	auto stateSet = new osg::StateSet();
+
+	auto lineWidth = new osg::LineWidth();
+	lineWidth->setWidth(3);
+	stateSet->setAttribute(lineWidth);
+
+	stateSet->setAttribute(material);
+	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+
+	osgNode->setStateSet(stateSet);
+}
+
+void Obstacle3d::drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr)
+{
+#ifdef WITH_OSG
+	ASSERT(canvas);
+
+	osg::Group *scene = dynamic_cast<osg::Group*>(canvas->getScene());
+	if (!scene)
+	{
+		scene = new osg::Group();
+		canvas->setScene(scene);
+	}
+	ASSERT(scene);
+
+	osgNode = new osg::Group();
+
+	auto color = cFigure::Color(colorStr.c_str());
+
+	createOsgGeometry(color);
+
+	scene->addChild(osgNode);
+#endif
+}

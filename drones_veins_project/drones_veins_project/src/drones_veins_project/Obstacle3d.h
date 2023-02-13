@@ -19,11 +19,31 @@
 #include "drones_veins_project.h"
 #include "veins/modules/obstacle/Obstacle.h"
 
+#ifdef WITH_OSG
+#include <osg/Geode>
+#include <osg/Geometry>
+#include <osg/Group>
+#include <osg/LineWidth>
+#include <osg/Material>
+#include <osg/ShapeDrawable>
+#include <osg/Matrix>
+#include <osg/MatrixTransform>
+#endif
+
 namespace drones_veins_project
 {
 
 	class Obstacle3d : public veins::Obstacle
 	{
+	private:
+#ifdef WITH_OSG
+		osg::ref_ptr<osg::Group> osgNode;
+
+		virtual osg::Geode* createWall(int wallIndex1, int wallIndex2);
+		virtual osg::Geode* createHorizontalPolygon(float height);
+		virtual void createOsgGeometry(const cFigure::Color& color);
+#endif
+
 	protected:
 		double height;
 	public:
@@ -34,6 +54,8 @@ namespace drones_veins_project
 		virtual bool containsPoint(veins::Coord Point) const override;
 		virtual std::vector<double> getIntersections(const veins::Coord &senderPos,
 				const veins::Coord &receiverPos) const override;
+
+		virtual void drawOnOsgCanvas(cOsgCanvas *canvas, std::string& colorStr);
 	};
 }
 

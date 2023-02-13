@@ -20,9 +20,7 @@ module NodeOsgVisualizer
     parameters:
         @class(drones_veins_project::NodeOsgVisualizer);
         
-        string updaterSignal = default("org_car2x_veins_modules_mobility_traciTimestepEnd");
-        
-        string meshPath = default("");
+        string modelPath = default("");
         string color = default("green");
         double lineWidth = default(2);
         double scale = 1;
