@@ -62,10 +62,12 @@ void ObstacleControl3d::add3d(Obstacle3d obstacle3d)
 	}
 
 	std::string colorStr = par("obstaclesColor").stringValue();
+	bool obstaclesShadingEnabled = par("obstaclesShadingEnabled").boolValue();
+	bool wireframeModeEnabled = par("wireframeModeEnabled").boolValue();
 
 #ifdef WITH_OSG
 	cOsgCanvas *canvas = getParentModule()->getOsgCanvas();
-	o->drawOnOsgCanvas(canvas, colorStr);
+	o->drawOnOsgCanvas(canvas, colorStr, obstaclesShadingEnabled, wireframeModeEnabled);
 #endif
 
 	cacheEntries.clear();

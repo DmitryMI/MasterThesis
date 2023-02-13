@@ -25,6 +25,8 @@ simple ObstacleControl3d extends ObstacleControl
     parameters:
         @class(drones_veins_project::ObstacleControl3d);
         double buildingsHeightDefault @unit(m) = 10m;    
-        string obstaclesColor = default("#966F33");   
+        string obstaclesColor = default("#6c6760");   
         xml additionalObstaclesXml = default(xml("<obstacles/>"));
+        bool obstaclesShadingEnabled = default(false);
+        bool wireframeModeEnabled = default(false);
 }

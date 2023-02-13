@@ -47,7 +47,7 @@ std::vector<double> Obstacle3d::getIntersections(const Coord &senderPos, const C
 	return Obstacle::getIntersections(senderPos, receiverPos);
 }
 
-osg::Geode* Obstacle3d::createWall(int wallIndex1, int wallIndex2)
+osg::Geode* Obstacle3d::createWall(int wallIndex1, int wallIndex2, osg::PrimitiveSet::Mode mode)
 {
 	Coord coord1 = coords[wallIndex1];
 	Coord coord2 = coords[wallIndex2];
@@ -58,7 +58,7 @@ osg::Geode* Obstacle3d::createWall(int wallIndex1, int wallIndex2)
 	verts->push_back(osg::Vec3(coord2.x, coord2.y, height));
 	verts->push_back(osg::Vec3(coord1.x, coord1.y, height));
 
-	auto primitiveSet = new osg::DrawArrays(osg::PrimitiveSet::POLYGON);
+	auto primitiveSet = new osg::DrawArrays(mode);
 	primitiveSet->setFirst(0);
 	primitiveSet->setCount(verts->size());
 
@@ -71,7 +71,7 @@ osg::Geode* Obstacle3d::createWall(int wallIndex1, int wallIndex2)
 	return geode;
 }
 
-osg::Geode* Obstacle3d::createHorizontalPolygon(float height)
+osg::Geode* Obstacle3d::createHorizontalPolygon(float height, osg::PrimitiveSet::Mode mode)
 {
 	auto verts = new osg::Vec3Array();
 	for (auto &coord : coords)
@@ -79,7 +79,7 @@ osg::Geode* Obstacle3d::createHorizontalPolygon(float height)
 		verts->push_back(osg::Vec3(coord.x, coord.y, height));
 	}
 
-	auto primitiveSet = new osg::DrawArrays(osg::PrimitiveSet::POLYGON);
+	auto primitiveSet = new osg::DrawArrays(mode);
 	primitiveSet->setFirst(0);
 	primitiveSet->setCount(verts->size());
 
@@ -92,8 +92,35 @@ osg::Geode* Obstacle3d::createHorizontalPolygon(float height)
 	return geode;
 }
 
-void Obstacle3d::createOsgGeometry(const cFigure::Color &color)
+void Obstacle3d::createOsgGeometry(const cFigure::Color &color, bool obstaclesShadingEnabled, bool wireframeModeEnabled)
 {
+	auto borderMaterial = new osg::Material();
+	osg::Vec4 borderColorVec(0, 0, 0, 1.0);
+	borderMaterial->setAmbient(osg::Material::FRONT_AND_BACK, borderColorVec);
+	borderMaterial->setDiffuse(osg::Material::FRONT_AND_BACK, borderColorVec);
+	auto borderStateSet = new osg::StateSet();
+	auto lineWidth = new osg::LineWidth();
+	lineWidth->setWidth(3);
+	borderStateSet->setAttribute(lineWidth);
+	borderStateSet->setAttribute(borderMaterial);
+	borderStateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+
+	auto polygonMaterial = new osg::Material();
+	osg::Vec4 polygonColorVec(color.red / 255.0, color.green / 255.0, color.blue / 255.0, 1.0);
+	polygonMaterial->setAmbient(osg::Material::FRONT_AND_BACK, polygonColorVec);
+	polygonMaterial->setDiffuse(osg::Material::FRONT_AND_BACK, polygonColorVec);
+	auto polygonStateSet = new osg::StateSet();
+	polygonStateSet->setAttribute(polygonMaterial);
+	if (obstaclesShadingEnabled)
+	{
+		osg::ShadeModel *shadeModel = new osg::ShadeModel();
+		shadeModel->setMode(osg::ShadeModel::Mode::FLAT);
+		polygonStateSet->setAttribute(shadeModel);
+	}
+	else
+	{
+		polygonStateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+	}
 
 	for (int i = 0; i < coords.size(); i++)
 	{
@@ -107,37 +134,44 @@ void Obstacle3d::createOsgGeometry(const cFigure::Color &color)
 			j = i + 1;
 		}
 
-		osg::Geode *wall = createWall(i, j);
-		osgNode->addChild(wall);
+		if (!wireframeModeEnabled)
+		{
+			osg::Geode *wall = createWall(i, j, osg::PrimitiveSet::POLYGON);
+			wall->setStateSet(polygonStateSet);
+			osgNode->addChild(wall);
+		}
+		osg::Geode *wallBorder = createWall(i, j, osg::PrimitiveSet::LINE_LOOP);
+		wallBorder->setStateSet(borderStateSet);
+		osgNode->addChild(wallBorder);
 	}
 
-	osg::Geode *polyFloor = createHorizontalPolygon(0);
-	osgNode->addChild(polyFloor);
-	osg::Geode *polyCeil = createHorizontalPolygon(height);
-	osgNode->addChild(polyCeil);
+	if (!wireframeModeEnabled)
+	{
+		osg::Geode *polyFloor = createHorizontalPolygon(0, osg::PrimitiveSet::POLYGON);
+		polyFloor->setStateSet(polygonStateSet);
+		osgNode->addChild(polyFloor);
+	}
 
-	auto material = new osg::Material();
-	osg::Vec4 colorVec(color.red / 255.0, color.green / 255.0, color.blue / 255.0, 1.0);
-	material->setAmbient(osg::Material::FRONT_AND_BACK, colorVec);
-	material->setDiffuse(osg::Material::FRONT_AND_BACK, colorVec);
-	auto stateSet = new osg::StateSet();
+	osg::Geode *polyFloorBorder = createHorizontalPolygon(0, osg::PrimitiveSet::LINES);
+	polyFloorBorder->setStateSet(borderStateSet);
+	osgNode->addChild(polyFloorBorder);
 
-	auto lineWidth = new osg::LineWidth();
-	lineWidth->setWidth(3);
-	stateSet->setAttribute(lineWidth);
+	if (!wireframeModeEnabled)
+	{
+		osg::Geode *polyCeil = createHorizontalPolygon(height, osg::PrimitiveSet::POLYGON);
+		polyCeil->setStateSet(polygonStateSet);
+		osgNode->addChild(polyCeil);
+	}
 
-	stateSet->setAttribute(material);
-	osg::ShadeModel* shadeModel = new osg::ShadeModel();
-	shadeModel->setMode(osg::ShadeModel::Mode::FLAT);
-	stateSet->setAttribute(shadeModel);
-	//stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-
-	osgNode->setStateSet(stateSet);
+	osg::Geode *polyCeilBorder = createHorizontalPolygon(height, osg::PrimitiveSet::LINES);
+	polyCeilBorder->setStateSet(borderStateSet);
+	osgNode->addChild(polyCeilBorder);
 }
 
 #ifdef WITH_OSG
 
-void Obstacle3d::drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr)
+void Obstacle3d::drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr, bool obstaclesShadingEnabled,
+		bool wireframeModeEnabled)
 {
 	ASSERT(canvas);
 
@@ -153,7 +187,7 @@ void Obstacle3d::drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr)
 
 	auto color = cFigure::Color(colorStr.c_str());
 
-	createOsgGeometry(color);
+	createOsgGeometry(color, obstaclesShadingEnabled, wireframeModeEnabled);
 
 	scene->addChild(osgNode);
 #endif
