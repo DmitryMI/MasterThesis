@@ -38,6 +38,8 @@ namespace drones_veins_project
 
 		virtual void addFromXml(cXMLElement* xml) override;
 		virtual void addFromTypeAndShape(std::string id, std::string typeId, std::vector<veins::Coord> shape) override;
+
+		virtual std::vector<std::pair<veins::Obstacle*, std::vector<double>>> getIntersections(const veins::Coord& senderPos, const veins::Coord& receiverPos) const override;
 	};
 }
 #endif /* DRONES_VEINS_PROJECT_OBSTACLECONTROL3D_H_ */

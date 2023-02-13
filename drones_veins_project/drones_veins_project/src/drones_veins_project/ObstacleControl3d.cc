@@ -18,6 +18,8 @@
 #include <string>
 #include "veins/modules/mobility/traci/TraCIScenarioManager.h"
 #include "veins/modules/mobility/traci/TraCIConnection.h"
+#include "visualizers/ObstacleShadowingVisualizer.h"
+#include "veins/base/utils/FindModule.h"
 
 using namespace drones_veins_project;
 using namespace veins;
@@ -226,5 +228,19 @@ void ObstacleControl3d::addFromXml(cXMLElement *xml)
 			throw cRuntimeError("Found unknown tag in obstacle definition: \"%s\"", tag.c_str());
 		}
 	}
+}
+
+std::vector<std::pair<veins::Obstacle*, std::vector<double>>> ObstacleControl3d::getIntersections(
+		const Coord &senderPos, const Coord &receiverPos) const
+{
+	auto intersections = ObstacleControl::getIntersections(senderPos, receiverPos);
+
+	ObstacleShadowingVisualizer *visualizer = veins::FindModule<ObstacleShadowingVisualizer*>::findGlobalModule();
+	if (visualizer)
+	{
+		visualizer->visualizeIntersections(intersections, senderPos, receiverPos);
+	}
+
+	return intersections;
 }
 
