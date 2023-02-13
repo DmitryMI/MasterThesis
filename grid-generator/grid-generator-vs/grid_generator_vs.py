@@ -164,7 +164,7 @@ class GridGenerator:
     def generate_buildings(self):
         polygons_filepath = self._get_project_filepath("poly")
 
-        print(f"Target file: {polygons_filepath}")
+        print(f"Target file: {polygons_filepath}")        
 
         scene_width = self._junctions_count_x * self._street_length
         scene_height = self._junctions_count_y * self._street_length
@@ -178,6 +178,9 @@ class GridGenerator:
 
         cells_count_x = self._junctions_count_x - 1
         cells_count_y = self._junctions_count_y - 1
+
+        print(f"Cells count X: {cells_count_x}")        
+        print(f"Cells count T: {cells_count_y}")
 
         assert cells_count_x > 0
         assert cells_count_y > 0
