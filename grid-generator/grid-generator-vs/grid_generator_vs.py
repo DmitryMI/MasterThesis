@@ -60,7 +60,7 @@ class GridGenerator:
         color=(128, 128, 128),
         fill=True,
         layer=-1.0,
-        height=None
+        height=None,
     ):
         poly_element = ET.Element("poly")
 
@@ -94,7 +94,9 @@ class GridGenerator:
         return poly_element
 
     # Generating simple rectangle building that fills the entire cell
-    def _generate_simple_building(self, index_x, index_y, cell_width, cell_height, scale=1):
+    def _generate_simple_building(
+        self, index_x, index_y, cell_width, cell_height, scale=1
+    ):
         cell_center_x = cell_width * index_x + cell_width / 2
         cell_center_y = cell_height * index_y + cell_height / 2
 
@@ -106,41 +108,56 @@ class GridGenerator:
 
         return self._get_polygon_xml_element(poly_id, coords)
 
-    def _generate_building(self, center_x, center_y, width, height):
+    def _generate_building(self, center_x, center_y, width, height, poly_id=None):
+        coords = self._get_rectangle_coords(center_x, center_y, width, height, 1)
 
-        coords = self._get_rectangle_coords(
-            center_x, center_y, width, height, 1
-        )
-
-        poly_id = f"building-simple-{int(center_x)}_{int(center_y)}"
+        if poly_id is None:
+            poly_id = f"building-simple-{int(center_x)}_{int(center_y)}"
 
         height = random.uniform(self._building_height_min, self._building_height_max)
         return self._get_polygon_xml_element(poly_id, coords, height=height)
 
-
-    def generate_buildings_in_cell(self, cell_x, cell_y, cell_width, cell_height, element_additional):
+    def generate_buildings_in_cell(
+        self, cell_x, cell_y, cell_width, cell_height, element_additional
+    ):
         # cell_center_x = cell_width * cell_x + cell_width / 2
         # cell_center_y = cell_height * cell_y + cell_height / 2
-        cell_start_x =  cell_width * cell_x + self._block_config.block_margin
-        cell_start_y =  cell_height * cell_y + self._block_config.block_margin
+        cell_start_x = cell_width * cell_x + self._block_config.block_margin
+        cell_start_y = cell_height * cell_y + self._block_config.block_margin
 
         cell_width_mod = cell_width - self._block_config.block_margin * 2
         cell_height_mod = cell_height - self._block_config.block_margin * 2
 
-        total_padding_space = (self._block_config.block_size - 1) * self._block_config.block_padding
+        total_padding_space = (
+            self._block_config.block_size - 1
+        ) * self._block_config.block_padding
         size_reduction = total_padding_space / self._block_config.block_size
-        building_size_x = cell_width_mod / self._block_config.block_size - size_reduction
-        building_size_y = cell_height_mod / self._block_config.block_size - size_reduction
-        
+        building_size_x = (
+            cell_width_mod / self._block_config.block_size - size_reduction
+        )
+        building_size_y = (
+            cell_height_mod / self._block_config.block_size - size_reduction
+        )
+
         for i in range(self._block_config.block_size):
             for j in range(self._block_config.block_size):
-                building_right = (building_size_x +  self._block_config.block_padding) * i + cell_start_x
-                building_bot = (building_size_y +  self._block_config.block_padding) * j + cell_start_y
+                building_right = (
+                    building_size_x + self._block_config.block_padding
+                ) * i + cell_start_x
+                building_bot = (
+                    building_size_y + self._block_config.block_padding
+                ) * j + cell_start_y
                 building_center_x = building_right + building_size_x / 2
                 building_center_y = building_bot + building_size_y / 2
 
+                poly_id = f"building-{int(cell_x)}{(i)}_{int(cell_y)}{(j)}"
+
                 building_xml_element = self._generate_building(
-                    building_center_x, building_center_y, building_size_x, building_size_y
+                    building_center_x,
+                    building_center_y,
+                    building_size_x,
+                    building_size_y,
+                    poly_id
                 )
                 element_additional.append(building_xml_element)
 
@@ -157,7 +174,7 @@ class GridGenerator:
         cell_width = scene_width / self._junctions_count_x
         cell_height = scene_height / self._junctions_count_y
 
-        print(f"Building size: ({cell_width}, {cell_height})")
+        print(f"Cell size: ({cell_width}, {cell_height})")
 
         cells_count_x = self._junctions_count_x - 1
         cells_count_y = self._junctions_count_y - 1
@@ -174,7 +191,9 @@ class GridGenerator:
 
         for xi in range(cells_count_x):
             for yi in range(cells_count_y):
-                self.generate_buildings_in_cell(xi, yi, cell_width, cell_height, element_additional)
+                self.generate_buildings_in_cell(
+                    xi, yi, cell_width, cell_height, element_additional
+                )
 
         tree = ET.ElementTree(element_additional)
         ET.indent(tree, space="\t", level=0)
@@ -214,8 +233,12 @@ if __name__ == "__main__":
     parser.add_argument("--grid.x-number", default=5, dest="junctions_x", type=int)
     parser.add_argument("--grid.y-number", default=5, dest="junctions_y", type=int)
     parser.add_argument("--grid.length", default=100, dest="street_length", type=float)
-    parser.add_argument("--building_height_min", default=10, dest="building_height_min", type=float)
-    parser.add_argument("--building_height_max", default=20, dest="building_height_max", type=float)
+    parser.add_argument(
+        "--building_height_min", default=10, dest="building_height_min", type=float
+    )
+    parser.add_argument(
+        "--building_height_max", default=20, dest="building_height_max", type=float
+    )
     parser.add_argument("--block_size", default=4, type=int)
     parser.add_argument("--block_margin", default=10, type=float)
     parser.add_argument("--block_padding", default=10, type=float)
@@ -239,7 +262,14 @@ if __name__ == "__main__":
 
     blockConfig = BlockConfig(block_size, block_margin, block_padding)
     grid_generator = GridGenerator(
-        proj_dir, proj_name, junctions_x, junctions_y, street_length, building_height_min, building_height_max, blockConfig
+        proj_dir,
+        proj_name,
+        junctions_x,
+        junctions_y,
+        street_length,
+        building_height_min,
+        building_height_max,
+        blockConfig,
     )
     grid_generator.generate_buildings()
 
