@@ -63,8 +63,10 @@ void ObstacleControl3d::add3d(Obstacle3d obstacle3d)
 
 	std::string colorStr = par("obstaclesColor").stringValue();
 
+#ifdef WITH_OSG
 	cOsgCanvas *canvas = getParentModule()->getOsgCanvas();
 	o->drawOnOsgCanvas(canvas, colorStr);
+#endif
 
 	cacheEntries.clear();
 	isBboxLookupDirty = true;

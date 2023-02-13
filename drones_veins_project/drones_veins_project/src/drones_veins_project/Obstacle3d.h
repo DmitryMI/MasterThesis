@@ -35,13 +35,16 @@ namespace drones_veins_project
 
 	class Obstacle3d : public veins::Obstacle
 	{
-	private:
 #ifdef WITH_OSG
+	private:
 		osg::ref_ptr<osg::Group> osgNode;
 
 		virtual osg::Geode* createWall(int wallIndex1, int wallIndex2);
 		virtual osg::Geode* createHorizontalPolygon(float height);
-		virtual void createOsgGeometry(const cFigure::Color& color);
+		virtual void createOsgGeometry(const cFigure::Color &color);
+
+	public:
+		virtual void drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr);
 #endif
 
 	protected:
@@ -55,7 +58,6 @@ namespace drones_veins_project
 		virtual std::vector<double> getIntersections(const veins::Coord &senderPos,
 				const veins::Coord &receiverPos) const override;
 
-		virtual void drawOnOsgCanvas(cOsgCanvas *canvas, std::string& colorStr);
 	};
 }
 

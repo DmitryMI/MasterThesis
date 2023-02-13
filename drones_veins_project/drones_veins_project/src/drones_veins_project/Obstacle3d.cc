@@ -17,6 +17,7 @@
 
 #ifdef WITH_OSG
 #include "veins/base/utils/FindModule.h"
+#include <osg/ShadeModel>
 #endif
 
 using namespace veins;
@@ -126,14 +127,18 @@ void Obstacle3d::createOsgGeometry(const cFigure::Color &color)
 	stateSet->setAttribute(lineWidth);
 
 	stateSet->setAttribute(material);
-	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+	osg::ShadeModel* shadeModel = new osg::ShadeModel();
+	shadeModel->setMode(osg::ShadeModel::Mode::FLAT);
+	stateSet->setAttribute(shadeModel);
+	//stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 
 	osgNode->setStateSet(stateSet);
 }
 
+#ifdef WITH_OSG
+
 void Obstacle3d::drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr)
 {
-#ifdef WITH_OSG
 	ASSERT(canvas);
 
 	osg::Group *scene = dynamic_cast<osg::Group*>(canvas->getScene());

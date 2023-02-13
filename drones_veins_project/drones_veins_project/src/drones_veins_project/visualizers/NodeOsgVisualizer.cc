@@ -69,36 +69,17 @@ void NodeOsgVisualizer::initialize(int stage)
 		cOsgCanvas *canvas = root->getOsgCanvas();
 		ASSERT(canvas);
 		osg::Group *scene = dynamic_cast<osg::Group*>(canvas->getScene());
-		if (!scene)
-		{
-			scene = new osg::Group();
-			canvas->setScene(scene);
-		}
 		ASSERT(scene);
 
 		osgTransform = new osg::MatrixTransform();
 		scene->addChild(osgTransform);
 
-		osgGeode = new osg::Geode();
 		osgTransform->addChild(osgGeode);
 
 		auto color = cFigure::Color(par("color").stringValue());
 		osg::Vec4 colorVec(color.red / 255.0, color.green / 255.0, color.blue / 255.0, 1.0);
 
 		initDrawables(colorVec);
-
-		auto material = new osg::Material();
-		material->setAmbient(osg::Material::FRONT_AND_BACK, colorVec);
-		material->setDiffuse(osg::Material::FRONT_AND_BACK, colorVec);
-
-		auto lineWidth = new osg::LineWidth();
-		lineWidth->setWidth(par("lineWidth").doubleValue());
-
-		auto stateSet = new osg::StateSet();
-		stateSet->setAttribute(material);
-		stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-		stateSet->setAttribute(lineWidth);
-		osgGeode->setStateSet(stateSet);
 
 		//std::string updaterSignal = par("updaterSignal").str();
 		//subscribe(updaterSignal.c_str(), this);
@@ -113,22 +94,40 @@ void NodeOsgVisualizer::initialize(int stage)
 
 void NodeOsgVisualizer::initDrawables(osg::Vec4 colorVec)
 {
+	osg::ref_ptr<osg::Material> material = new osg::Material();
+	material->setAmbient(osg::Material::FRONT_AND_BACK, colorVec);
+	material->setDiffuse(osg::Material::FRONT_AND_BACK, colorVec);
+
+	osg::ref_ptr<osg::LineWidth> lineWidth = new osg::LineWidth();
+	lineWidth->setWidth(par("lineWidth").doubleValue());
+
+	osg::ref_ptr<osg::StateSet> stateSet = new osg::StateSet();
+	stateSet->setAttribute(material);
+	stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+	stateSet->setAttribute(lineWidth);
+
+
 	std::string modelPath = par("modelPath").stringValue();
 	if (modelPath.empty())
 	{
-		osg::ShapeDrawable *shapeDrawable = new osg::ShapeDrawable();
-		osg::Shape *boxShape = new osg::Box(osg::Vec3(0.0f, 0.0f, 0.0f), 10.0f, 6.0f, 2.0f);
+		osg::ref_ptr<osg::ShapeDrawable> shapeDrawable = new osg::ShapeDrawable();
+		osg::ref_ptr<osg::Box> boxShape = new osg::Box(osg::Vec3(0.0f, 0.0f, 0.0f), 10.0f, 6.0f, 2.0f);
 		shapeDrawable->setShape(boxShape);
 		shapeDrawable->setColor(colorVec);
-
+		osgGeode = new osg::Geode();
 		osgGeode->addDrawable(shapeDrawable);
+		osgTransform->addChild(osgGeode);
 	}
 	else
 	{
 		osg::ref_ptr<osg::Node> model = osgDB::readNodeFile(modelPath);
 		ASSERT(model);
-		osgGeode->addChild(model);
+
+		//osgGeode->addChild(model);
+		osgTransform->addChild(model);
 	}
+
+	osgTransform->setStateSet(stateSet);
 }
 
 void NodeOsgVisualizer::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj, cObject *details)
