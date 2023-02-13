@@ -67,11 +67,12 @@ void OsgManager::initialize(int stage)
 	const veins::Coord* playgroundSize = world->getPgs();
 
 	double lightSourceHeight = par("lightSourceHeight").doubleValue();
-	globalLight->setPosition(osg::Vec4(playgroundSize->x / 2, playgroundSize->z / 2, lightSourceHeight, 1));
+	globalLight->setPosition(osg::Vec4(playgroundSize->x / 2, playgroundSize->y / 2, lightSourceHeight, 1));
 
 	globalLight->setAmbient(osg::Vec4(1.0,1.0,1.0,1.0));
 	globalLight->setDiffuse(osg::Vec4(1.0,1.0,1.0,1.0));
 	globalLight->setSpecular(osg::Vec4(1,1,1,1));  // some examples don't have this one
+	globalLight->setLinearAttenuation(0.01f);
 
 	globalLightSource->setLight(globalLight);
 
