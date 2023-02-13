@@ -1,4 +1,4 @@
-PROJ_NAME="drones"
+PROJ_NAME="drones-simple"
 GRID_SIZE=7
 STREET_LENGTH=100
 SUMO_TOOLS_PATH="/home/$(whoami)/Software/sumo-1.8.0/tools"

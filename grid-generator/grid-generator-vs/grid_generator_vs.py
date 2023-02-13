@@ -203,9 +203,9 @@ class GridGenerator:
         tree.write(polygons_filepath, xml_declaration=True)
 
     def set_omnetpp_playground_size(self, omnetpp_ini_path):
-        factor = 1.05
-        playground_width = (self._junctions_count_x - 1) * self._street_length * factor
-        playground_height = (self._junctions_count_y - 1) * self._street_length * factor
+        extra = 50
+        playground_width = (self._junctions_count_x - 1) * self._street_length + extra
+        playground_height = (self._junctions_count_y - 1) * self._street_length + extra
 
         with open(omnetpp_ini_path, "r") as omnetpp_ini:
             text = omnetpp_ini.read()
@@ -240,7 +240,7 @@ if __name__ == "__main__":
         "--building_height_min", default=10, dest="building_height_min", type=float
     )
     parser.add_argument(
-        "--building_height_max", default=20, dest="building_height_max", type=float
+        "--building_height_max", default=50, dest="building_height_max", type=float
     )
     parser.add_argument("--block_size", default=4, type=int)
     parser.add_argument("--block_margin", default=10, type=float)
