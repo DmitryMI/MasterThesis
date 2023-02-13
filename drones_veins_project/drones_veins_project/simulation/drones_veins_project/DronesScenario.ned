@@ -35,7 +35,7 @@ import org.car2x.veins.subprojects.drones_veins_project.cars.Car3d;
 import org.car2x.veins.subprojects.drones_veins_project.drones.Drone;
 import org.car2x.veins.subprojects.drones_veins_project.drones.DroneManager;
 import org.car2x.veins.subprojects.drones_veins_project.ObstacleControl3d;
-import org.car2x.veins.subprojects.drones_veins_project.visualizers.OsgManager;
+import org.car2x.veins.subprojects.drones_veins_project.visualizers.*;
 
 network DronesScenario
 {
@@ -94,6 +94,10 @@ network DronesScenario
         
         osgManager: OsgManager {
             @display("p=350,0");
+        }
+        
+        obstacleShadowingVisualizer: ObstacleShadowingVisualizer {
+            @display("p=400,0");
         }
         
         node[0]: Car3d {

@@ -39,12 +39,11 @@ namespace drones_veins_project
 	private:
 		osg::ref_ptr<osg::Group> osgNode;
 
-		virtual osg::Geode* createWall(int wallIndex1, int wallIndex2);
-		virtual osg::Geode* createHorizontalPolygon(float height);
-		virtual void createOsgGeometry(const cFigure::Color &color);
-
+		virtual osg::Geode* createWall(int wallIndex1, int wallIndex2, osg::PrimitiveSet::Mode mode);
+		virtual osg::Geode* createHorizontalPolygon(float height, osg::PrimitiveSet::Mode mode);
+		virtual void createOsgGeometry(const cFigure::Color &color, bool obstaclesShadingEnabled, bool wireframeModeEnabled);
 	public:
-		virtual void drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr);
+		virtual void drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr, bool obstaclesShadingEnabled, bool wireframeModeEnabled);
 #endif
 
 	protected:

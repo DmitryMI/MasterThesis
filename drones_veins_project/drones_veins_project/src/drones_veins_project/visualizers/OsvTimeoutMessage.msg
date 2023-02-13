@@ -13,20 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package org.car2x.veins.subprojects.drones_veins_project;
-
-import org.car2x.veins.modules.obstacle.ObstacleControl;
-
 //
-// ObstacleControl models obstacles that block radio transmissions
+// TODO generated message class
 //
-simple ObstacleControl3d extends ObstacleControl
-{
-    parameters:
-        @class(drones_veins_project::ObstacleControl3d);
-        double buildingsHeightDefault @unit(m) = 10m;    
-        string obstaclesColor = default("#6c6760");   
-        xml additionalObstaclesXml = default(xml("<obstacles/>"));
-        bool obstaclesShadingEnabled = default(false);
-        bool wireframeModeEnabled = default(false);
+
+namespace drones_veins_project;
+
+packet OsvTimeoutMessage {
+    string displayGroupName; 
 }
