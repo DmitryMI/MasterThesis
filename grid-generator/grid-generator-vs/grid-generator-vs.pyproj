@@ -12,7 +12,7 @@
     <Name>grid-generator-vs</Name>
     <RootNamespace>grid-generator-vs</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>TestProj</CommandLineArguments>
+    <CommandLineArguments>drones-simple --proj_dir "C:\Users\DmitriyPC\Documents\GitHub\MasterThesis\generated" --grid.x-number 3 --grid.y-number 3 --grid.length 500</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
