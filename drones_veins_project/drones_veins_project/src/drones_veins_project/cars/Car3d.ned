@@ -23,5 +23,6 @@ module Car3d extends Car
     submodules:
         nodeOsgVisualizer: NodeOsgVisualizer
         {
+            modelPath = "../../models/Car3d.osgb";
         }
 }

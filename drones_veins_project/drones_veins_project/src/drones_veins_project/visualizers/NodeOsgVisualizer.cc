@@ -27,10 +27,13 @@
 #include <osg/ShapeDrawable>
 #include <osg/Matrix>
 #include <osg/MatrixTransform>
+#include <osgDB/ReadFile>
 #include "veins/base/utils/FindModule.h"
 #include "veins/base/modules/BaseMobility.h"
 #include "veins/modules/mobility/traci/TraCIScenarioManager.h"
+#include "veins/modules/mobility/traci/TraCIMobility.h"
 #include <string>
+#include <unistd.h>
 #endif
 
 using namespace veins;
@@ -110,12 +113,31 @@ void NodeOsgVisualizer::initialize(int stage)
 
 void NodeOsgVisualizer::initDrawables(osg::Vec4 colorVec)
 {
-	osg::ShapeDrawable *shapeDrawable = new osg::ShapeDrawable();
-	osg::Shape *boxShape = new osg::Box(osg::Vec3(0.0f, 0.0f, 0.0f), 10.0f, 6.0f, 2.0f);
-	shapeDrawable->setShape(boxShape);
-	shapeDrawable->setColor(colorVec);
+	std::string modelPath = par("modelPath").stringValue();
+	if (modelPath.empty())
+	{
+		osg::ShapeDrawable *shapeDrawable = new osg::ShapeDrawable();
+		osg::Shape *boxShape = new osg::Box(osg::Vec3(0.0f, 0.0f, 0.0f), 10.0f, 6.0f, 2.0f);
+		shapeDrawable->setShape(boxShape);
+		shapeDrawable->setColor(colorVec);
 
-	osgGeode->addDrawable(shapeDrawable);
+		osgGeode->addDrawable(shapeDrawable);
+	}
+	else
+	{
+		char cwd[256];
+		if (getcwd(cwd, sizeof(cwd)) != NULL)
+		{
+			printf("Current working dir: %s\n", cwd);
+		}
+		else
+		{
+			perror("getcwd() error");
+		}
+		osg::ref_ptr<osg::Node> model = osgDB::readNodeFile(modelPath);
+		ASSERT(model);
+		osgGeode->addChild(model);
+	}
 }
 
 void NodeOsgVisualizer::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj, cObject *details)
@@ -127,20 +149,29 @@ void NodeOsgVisualizer::receiveSignal(cComponent *source, simsignal_t signalID, 
 	{
 		return;
 	}
+
 	Coord location = mobility->getPositionAt(simTime());
-	Coord orientation = mobility->getCurrentDirection();
-	double zAngleDeg = atan2(orientation.y, orientation.x);
-	setTransform(location, zAngleDeg);
+	float angleRadZ = 0;
+	if (veins::TraCIMobility *traci = dynamic_cast<veins::TraCIMobility*>(mobility))
+	{
+		angleRadZ = traci->getHeading().getRad();
+	}
+	else
+	{
+		Coord orientation = mobility->getCurrentOrientation();
+		double zAngleDeg = atan2(orientation.y, orientation.x);
+		angleRadZ = zAngleDeg * M_PI / 180;
+	}
+	setTransform(location, angleRadZ);
 }
 
 void NodeOsgVisualizer::setTransform(const veins::Coord &location, double angleZ)
 {
 	osg::Vec3 posVec3(location.x, location.y, location.z);
-	double rad = angleZ * M_PI / 180;
 
 	const osg::Vec3d axis(0, 0, 1);
 	auto matrixTranslate = osg::Matrix::translate(posVec3);
-	auto matrixRotate = osg::Matrix::rotate(rad, axis);
+	auto matrixRotate = osg::Matrix::rotate(angleZ, axis);
 	auto matrix = matrixRotate * matrixTranslate;
 	osgTransform->setMatrix(matrix);
 }

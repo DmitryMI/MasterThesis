@@ -48,6 +48,11 @@ void ObstacleControl3d::add3d(Obstacle3d obstacle3d)
 		o->visualRepresentation = annotations->drawPolygon(o->getShape(), "red", annotationGroup);
 	}
 
+	std::string colorStr = par("obstaclesColor").stringValue();
+
+	cOsgCanvas* canvas = getParentModule()->getOsgCanvas();
+	o->drawOnOsgCanvas(canvas, colorStr);
+
 	cacheEntries.clear();
 	isBboxLookupDirty = true;
 }

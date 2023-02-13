@@ -24,5 +24,6 @@ simple ObstacleControl3d extends ObstacleControl
 {
     parameters:
         @class(drones_veins_project::ObstacleControl3d);
-        double buildingsHeightDefault @unit(m) = 10m;        
+        double buildingsHeightDefault @unit(m) = 10m;    
+        string obstaclesColor = default("gray");   
 }
