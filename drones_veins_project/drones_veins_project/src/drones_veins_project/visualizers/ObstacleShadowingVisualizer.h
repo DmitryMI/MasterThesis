@@ -43,6 +43,7 @@ namespace drones_veins_project
 		virtual osg::ref_ptr<osg::StateSet> createShapeStateSet(const osg::Vec4& color);
 
 		virtual osg::ref_ptr<osg::Geode> createLine(const osg::Vec3& from, const osg::Vec3& to);
+		virtual osg::ref_ptr<osg::Geode> createSphere(const osg::Vec3& pos, double radius, osg::Vec4& colorVec);
 
 		virtual void initialize(int stage) override;
 

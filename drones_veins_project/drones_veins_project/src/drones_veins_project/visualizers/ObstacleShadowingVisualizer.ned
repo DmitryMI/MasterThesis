@@ -21,5 +21,7 @@ simple ObstacleShadowingVisualizer
         @class(drones_veins_project::ObstacleShadowingVisualizer);
         double duration @unit(s) = default(2s);
         string lineColor = default("blue");
-        double lineWidth @unit(m) = default(3m);
+        string shapeColor = default("red");
+        double sphereRadius @unit(m) = default(3m);
+        double lineWidth @unit(m) = default(2m);
 }

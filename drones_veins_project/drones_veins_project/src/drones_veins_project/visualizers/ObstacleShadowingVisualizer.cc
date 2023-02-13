@@ -21,6 +21,8 @@ using namespace drones_veins_project;
 #include <osg/Material>
 #include <osg/Geometry>
 #include <osg/LineWidth>
+#include <osg/Shape>
+#include <osg/ShapeDrawable>
 #include <string>
 #include "OsvTimeoutMessage_m.h"
 
@@ -90,6 +92,18 @@ osg::ref_ptr<osg::StateSet> ObstacleShadowingVisualizer::createShapeStateSet(con
 	return stateSet;
 }
 
+osg::ref_ptr<osg::Geode> ObstacleShadowingVisualizer::createSphere(const osg::Vec3 &pos, double radius, osg::Vec4& colorVec)
+{
+	osg::ref_ptr<osg::Geode> shapeGeode = new osg::Geode();
+	osg::ref_ptr<osg::ShapeDrawable> shapeDrawable = new osg::ShapeDrawable();
+	osg::ref_ptr<osg::Sphere> sphere = new osg::Sphere(pos, radius);
+	shapeDrawable->setShape(sphere);
+	shapeDrawable->setColor(colorVec);
+	shapeGeode->addDrawable(shapeDrawable);
+
+	return shapeGeode;
+}
+
 osg::ref_ptr<osg::Geode> ObstacleShadowingVisualizer::createLine(const osg::Vec3 &from, const osg::Vec3 &to)
 {
 	osg::ref_ptr<osg::Geode> lineGeode = new osg::Geode();
@@ -130,8 +144,32 @@ void ObstacleShadowingVisualizer::visualizeIntersections(
 	auto losColorVec = osg::Vec4(losColor.red / 255, losColor.green / 255, losColor.blue / 255, 1);
 	auto losStateSet = createLineStateSet(losColorVec);
 	losGeode->setStateSet(losStateSet);
-
 	group->addChild(losGeode);
+
+	std::string shapeColorStr = par("shapeColor").stringValue();
+	auto shapeColor = cFigure::Color(shapeColorStr.c_str());
+	auto shapeColorVec = osg::Vec4(shapeColor.red / 255, shapeColor.green / 255, shapeColor.blue / 255, 1);
+	auto shapeStateSet = createShapeStateSet(shapeColorVec);
+
+	double dx = receiverPos.x - senderPos.x;
+	double dy = receiverPos.y - senderPos.y;
+	double dz = receiverPos.z - senderPos.z;
+	double radius = par("sphereRadius").doubleValue();
+	for (const auto &obstacleIntersections : intersections)
+	{
+		std::vector<double> intersectionPoints = obstacleIntersections.second;
+		for (double pointFactor : intersectionPoints)
+		{
+			double x = receiverPos.x - pointFactor * dx;
+			double y = receiverPos.y - pointFactor * dy;
+			double z = receiverPos.z - pointFactor * dz;
+			osg::ref_ptr<osg::Geode> sphereGeode = createSphere(osg::Vec3(x, y, z), radius, shapeColorVec);
+			sphereGeode->setStateSet(shapeStateSet);
+			group->addChild(sphereGeode);
+		}
+
+	}
+
 	scene->addChild(group);
 	displayGroups.push_back(group);
 
