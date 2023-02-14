@@ -35,15 +35,31 @@ namespace drones_veins_project
 
 	class Obstacle3d : public veins::Obstacle
 	{
+	private:
+		void getIntersectionPoints(const veins::Coord &lineStart, const veins::Coord &lineEnd,
+				std::vector<veins::Coord> &outIntersections) const;
+		bool getLineToLineIntersection(const veins::Coord &line1Start, const veins::Coord &line1End,
+				const veins::Coord &line2Start, const veins::Coord &line2End, veins::Coord &outIntersection) const;
+		bool getHorizonToLineIntersection(const veins::Coord &lineStart, const veins::Coord &lineEnd, float horizonY,
+				veins::Coord &outIntersection) const;
+		bool getHorizontalIntersection(const veins::Coord &lineStart, const veins::Coord &lineEnd, float intersectionZ,
+				veins::Coord &intersectionPoint) const;
+
+		bool getWallIntersection(const veins::Coord &lineStart, const veins::Coord &lineEnd, int wallStartIndex,
+				int wallEndIndex, veins::Coord &intersectionPoint) const;
+		void getWallIntersections(const veins::Coord &lineStart, const veins::Coord &lineEnd,
+				std::vector<veins::Coord> &outIntersections) const;
 #ifdef WITH_OSG
 	private:
 		osg::ref_ptr<osg::Group> osgNode;
 
 		virtual osg::Geode* createWall(int wallIndex1, int wallIndex2, osg::PrimitiveSet::Mode mode);
 		virtual osg::Geode* createHorizontalPolygon(float height, osg::PrimitiveSet::Mode mode);
-		virtual void createOsgGeometry(const cFigure::Color &color, bool obstaclesShadingEnabled, bool wireframeModeEnabled);
+		virtual void createOsgGeometry(const cFigure::Color &color, bool obstaclesShadingEnabled,
+				bool wireframeModeEnabled);
 	public:
-		virtual void drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr, bool obstaclesShadingEnabled, bool wireframeModeEnabled);
+		virtual void drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr, bool obstaclesShadingEnabled,
+				bool wireframeModeEnabled);
 #endif
 
 	protected:
@@ -56,7 +72,6 @@ namespace drones_veins_project
 		virtual bool containsPoint(veins::Coord Point) const override;
 		virtual std::vector<double> getIntersections(const veins::Coord &senderPos,
 				const veins::Coord &receiverPos) const override;
-
 	};
 }
 

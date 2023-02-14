@@ -160,9 +160,9 @@ void ObstacleShadowingVisualizer::visualizeIntersections(
 		std::vector<double> intersectionPoints = obstacleIntersections.second;
 		for (double pointFactor : intersectionPoints)
 		{
-			double x = receiverPos.x - pointFactor * dx;
-			double y = receiverPos.y - pointFactor * dy;
-			double z = receiverPos.z - pointFactor * dz;
+			double x = senderPos.x + pointFactor * dx;
+			double y = senderPos.y + pointFactor * dy;
+			double z = senderPos.z + pointFactor * dz;
 			osg::ref_ptr<osg::Geode> sphereGeode = createSphere(osg::Vec3(x, y, z), radius, shapeColorVec);
 			sphereGeode->setStateSet(shapeStateSet);
 			group->addChild(sphereGeode);
