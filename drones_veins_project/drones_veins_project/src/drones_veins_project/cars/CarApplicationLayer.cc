@@ -37,6 +37,19 @@ void CarApplicationLayer::initialize(int stage)
 	// Required for proper initialization
 	DemoBaseApplLayer::initialize(stage);
 
+	WATCH(totalTimeInJam);
+}
+
+void CarApplicationLayer::finish()
+{
+	BaseApplicationLayer::finish();
+
+	if(jammingDetector.isJammedNow())
+	{
+		totalTimeInJam += (simTime() - jammingDetector.getJamStartTimestamp()).dbl();
+	}
+
+	recordScalar("totalTimeInJam", totalTimeInJam);
 }
 
 std::string CarApplicationLayer::getCarDescriptor()
@@ -67,6 +80,8 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 	}
 	else
 	{
+		totalTimeInJam += (simTime() - jammingDetector.getJamStartTimestamp()).dbl();
+
 		setIconColor("white");
 		EV << "Car " << getCarDescriptor() << " is no longer jammed!";
 	}

@@ -28,6 +28,7 @@ namespace drones_veins_project
 	class DRONES_VEINS_PROJECT_API CarJammingDetector
 	{
 	private:
+		omnetpp::simtime_t jamStartTimestamp;
 		omnetpp::simtime_t lastDrivingTimestamp;
 		JammingStateChangesCallback jammingStateChangedCallback;
 
@@ -50,6 +51,8 @@ namespace drones_veins_project
 		void updateJammingDetector(double currentSpeed);
 
 		bool isJammedNow();
+
+		omnetpp::simtime_t getJamStartTimestamp();
 	};
 }
 

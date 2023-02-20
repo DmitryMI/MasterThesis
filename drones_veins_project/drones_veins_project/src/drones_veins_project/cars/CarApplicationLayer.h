@@ -29,6 +29,8 @@ namespace drones_veins_project
 	private:
 		CarJammingDetector jammingDetector;
 
+		double totalTimeInJam = 0.0;
+
 		void onCarJammingStateChanged(bool jammed);
 		void updateJammingDetector();
 
@@ -40,6 +42,7 @@ namespace drones_veins_project
 		virtual ~CarApplicationLayer();
 
 		virtual void initialize(int stage) override;
+		virtual void finish() override;
 
 	protected:
 		virtual void onWSM(veins::BaseFrame1609_4 *wsm) override;
