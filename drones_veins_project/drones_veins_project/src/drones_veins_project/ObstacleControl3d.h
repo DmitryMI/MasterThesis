@@ -24,6 +24,9 @@ namespace drones_veins_project
 
 	class ObstacleControl3d : public veins::ObstacleControl
 	{
+	private:
+		bool osgFlipY;
+
 	protected:
 		bool getHeightFromXml(cXMLElement* xml, std::string id, double& height);
 

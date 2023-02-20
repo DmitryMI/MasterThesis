@@ -24,4 +24,6 @@ simple ObstacleShadowingVisualizer
         string shapeColor = default("red");
         double sphereRadius @unit(m) = default(3m);
         double lineWidth @unit(m) = default(2m);
+        
+        bool osgFlipY = default(true);
 }

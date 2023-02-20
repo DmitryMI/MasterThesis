@@ -24,6 +24,8 @@ using namespace drones_veins_project;
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
 #include <string>
+#include "veins/base/utils/FindModule.h"
+#include "veins/base/modules/BaseWorldUtility.h"
 #include "OsvTimeoutMessage_m.h"
 
 Define_Module(drones_veins_project::ObstacleShadowingVisualizer);
@@ -42,6 +44,11 @@ ObstacleShadowingVisualizer::~ObstacleShadowingVisualizer()
 void ObstacleShadowingVisualizer::initialize(int stage)
 {
 	cModule::initialize(stage);
+
+	if (stage == 0)
+	{
+		osgFlipY = par("osgFlipY").boolValue();
+	}
 }
 
 void ObstacleShadowingVisualizer::handleMessage(omnetpp::cMessage *msg)
@@ -92,7 +99,8 @@ osg::ref_ptr<osg::StateSet> ObstacleShadowingVisualizer::createShapeStateSet(con
 	return stateSet;
 }
 
-osg::ref_ptr<osg::Geode> ObstacleShadowingVisualizer::createSphere(const osg::Vec3 &pos, double radius, osg::Vec4& colorVec)
+osg::ref_ptr<osg::Geode> ObstacleShadowingVisualizer::createSphere(const osg::Vec3 &pos, double radius,
+		osg::Vec4 &colorVec)
 {
 	osg::ref_ptr<osg::Geode> shapeGeode = new osg::Geode();
 	osg::ref_ptr<osg::ShapeDrawable> shapeDrawable = new osg::ShapeDrawable();
@@ -131,13 +139,24 @@ void ObstacleShadowingVisualizer::visualizeIntersections(
 {
 	Enter_Method_Silent();
 
+	veins::Coord senderPosMod = senderPos;
+	veins::Coord receiverPosMod = receiverPos;
+
+	if (osgFlipY)
+	{
+		veins::BaseWorldUtility *world = veins::FindModule<veins::BaseWorldUtility*>::findGlobalModule();
+		ASSERT(world);
+		senderPosMod.y = world->getPgs()->y - senderPosMod.y;
+		receiverPosMod.y = world->getPgs()->y - receiverPosMod.y;
+	}
+
 	cOsgCanvas *canvas = getParentModule()->getOsgCanvas();
 	osg::Group *scene = dynamic_cast<osg::Group*>(canvas->getScene());
 	ASSERT(scene);
 
 	osg::ref_ptr<osg::Group> group = new osg::Group();
-	osg::ref_ptr<osg::Geode> losGeode = createLine(osg::Vec3(senderPos.x, senderPos.y, senderPos.z),
-			osg::Vec3(receiverPos.x, receiverPos.y, receiverPos.z));
+	osg::ref_ptr<osg::Geode> losGeode = createLine(osg::Vec3(senderPosMod.x, senderPosMod.y, senderPosMod.z),
+			osg::Vec3(receiverPosMod.x, receiverPosMod.y, receiverPosMod.z));
 
 	std::string losColorStr = par("lineColor").stringValue();
 	auto losColor = cFigure::Color(losColorStr.c_str());
@@ -151,18 +170,18 @@ void ObstacleShadowingVisualizer::visualizeIntersections(
 	auto shapeColorVec = osg::Vec4(shapeColor.red / 255, shapeColor.green / 255, shapeColor.blue / 255, 1);
 	auto shapeStateSet = createShapeStateSet(shapeColorVec);
 
-	double dx = receiverPos.x - senderPos.x;
-	double dy = receiverPos.y - senderPos.y;
-	double dz = receiverPos.z - senderPos.z;
+	double dx = receiverPosMod.x - senderPosMod.x;
+	double dy = receiverPosMod.y - senderPosMod.y;
+	double dz = receiverPosMod.z - senderPosMod.z;
 	double radius = par("sphereRadius").doubleValue();
 	for (const auto &obstacleIntersections : intersections)
 	{
 		std::vector<double> intersectionPoints = obstacleIntersections.second;
 		for (double pointFactor : intersectionPoints)
 		{
-			double x = senderPos.x + pointFactor * dx;
-			double y = senderPos.y + pointFactor * dy;
-			double z = senderPos.z + pointFactor * dz;
+			double x = senderPosMod.x + pointFactor * dx;
+			double y = senderPosMod.y + pointFactor * dy;
+			double z = senderPosMod.z + pointFactor * dz;
 			osg::ref_ptr<osg::Geode> sphereGeode = createSphere(osg::Vec3(x, y, z), radius, shapeColorVec);
 			sphereGeode->setStateSet(shapeStateSet);
 			group->addChild(sphereGeode);

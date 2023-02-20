@@ -42,7 +42,7 @@ namespace drones_veins_project
 		osg::ref_ptr<osg::MatrixTransform> osgTransform;
 		osg::ref_ptr<osg::Geode> osgGeode;
 		osg::Node* findNodeWithName(osg::Node* node, const std::string& name);
-
+		bool flipY;
 public:
 		virtual void initialize(int stage) override;
 

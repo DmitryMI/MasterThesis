@@ -34,6 +34,7 @@ namespace drones_veins_project
 	private:
 		std::vector<osg::ref_ptr<osg::Group>> displayGroups;
 		uint64_t displayGroupCounter = 0;
+		bool osgFlipY;
 
 	public:
 		ObstacleShadowingVisualizer();

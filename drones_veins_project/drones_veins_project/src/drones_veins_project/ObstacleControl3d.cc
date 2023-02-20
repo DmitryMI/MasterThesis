@@ -41,6 +41,10 @@ void ObstacleControl3d::initialize(int stage)
 {
 	ObstacleControl::initialize(stage);
 
+	if(stage == 0)
+	{
+		osgFlipY = par("osgFlipY").boolValue();
+	}
 }
 
 void ObstacleControl3d::add3d(Obstacle3d obstacle3d)
@@ -69,7 +73,7 @@ void ObstacleControl3d::add3d(Obstacle3d obstacle3d)
 
 #ifdef WITH_OSG
 	cOsgCanvas *canvas = getParentModule()->getOsgCanvas();
-	o->drawOnOsgCanvas(canvas, colorStr, obstaclesShadingEnabled, wireframeModeEnabled);
+	o->drawOnOsgCanvas(canvas, colorStr, obstaclesShadingEnabled, wireframeModeEnabled, osgFlipY);
 #endif
 
 	cacheEntries.clear();

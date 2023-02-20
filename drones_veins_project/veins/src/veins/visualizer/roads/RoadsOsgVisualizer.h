@@ -58,7 +58,7 @@ protected:
     veins::SignalManager signalManager;
     osg::Group* figures;
 
-    osg::Geode* createLine(const std::list<veins::Coord>& coords, cFigure::Color color, double width);
+    virtual osg::Geode* createLine(const std::list<veins::Coord>& coords, cFigure::Color color, double width);
 #endif // WITH_OSG
 };
 

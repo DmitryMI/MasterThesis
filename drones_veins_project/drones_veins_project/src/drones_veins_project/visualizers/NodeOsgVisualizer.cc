@@ -29,6 +29,7 @@
 #include <osg/MatrixTransform>
 #include <osgDB/ReadFile>
 #include "veins/base/utils/FindModule.h"
+#include "veins/base/modules/BaseWorldUtility.h"
 #include "veins/base/modules/BaseMobility.h"
 #include "veins/modules/mobility/traci/TraCIScenarioManager.h"
 #include "veins/modules/mobility/traci/TraCIMobility.h"
@@ -58,6 +59,8 @@ void NodeOsgVisualizer::initialize(int stage)
 	cModule::initialize(stage);
 	if (stage == 0)
 	{
+		flipY = par("osgFlipY").boolValue();
+
 		cModule *parent = getParentModule();
 		cModule *root = this;
 		while (parent != nullptr)
@@ -192,7 +195,18 @@ void NodeOsgVisualizer::receiveSignal(cComponent *source, simsignal_t signalID, 
 
 void NodeOsgVisualizer::setTransform(const veins::Coord &location, double angleZ)
 {
-	osg::Vec3 posVec3(location.x, location.y, location.z);
+	osg::Vec3 posVec3;
+	if(!flipY)
+	{
+		posVec3 = osg::Vec3(location.x, location.y, location.z);
+	}
+	else
+	{
+		veins::BaseWorldUtility* world = veins::FindModule<veins::BaseWorldUtility*>::findGlobalModule();
+		ASSERT(world);
+		auto pgs = world->getPgs();
+		posVec3 = osg::Vec3(location.x, pgs->y - location.y, location.z);
+	}
 
 	const osg::Vec3d axis(0, 0, 1);
 	double scale = par("scale").doubleValue();

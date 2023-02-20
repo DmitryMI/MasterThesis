@@ -13,17 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+import org.car2x.veins.visualizer.roads.*;
+
 package org.car2x.veins.subprojects.drones_veins_project.visualizers;
 
-module NodeOsgVisualizer
+simple RoadsOsgVisualizer2 extends RoadsOsgVisualizer
 {
     parameters:
-        @class(drones_veins_project::NodeOsgVisualizer);
-        
-        string modelPath = default("");
-        string modelMainPartName = default("");
-        string color = default("green");
-        double lineWidth = default(2);
-        double scale = default(1);
+        @class(drones_veins_project::RoadsOsgVisualizer2);
         bool osgFlipY = default(true);
 }
+

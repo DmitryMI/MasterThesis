@@ -13,17 +13,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package org.car2x.veins.subprojects.drones_veins_project.visualizers;
+#ifndef DRONES_VEINS_PROJECT_VISUALIZERS_ROADSOSGVISUALIZER2_H_
+#define DRONES_VEINS_PROJECT_VISUALIZERS_ROADSOSGVISUALIZER2_H_
 
-module NodeOsgVisualizer
+#include "veins/visualizer/roads/RoadsOsgVisualizer.h"
+
+namespace drones_veins_project
 {
-    parameters:
-        @class(drones_veins_project::NodeOsgVisualizer);
-        
-        string modelPath = default("");
-        string modelMainPartName = default("");
-        string color = default("green");
-        double lineWidth = default(2);
-        double scale = default(1);
-        bool osgFlipY = default(true);
+
+	class RoadsOsgVisualizer2 : public veins::RoadsOsgVisualizer
+	{
+	private:
+		bool flipY;
+
+	public:
+		RoadsOsgVisualizer2();
+		virtual ~RoadsOsgVisualizer2();
+
+		virtual void initialize(int stage) override;
+	protected:
+		virtual osg::Geode* createLine(const std::list<veins::Coord> &coords, cFigure::Color color, double width) override;
+	};
+
 }
+
+#endif /* DRONES_VEINS_PROJECT_VISUALIZERS_ROADSOSGVISUALIZER2_H_ */

@@ -88,7 +88,7 @@ network DronesScenario
             @display("p=300,0");
         }
         
-        roadsOsgVisualizer: RoadsOsgVisualizer {
+        roadsOsgVisualizer: RoadsOsgVisualizer2 {
             @display("p=350,0");
         }
         
