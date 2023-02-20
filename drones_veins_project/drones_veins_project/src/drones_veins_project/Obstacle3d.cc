@@ -210,6 +210,22 @@ std::vector<double> Obstacle3d::getIntersections(const Coord &senderPos, const C
 	//return Obstacle::getIntersections(senderPos, receiverPos);
 
 	std::vector<veins::Coord> intersectionPoints;
+/*
+	if(
+			abs(senderPos.x - 923.4) < 0.01 &&
+			abs(senderPos.y - 747.986) < 0.01 &&
+			abs(senderPos.z - 1.895) < 0.01 &&
+			abs(receiverPos.x - 626.6) < 0.01 &&
+			abs(receiverPos.y - 536.5149) < 0.01 &&
+			abs(receiverPos.z - 1.895) < 0.01 &&
+			abs(coords[0].x - 635) < 0.01 &&
+			abs(coords[0].y - 542.5) < 0.01 &&
+			abs(coords[0].z - 0) < 0.01
+			)
+	{
+		EV << "BREAK";
+	}
+	*/
 	getIntersectionPoints(senderPos, receiverPos, intersectionPoints);
 
 	std::vector<double> intersectionFactors;
@@ -231,6 +247,10 @@ std::vector<double> Obstacle3d::getIntersections(const Coord &senderPos, const C
 		intersectionFactors.push_back(k);
 	}
 	std::sort(intersectionFactors.begin(), intersectionFactors.end());
+	if(intersectionFactors.size() == 1)
+	{
+		intersectionFactors.push_back(intersectionFactors[0]);
+	}
 	return intersectionFactors;
 }
 

@@ -56,6 +56,7 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 	if (jammed)
 	{
 		EV << "Car " << getCarDescriptor() << " jammed!";
+		setIconColor("red");
 
 		CarJammingAnnouncement *msg = new CarJammingAnnouncement();
 		populateWSM(msg);
@@ -66,6 +67,7 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 	}
 	else
 	{
+		setIconColor("white");
 		EV << "Car " << getCarDescriptor() << " is no longer jammed!";
 	}
 }
@@ -88,6 +90,12 @@ void CarApplicationLayer::onWSA(veins::DemoServiceAdvertisment *wsa)
 void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *msg)
 {
 	BaseApplicationLayer::handleCarJammingAnnouncement(msg);
+
+	if (mobility->getRoadId()[0] != ':')
+	{
+		std::string roadId = msg->getCarRoadId();
+		traciVehicle->changeRoute(roadId, 9999);
+	}
 }
 
 void CarApplicationLayer::handleSelfMsg(cMessage *msg)
@@ -97,6 +105,8 @@ void CarApplicationLayer::handleSelfMsg(cMessage *msg)
 
 void CarApplicationLayer::handlePositionUpdate(cObject *obj)
 {
+	setIconColor("white");
+
 	DemoBaseApplLayer::handlePositionUpdate(obj);
 
 	updateJammingDetector();
