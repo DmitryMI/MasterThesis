@@ -139,6 +139,11 @@ void ObstacleShadowingVisualizer::visualizeIntersections(
 {
 	Enter_Method_Silent();
 
+	if(!par("enabled").boolValue())
+	{
+		return;
+	}
+
 	veins::Coord senderPosMod = senderPos;
 	veins::Coord receiverPosMod = receiverPos;
 
