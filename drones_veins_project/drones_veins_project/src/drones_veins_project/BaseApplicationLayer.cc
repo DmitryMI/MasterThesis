@@ -85,7 +85,7 @@ void BaseApplicationLayer::handleSelfMsg(cMessage *msg)
 {
 	if (CarJammingAnnouncement *jamAnnouncement = dynamic_cast<CarJammingAnnouncement*>(msg))
 	{
-		sendDown(jamAnnouncement->dup());
+		sendDown(jamAnnouncement);
 	}
 	else if (msg->getKind() == SEND_BEACON_EVT)
 	{

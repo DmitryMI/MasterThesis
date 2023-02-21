@@ -44,6 +44,7 @@ int RebroadcastDecider::getParentInGate()
 void RebroadcastDecider::handleMessage(omnetpp::cMessage *msg)
 {
 	EV << "Message [" << msg->getName() << "] received";
+	cancelAndDelete(msg);
 }
 
 bool RebroadcastDecider::shouldRebroadcast()
