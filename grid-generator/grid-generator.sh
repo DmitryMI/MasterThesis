@@ -62,7 +62,9 @@ netgenerate --grid --grid.number $GRID_SIZE --grid.length $STREET_LENGTH --defau
 ../grid-generator-vs/grid_generator_vs.py $PROJ_NAME --grid.x-number $GRID_SIZE --grid.y-number $GRID_SIZE --grid.length $STREET_LENGTH --ini_path $OMNETPP_INI_PATH
 
 # Generating random trips
-python3 $SUMO_TOOLS_PATH/randomTrips.py -n $PROJ_NAME.net.xml -b $TRIPS_START_TIME -e $TRIPS_END_TIME -p $TRIPS_PERIOD --random -i $TRIPS_INTERMEDIATES -o $PROJ_NAME.trips.xml
+TRIPS_MIN_DISTANCE=$(expr $GRID_SIZE \* $GRID_SIZE \* $STREET_LENGTH)
+echo "RandomTrips will use min distance of $TRIPS_MIN_DISTANCE"
+python3 $SUMO_TOOLS_PATH/randomTrips.py -n $PROJ_NAME.net.xml -b $TRIPS_START_TIME -e $TRIPS_END_TIME -p $TRIPS_PERIOD --random -i $TRIPS_INTERMEDIATES -o $PROJ_NAME.trips.xml --min-distance $TRIPS_MIN_DISTANCE
 
 # Applying duarouter-randomTrips bugfix
 str_to_replace=' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd"'

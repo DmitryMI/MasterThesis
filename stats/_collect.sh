@@ -4,5 +4,5 @@ cd $WORKING_DIR
 
 pwd
 
-scavetool export -o $RESULTS_DIR/results.csv -f "name(totalTimeInJam)" $PATH_TO_RAW/$OPP_CONFIG_NAME-*.sca
+scavetool export -o $RESULTS_DIR/$OPP_CONFIG_NAME.csv -f "name(totalTimeInJam)" $PATH_TO_RAW/$OPP_CONFIG_NAME-*.sca
 

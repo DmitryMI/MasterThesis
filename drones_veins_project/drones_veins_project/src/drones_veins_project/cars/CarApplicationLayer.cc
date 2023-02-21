@@ -71,12 +71,15 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 		EV << "Car " << getCarDescriptor() << " jammed!";
 		setIconColor("red");
 
-		CarJammingAnnouncement *msg = new CarJammingAnnouncement();
-		populateWSM(msg);
+		if(par("jammingAnnouncementEnabled").boolValue())
+		{
+			CarJammingAnnouncement *msg = new CarJammingAnnouncement();
+			populateWSM(msg);
 
-		msg->setCarPosition(curPosition);
-		msg->setCarRoadId(mobility->getRoadId().c_str());
-		sendDown(msg);
+			msg->setCarPosition(curPosition);
+			msg->setCarRoadId(mobility->getRoadId().c_str());
+			sendDown(msg);
+		}
 	}
 	else
 	{
