@@ -20,6 +20,13 @@
 
 using namespace drones_veins_project;
 
+veins::LAddress::L2Type BaseApplicationLayer::addressCounter = 1;
+
+veins::LAddress::L2Type BaseApplicationLayer::getAddress()
+{
+	return address;
+}
+
 BaseApplicationLayer::BaseApplicationLayer()
 {
 	// TODO Auto-generated constructor stub
@@ -50,7 +57,15 @@ void BaseApplicationLayer::initialize(int stage)
 {
 	DemoBaseApplLayer::initialize(stage);
 
-	rebroadcastDeciderInGate = findGate("rebroadcastDeciderInGate");
+	if(stage == 0)
+	{
+		address = addressCounter;
+		addressCounter++;
+
+		rebroadcastDeciderInGate = findGate("rebroadcastDeciderInGate");
+
+		WATCH(address);
+	}
 }
 
 void BaseApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)

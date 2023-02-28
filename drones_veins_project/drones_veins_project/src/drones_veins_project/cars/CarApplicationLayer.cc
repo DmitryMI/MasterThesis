@@ -35,7 +35,7 @@ CarApplicationLayer::~CarApplicationLayer()
 void CarApplicationLayer::initialize(int stage)
 {
 	// Required for proper initialization
-	DemoBaseApplLayer::initialize(stage);
+	BaseApplicationLayer::initialize(stage);
 
 	WATCH(totalTimeInJam);
 }
@@ -78,6 +78,7 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 
 			msg->setCarPosition(curPosition);
 			msg->setCarRoadId(mobility->getRoadId().c_str());
+			msg->setSenderAddress(getAddress());
 			sendDown(msg);
 		}
 	}

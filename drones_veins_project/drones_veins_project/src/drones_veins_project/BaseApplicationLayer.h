@@ -19,13 +19,17 @@
 #include "veins/modules/application/ieee80211p/DemoBaseApplLayer.h"
 #include "rebroadcasting/RebroadcastDecider.h"
 #include "CarJammingAnnouncement_m.h"
+#include "veins/base/utils/SimpleAddress.h"
 
 namespace drones_veins_project
 {
 	class BaseApplicationLayer : public veins::DemoBaseApplLayer
 	{
 	private:
+		static veins::LAddress::L2Type addressCounter;
+
 		int rebroadcastDeciderInGate;
+		veins::LAddress::L2Type address;
 
 	protected:
 		RebroadcastDecider* getRebroadcastDecider();
@@ -46,6 +50,8 @@ namespace drones_veins_project
 		virtual void initialize(int stage) override;
 
 		int getRebroadcastDeciderInGate();
+
+		veins::LAddress::L2Type getAddress();
 	};
 
 }

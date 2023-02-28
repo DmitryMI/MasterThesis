@@ -25,6 +25,8 @@ namespace drones_veins_project
 	{
 	private:
 		int parentInGate;
+
+
 	public:
 
 		RebroadcastDecider();
