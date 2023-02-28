@@ -28,6 +28,7 @@ namespace drones_veins_project
 	{
 	private:
 		CarJammingDetector jammingDetector;
+		long messageSerialCounter = 0;
 
 		double totalTimeInJam = 0.0;
 

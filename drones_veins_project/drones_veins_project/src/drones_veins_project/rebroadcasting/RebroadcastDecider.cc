@@ -14,6 +14,7 @@
 // 
 
 #include "RebroadcastDecider.h"
+#include "../CarJammingAnnouncement_m.h"
 
 using namespace drones_veins_project;
 
@@ -43,14 +44,41 @@ int RebroadcastDecider::getParentInGate()
 
 void RebroadcastDecider::handleMessage(omnetpp::cMessage *msg)
 {
-	EV << "Message [" << msg->getName() << "] received";
+	// EV << "Message [" << msg->getName() << "] received by RebroadcastDecider";
+
+	if (CarJammingAnnouncement *jamMsg = dynamic_cast<CarJammingAnnouncement*>(msg))
+	{
+		veins::LAddress::L2Type senderAddress = jamMsg->getSenderAddress();
+		if (senderAddress <= 0)
+		{
+			cancelAndDelete(msg);
+			return;
+		}
+
+		receivedMessagesTable[senderAddress] = jamMsg->getSerial();
+	}
+
 	cancelAndDelete(msg);
 }
 
-bool RebroadcastDecider::shouldRebroadcast()
+bool RebroadcastDecider::shouldRebroadcast(cMessage *msg)
 {
-	double probability = par("rebroadcastProbability").doubleValue();
-	double rnd = uniform(0.0, 1.0, 0);
+	if (CarJammingAnnouncement *jamMsg = dynamic_cast<CarJammingAnnouncement*>(msg))
+	{
+		veins::LAddress::L2Type senderAddress = jamMsg->getSenderAddress();
+		long serial = jamMsg->getSerial();
+		if(receivedMessagesTable.count(senderAddress) != 0)
+		{
+			if(receivedMessagesTable[senderAddress] >= serial)
+			{
+				return false;
+			}
+		}
 
-	return probability > rnd;
+		double probability = par("rebroadcastProbability").doubleValue();
+		double rnd = uniform(0.0, 1.0, 0);
+
+		return probability > rnd;
+	}
+	return false;
 }

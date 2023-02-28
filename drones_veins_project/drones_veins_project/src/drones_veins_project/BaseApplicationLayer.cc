@@ -57,7 +57,7 @@ void BaseApplicationLayer::initialize(int stage)
 {
 	DemoBaseApplLayer::initialize(stage);
 
-	if(stage == 0)
+	if (stage == 0)
 	{
 		address = addressCounter;
 		addressCounter++;
@@ -76,13 +76,10 @@ void BaseApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
 	{
 		handleCarJammingAnnouncement(jamAnnouncement);
 	}
-	else
+	RebroadcastDecider *rd = getRebroadcastDecider();
+	if (rd)
 	{
-		RebroadcastDecider *rd = getRebroadcastDecider();
-		if (rd)
-		{
-			sendDirect(wsm->dup(), rd, rd->getParentInGate());
-		}
+		sendDirect(wsm->dup(), rd, rd->getParentInGate());
 	}
 }
 
@@ -120,7 +117,7 @@ void BaseApplicationLayer::handleSelfMsg(cMessage *msg)
 void BaseApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *msg)
 {
 	RebroadcastDecider *rebroadcastDecider = getRebroadcastDecider();
-	if (rebroadcastDecider->shouldRebroadcast())
+	if (rebroadcastDecider->shouldRebroadcast(msg))
 	{
 		scheduleAt(simTime() + 2 + uniform(0.01, 0.2), msg->dup());
 	}

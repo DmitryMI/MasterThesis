@@ -79,6 +79,8 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 			msg->setCarPosition(curPosition);
 			msg->setCarRoadId(mobility->getRoadId().c_str());
 			msg->setSenderAddress(getAddress());
+			msg->setSerial(messageSerialCounter);
+			messageSerialCounter++;
 			sendDown(msg);
 		}
 	}
