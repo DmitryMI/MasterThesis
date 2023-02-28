@@ -25,4 +25,7 @@ simple DroneMobility extends BaseMobility
         
         // Should be overwritten by DronesManager, if batch-update is enabled
         double updateInterval @unit(sec) = 0;
+        
+        double initialHeightMin = default(50);
+        double initialHeightMax = default(200);
 }

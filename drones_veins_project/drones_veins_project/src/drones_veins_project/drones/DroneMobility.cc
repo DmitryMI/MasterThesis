@@ -47,7 +47,10 @@ void DroneMobility::initialize(int stage)
 			angle = par("angle");
 			angle = fmod(angle, 360);
 			updateInterval = par("updateInterval");
-			zCoord = par("z").doubleValue();
+
+			double initialHeightMin = par("initialHeightMin").doubleValue();
+			double initialHeightMax = par("initialHeightMax").doubleValue();
+			zCoord = uniform(initialHeightMin, initialHeightMax);
 		}
 	}
 	else if (stage == 1)
@@ -89,11 +92,14 @@ void DroneMobility::preInitialize(const Coord &position, simtime_t updateInterva
 {
 	this->angle = par("angle").doubleValue();
 	this->speed = par("speed").doubleValue();
+	move.setSpeed(speed);
 	this->updateInterval = updateInterval;
 
 	this->setStartPosition(position);
 
-	zCoord = par("z").doubleValue();
+	double initialHeightMin = par("initialHeightMin").doubleValue();
+	double initialHeightMax = par("initialHeightMax").doubleValue();
+	zCoord = uniform(initialHeightMin, initialHeightMax);
 
 	isPreinitialized = true;
 }
