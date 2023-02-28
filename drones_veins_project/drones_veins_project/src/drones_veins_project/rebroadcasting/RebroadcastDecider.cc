@@ -42,21 +42,23 @@ int RebroadcastDecider::getParentInGate()
 	return parentInGate;
 }
 
-void RebroadcastDecider::handleMessage(omnetpp::cMessage *msg)
+void RebroadcastDecider::registerMessage(cMessage *msg)
 {
-	// EV << "Message [" << msg->getName() << "] received by RebroadcastDecider";
-
 	if (CarJammingAnnouncement *jamMsg = dynamic_cast<CarJammingAnnouncement*>(msg))
 	{
 		veins::LAddress::L2Type senderAddress = jamMsg->getSenderAddress();
 		if (senderAddress <= 0)
 		{
-			cancelAndDelete(msg);
 			return;
 		}
 
 		receivedMessagesTable[senderAddress] = jamMsg->getSerial();
 	}
+}
+
+void RebroadcastDecider::handleMessage(omnetpp::cMessage *msg)
+{
+	registerMessage(msg);
 
 	cancelAndDelete(msg);
 }
@@ -67,12 +69,11 @@ bool RebroadcastDecider::shouldRebroadcast(cMessage *msg)
 	{
 		veins::LAddress::L2Type senderAddress = jamMsg->getSenderAddress();
 		long serial = jamMsg->getSerial();
-		if(receivedMessagesTable.count(senderAddress) != 0)
+
+		if (receivedMessagesTable.count(senderAddress) > 0 && receivedMessagesTable[senderAddress] >= serial)
 		{
-			if(receivedMessagesTable[senderAddress] >= serial)
-			{
-				return false;
-			}
+			// This is a duplicated or an outdated message
+			return false;
 		}
 
 		double probability = par("rebroadcastProbability").doubleValue();

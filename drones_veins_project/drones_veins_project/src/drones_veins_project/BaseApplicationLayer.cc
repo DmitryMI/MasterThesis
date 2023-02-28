@@ -74,13 +74,16 @@ void BaseApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
 
 	if (CarJammingAnnouncement *jamAnnouncement = dynamic_cast<CarJammingAnnouncement*>(wsm))
 	{
+		// handleCarJammingAnnouncement is responsible for forwarding the message to RD
 		handleCarJammingAnnouncement(jamAnnouncement);
 	}
+
 	RebroadcastDecider *rd = getRebroadcastDecider();
 	if (rd)
 	{
 		sendDirect(wsm->dup(), rd, rd->getParentInGate());
 	}
+
 }
 
 void BaseApplicationLayer::onBSM(veins::DemoSafetyMessage *bsm)
@@ -117,6 +120,7 @@ void BaseApplicationLayer::handleSelfMsg(cMessage *msg)
 void BaseApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *msg)
 {
 	RebroadcastDecider *rebroadcastDecider = getRebroadcastDecider();
+
 	if (rebroadcastDecider->shouldRebroadcast(msg))
 	{
 		scheduleAt(simTime() + 2 + uniform(0.01, 0.2), msg->dup());

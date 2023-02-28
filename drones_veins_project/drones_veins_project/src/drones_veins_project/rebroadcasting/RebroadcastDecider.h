@@ -28,6 +28,8 @@ namespace drones_veins_project
 	private:
 		int parentInGate;
 
+		void registerMessage(cMessage* msg);
+
 	protected:
 		std::map<veins::LAddress::L2Type, int> receivedMessagesTable;
 
