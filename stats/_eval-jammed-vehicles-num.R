@@ -26,7 +26,9 @@ scalars <- read_csv(csv_name, col_types = cols)
                        
 head(scalars,n=100)
 
-jammed_vehicles_num <- sqldf("select COUNT(Value) as cnt from scalars where Name == 'totalTimeInJam' and Value > 0 GROUP BY Run")
+query <- "select COUNT(Value) as cnt from scalars where Name == 'totalTimeInJam' and Value > 0 GROUP BY Run"
+
+jammed_vehicles_num <- sqldf(query)
 
 pdf(pdf_name) 
 par(cex.main=1)
