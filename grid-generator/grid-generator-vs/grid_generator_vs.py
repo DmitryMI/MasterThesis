@@ -235,16 +235,16 @@ if __name__ == "__main__":
     parser.add_argument("--proj_dir", default=os.getcwd())
     parser.add_argument("--grid.x-number", default=5, dest="junctions_x", type=int)
     parser.add_argument("--grid.y-number", default=5, dest="junctions_y", type=int)
-    parser.add_argument("--grid.length", default=100, dest="street_length", type=float)
+    parser.add_argument("--grid.length", default=125, dest="street_length", type=float)
     parser.add_argument(
         "--building_height_min", default=10, dest="building_height_min", type=float
     )
     parser.add_argument(
         "--building_height_max", default=50, dest="building_height_max", type=float
     )
-    parser.add_argument("--block_size", default=4, type=int)
-    parser.add_argument("--block_margin", default=10, type=float)
-    parser.add_argument("--block_padding", default=10, type=float)
+    parser.add_argument("--block_size", default=1, type=int)
+    parser.add_argument("--block_margin", default=15, type=float)
+    parser.add_argument("--block_padding", default=5, type=float)
 
     parser.add_argument("--ini_path", default=None)
 

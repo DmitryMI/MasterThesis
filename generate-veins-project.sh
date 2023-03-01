@@ -29,8 +29,11 @@ FORCE_REGENERATION=0
 # To generate and copy road network. -m
 GENERATE_ROAD_NET_NAME="drones"
 GENERATE_ROAD_NET=0
-GENERATE_ROAD_NET_GRID_SIZE=7
-GENERATE_ROAD_NET_STREET_LENGTH=100
+
+# Defaults are close to real Manhatten
+GENERATE_ROAD_NET_GRID_SIZE=15
+GENERATE_ROAD_NET_GRID_SUBD=4
+GENERATE_ROAD_NET_STREET_LENGTH=125
 
 
 ECHO_MSG="$PROJ_NAME\n$PROJ_BRIEF\n$PROJ_NAME_AS_FILE_NAME\n$PROJ_NAME_AS_MACRO_NAME"
@@ -50,6 +53,11 @@ while getopts ":hpfsm-:" optchar; do
 					val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
 				    	GENERATE_ROAD_NET_STREET_LENGTH=${val}
 				    	echo "Manhatten Grid street length set to $GENERATE_ROAD_NET_STREET_LENGTH"
+				    	;;
+				grid_subd)
+			        val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+				    	GENERATE_ROAD_NET_GRID_SUBD=${val}
+				    	echo "Manhatten Grid block subdivision set to $GENERATE_ROAD_NET_GRID_SUBD"
 				    	;;
 				grid_name)
 					val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
@@ -180,7 +188,7 @@ if [[ $GENERATE_ROAD_NET != 0 ]]; then
 	omnetpp_ini_path=$(realpath $omnetpp_ini_path_rel)
 	
 	cd ./grid-generator
-	./grid-generator.sh --grid_size $GENERATE_ROAD_NET_GRID_SIZE --street_length $GENERATE_ROAD_NET_STREET_LENGTH --omnetpp_ini $omnetpp_ini_path --proj_name $GENERATE_ROAD_NET_NAME
+	./grid-generator.sh --grid_size $GENERATE_ROAD_NET_GRID_SIZE --street_length $GENERATE_ROAD_NET_STREET_LENGTH --grid_subd $GENERATE_ROAD_NET_GRID_SUBD --omnetpp_ini $omnetpp_ini_path --proj_name $GENERATE_ROAD_NET_NAME
 	cd ..
 
 	echo "Moving Manhatten Grid files to veins project..."

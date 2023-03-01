@@ -90,7 +90,7 @@ if [[ $DO_EVAL == 1 ]]
 then
     echo "Evaluating..."
     cd $RESULTS_DIR
-    # Rscript ../_eval-jammed-vehicles-num.R --opp_config $OPP_CONFIG_NAME
+    Rscript ../_eval-jammed-vehicles-num.R --opp_config $OPP_CONFIG_NAME
     echo ""
     Rscript ../_eval-received-announcements-num.R --opp_config $OPP_CONFIG_NAME
     
