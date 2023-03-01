@@ -20,6 +20,7 @@
 #include "../BaseApplicationLayer.h"
 #include "CarJammingDetector.h"
 #include "../CarJammingAnnouncement_m.h"
+#include <set>
 
 namespace drones_veins_project
 {
@@ -29,8 +30,9 @@ namespace drones_veins_project
 	private:
 		CarJammingDetector jammingDetector;
 		long messageSerialCounter = 0;
-
+		std::set<veins::LAddress::L2Type> receivedJammingAnnouncements;
 		double totalTimeInJam = 0.0;
+
 
 		void onCarJammingStateChanged(bool jammed);
 		void updateJammingDetector();

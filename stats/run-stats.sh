@@ -9,8 +9,9 @@ DO_BUILD=0
 DO_RUN=0
 DO_COLLECT=0
 DO_EVAL=0
+DO_CLEAN=0
 
-while getopts ":hbrce-:" optchar; do
+while getopts ":hbrcex-:" optchar; do
 	case ${optchar} in	
 		
         h) # display Help		 	
@@ -37,11 +38,15 @@ while getopts ":hbrce-:" optchar; do
      		echo "Evaluation enabled"
      		DO_EVAL=1	
      		;;
+     	x)
+     	    echo "Clean enabled"
+     	    DO_CLEAN=1
+     	    ;;
      			
 	esac
 done
 
-if [ $DO_BUILD == 0 ] && [ $DO_RUN == 0 ] && [ $DO_COLLECT == 0 ] && [ $DO_EVAL == 0 ]
+if [ $DO_BUILD == 0 ] && [ $DO_RUN == 0 ] && [ $DO_COLLECT == 0 ] && [ $DO_EVAL == 0 ] && [ $DO_CLEAN == 0 ]
 then
     echo "No action specified, doing the whole pipeline."
     DO_BUILD=1   
@@ -51,6 +56,13 @@ then
 fi
 
 echo ""
+
+if [[ $DO_CLEAN == 1 ]]
+then
+    echo "Cleaning..."
+    rm -rf $SIMULATION_DIR/results
+    echo ""
+fi
 
 if [[ $DO_BUILD == 1 ]]
 then
@@ -78,6 +90,9 @@ if [[ $DO_EVAL == 1 ]]
 then
     echo "Evaluating..."
     cd $RESULTS_DIR
-    Rscript ../_eval-jammed-vehicles-num.R --opp_config $OPP_CONFIG_NAME
+    # Rscript ../_eval-jammed-vehicles-num.R --opp_config $OPP_CONFIG_NAME
+    echo ""
+    Rscript ../_eval-received-announcements-num.R --opp_config $OPP_CONFIG_NAME
+    
     echo ""
 fi

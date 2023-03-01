@@ -50,6 +50,7 @@ void CarApplicationLayer::finish()
 	}
 
 	recordScalar("totalTimeInJam", totalTimeInJam);
+	recordScalar("receivedJammingAnnouncementsNum", receivedJammingAnnouncements.size());
 }
 
 std::string CarApplicationLayer::getCarDescriptor()
@@ -112,10 +113,22 @@ void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *m
 {
 	BaseApplicationLayer::handleCarJammingAnnouncement(msg);
 
+	veins::LAddress::L2Type sender = msg->getSenderAddress();
+	if(sender == getAddress())
+	{
+		// Ignore own messages
+		return;
+	}
+
 	if (mobility->getRoadId()[0] != ':')
 	{
 		std::string roadId = msg->getCarRoadId();
 		traciVehicle->changeRoute(roadId, 9999);
+	}
+
+	if(receivedJammingAnnouncements.count(sender) == 0)
+	{
+		receivedJammingAnnouncements.insert(sender);
 	}
 }
 
