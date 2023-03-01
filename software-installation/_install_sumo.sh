@@ -48,4 +48,5 @@ if grep -q "$INSTALLATION_DIR/sumo-1.8.0/bin" ~/.profile; then
   	echo "SUMO binaries already in .profile"
 else
 	echo "export PATH=\$PATH:$INSTALLATION_DIR/sumo-1.8.0/bin" >> ~/.profile
+	echo "export SUMO_HOME=$INSTALLATION_DIR/sumo-1.8.0/bin" >> ~/.profile
 fi
