@@ -1,8 +1,4 @@
-#!/bin/bash
-
-INSTALLATION_DIR="/home/$(whoami)/Software"
-DOWNLOADS_DIR="/home/$(whoami)/Downloads"
-SLEEP_SEC=2
+source "./setvars.sh"
 
 function run_installation_script () {
 	echo "Running $1..."
@@ -39,5 +35,6 @@ run_installation_script "./_install_veins.sh"
 
 run_installation_script "./_install_r.sh"
 
+run_installation_script "./_install_singularity.sh"
 
 printf "All done! Reboot required for changes in .profile to be applied.\n\n"
