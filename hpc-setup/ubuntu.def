@@ -1,0 +1,21 @@
+Bootstrap: docker
+From: ubuntu:trusty
+
+%runscript
+    echo "Invoked inside the container in runtime."
+
+%post
+    echo "Invoked inside the container in buildtime\n"
+    apt-get update
+    
+    printf "\nInstalling git...\n"    
+    apt-get -y install git
+    
+    printf "\nCloning repository...\n"
+    git clone https://DmitryMI@github.com/DmitryMI/MasterThesis
+    
+    printf "\nRunning installation scripts...\n"
+    cd MasterThesis/software-installation
+    ./install_runtime.sh
+    
+
