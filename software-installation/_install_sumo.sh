@@ -50,9 +50,13 @@ else
 	cd $backup_wd	
 fi
 
-if grep -q "$INSTALLATION_DIR/sumo-1.8.0/bin" ~/.profile; then
-  	echo "SUMO binaries already in .profile"
-else
-	echo "export PATH=\$PATH:$INSTALLATION_DIR/sumo-1.8.0/bin" >> ~/.profile
-	echo "export SUMO_HOME=$INSTALLATION_DIR/sumo-1.8.0/bin" >> ~/.profile
+if test -f ~/.profile; then
+    if grep -q "$INSTALLATION_DIR/sumo-1.8.0/bin" ~/.profile; then
+  	    echo "SUMO binaries already in .profile"
+    else
+	    echo "export PATH=\$PATH:$INSTALLATION_DIR/sumo-1.8.0/bin" >> ~/.profile
+	    echo "export SUMO_HOME=$INSTALLATION_DIR/sumo-1.8.0/bin" >> ~/.profile
+    fi
 fi
+
+

@@ -39,26 +39,30 @@ else
 	cd $backup_wd	
 fi
 
-if grep -q "$INSTALLATION_DIR/omnetpp-5.7/bin" ~/.profile; then
-  	echo "OMNeT++ binaries already in .profile"
-else
-	echo "export PATH=\$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin" >> ~/.profile
+if test -f ~/.profile; then
+    if grep -q "$INSTALLATION_DIR/omnetpp-5.7/bin" ~/.profile; then
+        echo "OMNeT++ binaries already in .profile"
+    else
+        echo "export PATH=\$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin" >> ~/.profile
+    fi
 fi
 
-desktop_dir="/home/$(whoami)/Desktop"
-desktop_link="$desktop_dir/OMNeT++.desktop"
+if [[ $RUNTIME_ONLY == 0 ]]
+then   
+    desktop_dir="/home/$(whoami)/Desktop"
+    desktop_link="$desktop_dir/OMNeT++.desktop"
 
-if test -f "$desktop_link"; then
-	echo "OMNeT++ desktop link already exists"
-else
-	touch $desktop_link
-	echo "[Desktop Entry]" >> $desktop_link
-	echo "Type=Application" >> $desktop_link
-	echo "Terminal=false" >> $desktop_link
-	echo "Name=OMNeT++" >> $desktop_link
-	echo "Icon=$INSTALLATION_DIR/omnetpp-5.7/images/logo/logo128m.png" >> $desktop_link
-	echo "Exec=$INSTALLATION_DIR/omnetpp-5.7/bin/omnetpp" >> $desktop_link
-	
-	chmod +x $desktop_link
+    if test -f "$desktop_link"; then
+	    echo "OMNeT++ desktop link already exists"
+    else
+	    touch $desktop_link
+	    echo "[Desktop Entry]" >> $desktop_link
+	    echo "Type=Application" >> $desktop_link
+	    echo "Terminal=false" >> $desktop_link
+	    echo "Name=OMNeT++" >> $desktop_link
+	    echo "Icon=$INSTALLATION_DIR/omnetpp-5.7/images/logo/logo128m.png" >> $desktop_link
+	    echo "Exec=$INSTALLATION_DIR/omnetpp-5.7/bin/omnetpp" >> $desktop_link
+	    
+	    chmod +x $desktop_link
+    fi
 fi
-
