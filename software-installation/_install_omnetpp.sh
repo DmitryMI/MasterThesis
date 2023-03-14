@@ -1,9 +1,9 @@
 OMPP_LINK="https://github.com/omnetpp/omnetpp/releases/download/omnetpp-5.7/omnetpp-5.7-linux-x86_64.tgz"
 
-if [[ $SETVARS_GUARD != 0 ]]
+if [[ $SETVARS_GUARD != 1 ]]
 then
     echo "Run setvars.sh or setvars_runtime.sh before running any installation script."
-    exit
+    exit -1
 fi
 
 WITH_OSGEARTH=no

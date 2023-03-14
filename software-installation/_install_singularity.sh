@@ -1,4 +1,8 @@
-source "./setvars.sh"
+if [[ $SETVARS_GUARD != 1 ]]
+then
+    echo "Run setvars.sh or setvars_runtime.sh before running any installation script."
+    exit -1
+fi
 
 LIBSECCOMP_VERSION="2.5.4"
 

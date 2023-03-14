@@ -1,9 +1,9 @@
 printf "Installing prerequisites...\n\n"
 
-if [[ $SETVARS_GUARD != 0 ]]
+if [[ $SETVARS_GUARD != 1 ]]
 then
     echo "Run setvars.sh or setvars_runtime.sh before running any installation script."
-    exit
+    exit -1
 fi
 
 SUDO_PREFIX=""

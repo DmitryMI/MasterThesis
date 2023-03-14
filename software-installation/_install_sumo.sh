@@ -2,6 +2,12 @@ SUMO_LINK="https://sourceforge.net/projects/sumo/files/sumo/version%201.8.0/sumo
 
 ASSUME_DOWNLOADED=1
 
+if [[ $SETVARS_GUARD != 1 ]]
+then
+    echo "Run setvars.sh or setvars_runtime.sh before running any installation script."
+    exit -1
+fi
+
 printf "Installing SUMO...\n\n"
 
 if test -f "$INSTALLATION_DIR/sumo-1.8.0/bin/sumo"; then
