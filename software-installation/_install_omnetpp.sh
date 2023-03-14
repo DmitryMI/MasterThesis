@@ -6,14 +6,6 @@ then
     exit -1
 fi
 
-WITH_OSGEARTH=no
-
-if [[ $RUNTIME_ONLY == 1 ]]
-then
-    WITH_TKENV=no
-    WITH_QTENV=no
-    WITH_OSG=no
-fi
 
 printf "Installing OMNeT++...\n\n"
 
@@ -32,8 +24,17 @@ else
 
 	source setenv
 
+    configure_cmd="WITH_OSGEARTH=no"
+
+    if [[ $RUNTIME_ONLY == 1 ]]
+    then
+        configure_cmd="${configure_cmd} WITH_TKENV=no "
+        configure_cmd="${configure_cmd} WITH_QTENV=no "
+        configure_cmd="${configure_cmd} WITH_OSG=no "
+    fi
+    
 	./configure	
-	if [[ $? != 0 ]]; then exit $-1; fi
+	if [[ $? != 0 ]]; then exit -1; fi
 
 	make -j 16
 	if [[ $? != 0 ]]; then exit -1; fi
