@@ -61,4 +61,13 @@ if test -f ~/.profile; then
     fi
 fi
 
+if [ "$EUID" -e 0 ]
+then 
+    if grep -q "SUMO_HOME=$INSTALLATION_DIR/sumo-1.8.0/bin" /etc/environment; then
+        echo "SUMO_HOME binaries already in /etc/environment"
+    else
+        echo "Exporting SUMO_HOME to /etc/environment"
+        echo "SUMO_HOME=$INSTALLATION_DIR/sumo-1.8.0/bin" >> /etc/environment
+    fi
+fi
 
