@@ -22,7 +22,7 @@ else
     if [[ $? != 0 ]]
     then
         echo "Installing Go..."
-        wget 'https://storage.googleapis.com/golang/getgo/installer_linux' --directory-prefix $DOWNLOADS_DIR
+        wget 'https://storage.googleapis.com/golang/getgo/installer_linux' --continue --directory-prefix $DOWNLOADS_DIR
         chmod +x $DOWNLOADS_DIR/installer_linux
         $DOWNLOADS_DIR/installer_linux 
         source $HOME/.bash_profile
@@ -47,7 +47,7 @@ else
     sudo apt install gperf
 
     libseccomp_url=https://github.com/seccomp/libseccomp/releases/download/v$LIBSECCOMP_VERSION/libseccomp-$LIBSECCOMP_VERSION.tar.gz
-    wget $libseccomp_url --directory-prefix $DOWNLOADS_DIR
+    wget $libseccomp_url --continue --directory-prefix $DOWNLOADS_DIR
     cd $INSTALLATION_DIR
     tar -xzf $DOWNLOADS_DIR/libseccomp-${LIBSECCOMP_VERSION}.tar.gz
     cd libseccomp-${LIBSECCOMP_VERSION}
