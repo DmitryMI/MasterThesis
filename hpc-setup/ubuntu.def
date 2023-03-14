@@ -7,15 +7,18 @@ From: ubuntu:trusty
 %post
     echo "Invoked inside the container in buildtime\n"
     apt-get update
+    echo ""
     
-    printf "\nInstalling git...\n"    
+    echo "Installing git...\n"
     apt-get -y install git
+    echo ""
     
-    printf "\nCloning repository...\n"
-    git clone https://DmitryMI@github.com/DmitryMI/MasterThesis
+    echo "Cloning repository...\n"
+    git clone https://DmitryMI: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@github.com/DmitryMI/MasterThesis
+    echo ""
     
-    printf "\nRunning installation scripts...\n"
+    echo "Running installation scripts...\n"
     cd MasterThesis/software-installation
     ./install_runtime.sh
-    
+     echo ""
 

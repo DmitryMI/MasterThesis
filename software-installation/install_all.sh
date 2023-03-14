@@ -1,3 +1,5 @@
+#!/bin/bash
+
 source "./setvars.sh"
 
 function run_installation_script () {
