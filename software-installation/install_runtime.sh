@@ -2,7 +2,7 @@
 
 # Installs only packages, needed to run and evaluate simulations
 
-source ./setvars.sh
+source ./setvars_runtime.sh
 
 function run_installation_script () {
 	echo "Running $1..."
