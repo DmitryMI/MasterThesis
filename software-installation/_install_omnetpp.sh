@@ -81,3 +81,5 @@ then
         echo path_new >> /etc/environment
     fi
 fi
+
+export PATH="$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin"
