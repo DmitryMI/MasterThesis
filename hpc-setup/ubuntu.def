@@ -4,6 +4,9 @@ From: ubuntu:20.04
 %runscript
     echo "Invoked inside the container in runtime."
     
+%files
+    
+    
 %post
     #!/bin/bash
     
