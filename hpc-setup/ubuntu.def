@@ -3,10 +3,12 @@ From: ubuntu:20.04
 
 %runscript
     echo "Invoked inside the container in runtime."
-    
-%files
-    
-    
+    pwd
+    cd /MasterThesis
+    git pull
+    cd stats
+    ./run-stats.sh -b
+
 %post
     #!/bin/bash
     
@@ -23,12 +25,19 @@ From: ubuntu:20.04
     apt-get -y install git
     echo ""
     
-    echo "Cloning repository...\n"
-    git clone https://DmitryMI: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@github.com/DmitryMI/MasterThesis
+    if [ ! -d /MasterThesis/.git ]
+    then
+        echo "Cloning repository...\n"        
+        git clone https://DmitryMI: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@github.com/DmitryMI/MasterThesis
     echo ""
-    
+    else
+        echo "Singularity repository already exists in $(pwd). Pulling..."
+        cd /MasterThesis
+        git pull
+    fi
+
     echo "Running installation scripts...\n"
-    cd MasterThesis/software-installation
+    cd /MasterThesis/software-installation
     ./install_all.sh setvars_runtime.sh
     echo ""
 

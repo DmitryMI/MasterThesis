@@ -1,3 +1,5 @@
+#!/bin/bash
+
 MAKE_DIR=$(realpath ../drones_veins_project)
 SIMULATION_DIR=$(realpath ../drones_veins_project/drones_veins_project/simulation/drones_veins_project)
 OPP_CONFIG_NAME="Evaluation"
