@@ -21,7 +21,7 @@ pwd
 if test -f "$INSTALLATION_DIR"; then
 	printf "Installation directory already exists."
 else
-	mkdir $INSTALLATION_DIR
+	mkdir -p $INSTALLATION_DIR
 fi
 
 run_installation_script "./_install_prereq.sh"
