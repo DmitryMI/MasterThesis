@@ -32,9 +32,11 @@ else
 
 	source setenv
 
-	./configure
+	./configure	
+	if [[ $? != 0 ]]; then exit $?; fi
 
 	make -j 16
+	if [[ $? != 0 ]]; then exit $?; fi
 	
 	cd $backup_wd	
 fi

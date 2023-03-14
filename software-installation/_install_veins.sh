@@ -24,8 +24,10 @@ else
 	export PATH="$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin"
 
 	./configure
+	if [[ $? != 0 ]]; then exit $?; fi
 
 	make -j 16
+	if [[ $? != 0 ]]; then exit $?; fi
 	
 	cd $backup_wd
 fi

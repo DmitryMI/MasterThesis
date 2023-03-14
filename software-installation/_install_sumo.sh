@@ -39,13 +39,15 @@ else
 	
 	export SUMO_HOME=$(pwd)
 
-	mkdir build/cmake-build
+	mkdir -p build/cmake-build
 	
 	cd build/cmake-build
 
 	cmake ../..
+	if [[ $? != 0 ]]; then exit $?; fi
 
 	make -j 16	
+	if [[ $? != 0 ]]; then exit $?; fi
 
 	cd $backup_wd	
 fi

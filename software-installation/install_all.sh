@@ -39,21 +39,16 @@ run_installation_script "./_install_prereq.sh"
 
 run_installation_script "./_install_python311.sh"
 
-if [[ $RUNTIME_ONLY == 0 ]]
-then
-    run_installation_script "./_install_cookiecutter.sh"
-fi
-
 run_installation_script "./_install_omnetpp.sh"
 
 run_installation_script "./_install_sumo.sh"
 
 run_installation_script "./_install_veins.sh"
 
-run_installation_script "./_install_r.sh"
-
 if [[ $RUNTIME_ONLY == 0 ]]
 then
+    run_installation_script "./_install_r.sh"
+    run_installation_script "./_install_cookiecutter.sh"
     run_installation_script "./_install_singularity.sh"
 fi
 
