@@ -76,6 +76,8 @@ then
         echo "OMNeT++ binaries already in /etc/environment"
     else
         echo "Exporting omnetpp to /etc/environment"
-        echo "PATH=\$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin" >> /etc/environment
+        path_new="$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin"
+        sed -i '/\[PATH\]/d' /etc/environment
+        echo path_new >> /etc/environment
     fi
 fi
