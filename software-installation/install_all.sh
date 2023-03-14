@@ -1,6 +1,10 @@
 #!/bin/bash
 
-source "./setvars.sh"
+if [[ $SETVARS_GUARD != 0 ]]
+then
+    echo "Run setvars.sh or setvars_runtime.sh before running any installation script."
+    exit
+fi
 
 function run_installation_script () {
 	echo "Running $1..."
@@ -27,7 +31,10 @@ run_installation_script "./_install_prereq.sh"
 
 run_installation_script "./_install_python311.sh"
 
-run_installation_script "./_install_cookiecutter.sh"
+if [[ $RUNTIME_ONLY == 0 ]]
+then
+    run_installation_script "./_install_cookiecutter.sh"
+fi
 
 run_installation_script "./_install_omnetpp.sh"
 
@@ -37,6 +44,9 @@ run_installation_script "./_install_veins.sh"
 
 run_installation_script "./_install_r.sh"
 
-run_installation_script "./_install_singularity.sh"
+if [[ $RUNTIME_ONLY == 0 ]]
+then
+    run_installation_script "./_install_singularity.sh"
+fi
 
 printf "All done! Reboot required for changes in .profile to be applied.\n\n"

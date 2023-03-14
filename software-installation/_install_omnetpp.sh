@@ -1,5 +1,20 @@
 OMPP_LINK="https://github.com/omnetpp/omnetpp/releases/download/omnetpp-5.7/omnetpp-5.7-linux-x86_64.tgz"
 
+if [[ $SETVARS_GUARD != 0 ]]
+then
+    echo "Run setvars.sh or setvars_runtime.sh before running any installation script."
+    exit
+fi
+
+WITH_OSGEARTH=no
+
+if [[ $RUNTIME_ONLY == 1 ]]
+then
+    WITH_TKENV=no
+    WITH_QTENV=no
+    WITH_OSG=no
+fi
+
 printf "Installing OMNeT++...\n\n"
 
 if test -f "$INSTALLATION_DIR/omnetpp-5.7/bin/omnetpp"; then
@@ -11,7 +26,7 @@ else
 
 	backup_wd=$(pwd)
 
-	patch -u $INSTALLATION_DIR/omnetpp-5.7/configure.user -i omnetpp_configure_user.patch
+	#patch -u $INSTALLATION_DIR/omnetpp-5.7/configure.user -i omnetpp_configure_user.patch
 
 	cd $INSTALLATION_DIR/omnetpp-5.7
 
