@@ -33,7 +33,7 @@ else
         configure_cmd="${configure_cmd} WITH_OSG=no "
     fi
     
-	./configure	
+	./configure	$configure_cmd
 	if [[ $? != 0 ]]; then exit -1; fi
 
 	make -j 16
