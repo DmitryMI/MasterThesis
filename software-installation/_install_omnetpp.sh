@@ -70,7 +70,7 @@ then
     fi
 fi
 
-if [ "$EUID" -e 0 ]
+if [ "$EUID" == 0 ]
 then 
     if grep -q "$INSTALLATION_DIR/omnetpp-5.7/bin" /etc/environment; then
         echo "OMNeT++ binaries already in /etc/environment"
