@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if test -z "$1" 
+then
+      echo "Env file not specified"
+else
+      echo "Sourcing $1"
+      source $1
+fi
+
 if [[ $SETVARS_GUARD != 0 ]]
 then
     echo "Run setvars.sh or setvars_runtime.sh before running any installation script."

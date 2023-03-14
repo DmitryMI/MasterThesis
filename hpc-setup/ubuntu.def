@@ -3,7 +3,7 @@ From: ubuntu:20.04
 
 %runscript
     echo "Invoked inside the container in runtime."
-
+    
 %post
     echo "Invoked inside the container in buildtime\n"
     apt-get update
@@ -19,6 +19,6 @@ From: ubuntu:20.04
     
     echo "Running installation scripts...\n"
     cd MasterThesis/software-installation
-    ./install_runtime.sh
-     echo ""
+    ./install_all.sh setenv_runtime.sh
+    echo ""
 
