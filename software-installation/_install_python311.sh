@@ -1,10 +1,17 @@
 printf "Installing Python3.11...\n\n"
 
-sudo apt install -y software-properties-common -y
+SUDO_PREFIX=""
+if [ "$EUID" -ne 0 ]
+then 
+    SUDO_PREFIX="sudo"
+fi
 
-sudo add-apt-repository --yes ppa:deadsnakes/ppa
 
-sudo apt -y install python3.11
+$SUDO_PREFIX apt install -y software-properties-common -y
+
+$SUDO_PREFIX add-apt-repository --yes ppa:deadsnakes/ppa
+
+$SUDO_PREFIX apt -y install python3.11
 
 python_version=$(python3.11 --version)
 
@@ -16,7 +23,7 @@ else
 	exit -1
 fi
 
-sudo apt -y install python3-pip
+$SUDO_PREFIX apt -y install python3-pip
 
 pip_version=$(pip3 --version)
 
