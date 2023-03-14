@@ -2,12 +2,7 @@ Bootstrap: docker
 From: ubuntu:20.04
 
 %runscript
-    echo "Invoked inside the container in runtime."
-    pwd
-    cd /MasterThesis
-    git pull
-    cd stats
-    ./run-stats.sh -b
+    echo "Invoked inside the container in runtime."    
 
 %post
     #!/bin/bash
@@ -40,4 +35,8 @@ From: ubuntu:20.04
     cd /MasterThesis/software-installation
     ./install_all.sh setvars_runtime.sh
     echo ""
-
+    
+    # Building 
+    cd /MasterThesis/drones_veins_project
+    make -j8
+    
