@@ -48,9 +48,9 @@ public:
 
 		virtual void initDrawables(osg::Vec4 colorVec);
 		virtual void setModelColor(osg::Node* modelRoot, const osg::Vec4& colorVec);
-
-		void setTransform(const veins::Coord& location, double angleZ);
 #endif
+private:
+		void setTransform(const veins::Coord& location, double angleZ);
 	};
 
 }

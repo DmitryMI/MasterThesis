@@ -42,6 +42,7 @@ void RoadsOsgVisualizer2::initialize(int stage)
 	RoadsOsgVisualizer::initialize(stage);
 }
 
+#ifdef WITH_OSG
 osg::Geode* RoadsOsgVisualizer2::createLine(const std::list<veins::Coord> &coords, cFigure::Color color, double width)
 {
 	if (!flipY)
@@ -63,3 +64,4 @@ osg::Geode* RoadsOsgVisualizer2::createLine(const std::list<veins::Coord> &coord
 		return RoadsOsgVisualizer::createLine(coordsFlipped, color, width);
 	}
 }
+#endif

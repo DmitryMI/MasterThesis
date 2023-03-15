@@ -32,7 +32,9 @@ namespace drones_veins_project
 
 		virtual void initialize(int stage) override;
 	protected:
+#ifdef WITH_OSG
 		virtual osg::Geode* createLine(const std::list<veins::Coord> &coords, cFigure::Color color, double width) override;
+#endif
 	};
 
 }
