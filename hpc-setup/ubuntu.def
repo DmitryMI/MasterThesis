@@ -7,15 +7,6 @@ From: ubuntu:20.04
 %post
     #!/bin/bash
     
-    echo "Exporting omnetpp to /etc/environment"
-    path_new="$PATH:/MasterThesis/omnetpp-5.7/bin"
-    sed -i '/PATH/d' /etc/environment
-    printf "PATH=\"$path_new\"" >> /etc/environment
-    
-    cat /etc/environment
-    
-    exit -1
-    
     echo "Invoked inside the container in buildtime\n"
     apt-get update
     echo ""
