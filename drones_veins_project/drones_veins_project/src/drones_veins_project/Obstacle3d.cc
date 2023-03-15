@@ -424,5 +424,5 @@ void Obstacle3d::drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr, bool
 	createOsgGeometry(color, obstaclesShadingEnabled, wireframeModeEnabled, osgFlipY);
 
 	scene->addChild(osgNode);
-#endif
 }
+#endif
