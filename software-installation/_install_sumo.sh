@@ -71,3 +71,5 @@ then
     fi
 fi
 
+export SUMO_HOME=$INSTALLATION_DIR/sumo-1.8.0/bin
+
