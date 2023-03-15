@@ -3,6 +3,10 @@ From: ubuntu:20.04
 
 %runscript
     echo "Invoked inside the container in runtime. NO ACTIONS"    
+    
+%environment
+    export PATH=$PATH:/Software/omnetpp-5.7/bin
+    export SUMO_HOME=/Software/sumo-1.8.0
 
 %post
     #!/bin/bash
@@ -36,9 +40,21 @@ From: ubuntu:20.04
     ./install_all.sh setvars_runtime.sh
     echo ""
     
+    apt-get -y autoremove
+    apt-get -y clean
+    apt-get -y autoclean
+
+    sed -i '/path_new/d' /etc/environment
+        
+    . /etc/environment
+    
+    echo $PATH
+    echo $SUMO_HOME
+    
     # Building 
     cd /MasterThesis/drones_veins_project
     . ./setenv
     ./configure
+    mkdir veins/bin
     make -j8
     
