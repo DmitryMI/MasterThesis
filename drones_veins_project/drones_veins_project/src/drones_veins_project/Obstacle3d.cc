@@ -254,6 +254,8 @@ std::vector<double> Obstacle3d::getIntersections(const Coord &senderPos, const C
 	return intersectionFactors;
 }
 
+#ifdef WITH_OSG
+
 osg::Geode* Obstacle3d::createWall(int wallIndex1, int wallIndex2, osg::PrimitiveSet::Mode mode, bool osgFlipY)
 {
 	Coord coord1 = coords[wallIndex1];
@@ -401,8 +403,6 @@ void Obstacle3d::createOsgGeometry(const cFigure::Color &color, bool obstaclesSh
 	polyCeilBorder->setStateSet(borderStateSet);
 	osgNode->addChild(polyCeilBorder);
 }
-
-#ifdef WITH_OSG
 
 void Obstacle3d::drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr, bool obstaclesShadingEnabled,
 		bool wireframeModeEnabled, bool osgFlipY)

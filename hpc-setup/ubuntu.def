@@ -56,5 +56,6 @@ From: ubuntu:20.04
     . ./setenv
     ./configure
     mkdir veins/bin
+    mkdir /MasterThesis/drones_veins_project/drones_veins_project/bin
     make -j8
     
