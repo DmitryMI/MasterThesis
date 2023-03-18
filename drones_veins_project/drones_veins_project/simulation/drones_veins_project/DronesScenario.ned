@@ -78,7 +78,8 @@ network DronesScenario
                 @display("p=30,0;i=misc/globe");
         }
         
-        manager: TraCIScenarioManagerLaunchd {
+       	
+        manager: TraCIScenarioManagerForker {
             parameters:
                 @display("p=512,128");
                 moduleType = carType;
