@@ -20,12 +20,12 @@ From: ubuntu:20.04
     then
         echo "Copying repository from RO partition...\n"        
         cp -R /MasterThesis $MNT
-        if [ $? != 0 ]; then exit -1; fi
+        if [ $? != 0 ]; then exit $?; fi
     fi
     
     cd "$REPO_MNT"
     git pull
-    if [ $? != 0 ]; then exit -1; fi
+    if [ $? != 0 ]; then exit $?; fi
     
     . /etc/environment
     echo "Container's PATH: $PATH"
@@ -33,20 +33,20 @@ From: ubuntu:20.04
     
     # Building 
     cd $REPO_MNT/drones_veins_project
-    if [ $? != 0 ]; then exit -1; fi
+    if [ $? != 0 ]; then exit $?; fi
     
     echo "Calling setenv..."
     . ./setenv
-    if [ $? != 0 ]; then exit -1; fi
+    if [ $? != 0 ]; then exit $?; fi
     echo "Calling configure..."
     ./configure
-    if [ $? != 0 ]; then exit -1; fi
+    if [ $? != 0 ]; then exit $?; fi
     
     echo "Making..."
     mkdir -p veins/bin
     mkdir -p drones_veins_project/bin
     make -j8
-    if [ $? != 0 ]; then exit -1; fi
+    if [ $? != 0 ]; then exit $?; fi
     
 %environment
     export PATH=$PATH:/Software/omnetpp-5.7/bin
