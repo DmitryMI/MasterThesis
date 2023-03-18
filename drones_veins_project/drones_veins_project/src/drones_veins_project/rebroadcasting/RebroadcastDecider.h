@@ -18,7 +18,7 @@
 
 #include <map>
 #include "veins/base/utils/SimpleAddress.h"
-#include "drones_veins_project/drones_veins_project.h"
+#include "../drones_veins_project.h"
 
 namespace drones_veins_project
 {
