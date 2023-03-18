@@ -2,6 +2,8 @@ Bootstrap: docker
 From: ubuntu:20.04
 
 %runscript
+    #!/bin/bash
+
     echo "Invoked inside the container in runtime."
     
     MNT="/mnt"
