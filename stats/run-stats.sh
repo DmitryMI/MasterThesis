@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $RUNSIM_SETVARS_GUARD != 1 ]
+if [[ $RUNSIM_SETVARS_GUARD != 1 ]]
 then
     echo "Run setvars before running this script."
 fi
