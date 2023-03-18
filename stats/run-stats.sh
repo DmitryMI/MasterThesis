@@ -1,11 +1,13 @@
 #!/bin/bash
 
+if [ $RUNSIM_SETVARS_GUARD != 1 ]
+then
+    echo "Run setvars before running this script."
+fi
+
 MAKE_DIR=$(realpath ../drones_veins_project)
 SIMULATION_DIR=$(realpath ../drones_veins_project/drones_veins_project/simulation/drones_veins_project)
-OPP_CONFIG_NAME="Evaluation"
 WORKING_DIR=$(pwd)
-RESULTS_DIR=$WORKING_DIR/results
-VEINS_LAUNCHD_PATH="$HOME/Software/veins/bin/veins_launchd"
 
 DO_BUILD=0
 DO_RUN=0
