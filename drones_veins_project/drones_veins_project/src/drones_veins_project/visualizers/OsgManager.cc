@@ -15,8 +15,10 @@
 
 #include "../drones_veins_project.h"
 #include "OsgManager.h"
+#ifdef WITH_OSG
 #include "veins/base/utils/FindModule.h"
 #include <veins/base/modules/BaseWorldUtility.h>
+#endif
 
 #ifdef WITH_OSG
 

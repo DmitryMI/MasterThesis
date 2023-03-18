@@ -2,11 +2,45 @@ Bootstrap: docker
 From: ubuntu:20.04
 
 %runscript
-    echo "Invoked inside the container in runtime. NO ACTIONS"    
+    echo "Invoked inside the container in runtime."
+    
+    MNT="/mnt"
+    REPO_MNT="$MNT/MasterThesis"
+
+    if [ -d "$MNT" ];
+    then
+        echo "$MNT directory found, proceeding."
+    else
+	    echo "Run the container with --bind <host dir>:$MNT:rw to bind a directory."
+	    exit -1
+    fi 
+    
+    # Copying the repository to RW directory
+    cp -R /MasterThesis $MNT
+    if [ $? != 0 ] 
+    then
+        exit -1; 
+    fi
+    
+    cd "$REPO_MNT"
+    git pull
+    
+    . /etc/environment
+    echo "Container's PATH: $PATH"
+    echo "Container's SUMO_HOME: $SUMO_HOME" 
+    
+    # Building 
+    cd $REPO_MNT/drones_veins_project
+    . ./setenv
+    ./configure
+    mkdir veins/bin
+    mkdir drones_veins_project/bin
+    make -j8
     
 %environment
     export PATH=$PATH:/Software/omnetpp-5.7/bin
     export SUMO_HOME=/Software/sumo-1.8.0
+    
 
 %post
     #!/bin/bash
@@ -44,18 +78,11 @@ From: ubuntu:20.04
     apt-get -y clean
     apt-get -y autoclean
 
-    sed -i '/path_new/d' /etc/environment
+    # sed -i '/path_new/d' /etc/environment
         
     . /etc/environment
     
-    echo $PATH
-    echo $SUMO_HOME
+    echo "Container's PATH: $PATH"
+    echo "Container's SUMO_HOME: $SUMO_HOME" 
     
-    # Building 
-    cd /MasterThesis/drones_veins_project
-    . ./setenv
-    ./configure
-    mkdir veins/bin
-    mkdir /MasterThesis/drones_veins_project/drones_veins_project/bin
-    make -j8
     

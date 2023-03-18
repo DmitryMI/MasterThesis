@@ -30,8 +30,10 @@ namespace drones_veins_project
 	class OsgManager : public omnetpp::cModule
 	{
 	private:
+#ifdef WITH_OSG
 		osg::ref_ptr<osg::LightSource> globalLightSource;
 		osg::ref_ptr<osg::Light> globalLight;
+#endif
 	public:
 		OsgManager();
 		virtual ~OsgManager();

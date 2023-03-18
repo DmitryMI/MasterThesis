@@ -53,6 +53,7 @@ void ObstacleShadowingVisualizer::initialize(int stage)
 
 void ObstacleShadowingVisualizer::handleMessage(omnetpp::cMessage *msg)
 {
+#ifdef WITH_OSG
 	if (OsvTimeoutMessage *timeoutMessage = dynamic_cast<OsvTimeoutMessage*>(msg))
 	{
 		std::string name = timeoutMessage->getDisplayGroupName();
@@ -71,8 +72,10 @@ void ObstacleShadowingVisualizer::handleMessage(omnetpp::cMessage *msg)
 			}
 		}
 	}
+#endif
 }
 
+#ifdef WITH_OSG
 osg::ref_ptr<osg::StateSet> ObstacleShadowingVisualizer::createLineStateSet(const osg::Vec4 &color)
 {
 	osg::ref_ptr<osg::Material> lineMaterial = new osg::Material();
@@ -132,6 +135,7 @@ osg::ref_ptr<osg::Geode> ObstacleShadowingVisualizer::createLine(const osg::Vec3
 
 	return lineGeode;
 }
+#endif
 
 void ObstacleShadowingVisualizer::visualizeIntersections(
 		const std::vector<std::pair<veins::Obstacle*, std::vector<double>>> &intersections,
@@ -139,6 +143,7 @@ void ObstacleShadowingVisualizer::visualizeIntersections(
 {
 	Enter_Method_Silent();
 
+#ifdef WITH_OSG
 	if(!par("enabled").boolValue())
 	{
 		return;
@@ -204,4 +209,5 @@ void ObstacleShadowingVisualizer::visualizeIntersections(
 	OsvTimeoutMessage *timeoutMessage = new OsvTimeoutMessage();
 	timeoutMessage->setDisplayGroupName(groupName.c_str());
 	scheduleAt(simTime() + par("duration").doubleValue(), timeoutMessage);
+#endif
 }

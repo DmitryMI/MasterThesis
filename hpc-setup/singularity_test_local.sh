@@ -2,6 +2,5 @@
 
 source setvars.sh
 
-./singularity_build.sh -u
-
-sudo singularity run $CONTAINERS_DIR/$CONTAINER_NAME
+mkdir -p /tmp/drones_tmp
+sudo singularity run --bind /tmp/drones_tmp:/mnt:rw $CONTAINERS_DIR/$CONTAINER_NAME 
