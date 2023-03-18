@@ -63,11 +63,15 @@ fi
 
 if [ "$EUID" == 0 ]
 then 
-    if grep -q "SUMO_HOME=$INSTALLATION_DIR/sumo-1.8.0/bin" /etc/environment; then
-        echo "SUMO_HOME binaries already in /etc/environment"
-    else
-        echo "Exporting SUMO_HOME to /etc/environment"
-        echo "SUMO_HOME=$INSTALLATION_DIR/sumo-1.8.0/bin" >> /etc/environment
+    echo "Exporting SUMO to /etc/environment"
+    path_new="$PATH:$INSTALLATION_DIR/sumo-1.8.0/bin"
+    sed -i '/PATH/d' /etc/environment
+    printf "PATH=\"$path_new\"" >> /etc/environment
+    
+    echo "Exporting SUMO_HOME to /etc/environment"
+    sed -i '/SUMO_HOME/d' /etc/environment
+    echo "SUMO_HOME=$INSTALLATION_DIR/sumo-1.8.0/bin" >> /etc/environment
+        
     fi
 fi
 
