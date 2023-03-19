@@ -6,11 +6,14 @@ if [[ -z "$INSTALLATION_DIR_SUMO" ]]
 then
     INSTALLATION_DIR_SUMO="$INSTALLATION_DIR"
     echo "INSTALLATION_DIR_SUMO no set. Setting to default $INSTALLATION_DIR_SUMO"
+echo
+    echo "SUMO will be installed to $INSTALLATION_DIR_SUMO"
 fi
 if [[ -z "$INSTALLATION_DIR_OMNETPP" ]]
 then
     INSTALLATION_DIR_OMNETPP="$INSTALLATION_DIR"
     echo "INSTALLATION_DIR_OMNETPP no set. Setting to default $INSTALLATION_DIR_OMNETPP"
+    echo "OMNeT++ will be installed to $INSTALLATION_DIR_OMNETPP"
 fi
 
 DOWNLOADS_DIR="/Downloads"
