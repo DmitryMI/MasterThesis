@@ -100,15 +100,16 @@ From: ubuntu:20.04
 
     echo "Running installation scripts...\n"
     cd /MasterThesis/software-installation
-    . ./setvars_runtime.sh
-    . ./install_all.sh 
+    echo "INSTALLATION_DIR_OMNETPP="$INSTALLATION_DIR_OMNETPP" > _executor.sh
+    echo "INSTALLATION_DIR_SUMO="$INSTALLATION_DIR_SUMO" >> _executor.sh
+    echo "source setvars_runtime.sh" >> _executor.sh
+    echo "source install_all.sh" >> _executor.sh
+    chmod +x _executor.sh
+    ./executor.sh
     echo ""
     
     apt-get -y autoremove
     apt-get -y clean
     apt-get -y autoclean
-
-    echo "Container's PATH: $PATH"
-    echo "Container's SUMO_HOME: $SUMO_HOME" 
     
     

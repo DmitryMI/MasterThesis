@@ -36,10 +36,10 @@ else
     fi
     
 	./configure	$configure_cmd
-	if [ $? != 0 ]; then exit -1; fi
+	if [ $? != 0 ]; then exit 1; fi
 
 	make -j 16
-	if [ $? != 0 ]; then exit -1; fi
+	if [ $? != 0 ]; then exit 1; fi
 	
 	cd $backup_wd	
 fi
