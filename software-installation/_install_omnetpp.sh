@@ -2,7 +2,7 @@
 
 OMPP_LINK="https://github.com/omnetpp/omnetpp/releases/download/omnetpp-5.7/omnetpp-5.7-linux-x86_64.tgz"
 
-if [[ $SETVARS_GUARD != 1 ]]
+if [ $SETVARS_GUARD != 1 ]
 then
     echo "Run setvars.sh or setvars_runtime.sh before running any installation script."
     exit -1
@@ -28,7 +28,7 @@ else
 
     configure_cmd="WITH_OSGEARTH=no"
 
-    if [[ $RUNTIME_ONLY == 1 ]]
+    if [ $RUNTIME_ONLY == 1 ]
     then
         configure_cmd="${configure_cmd} WITH_TKENV=no "
         configure_cmd="${configure_cmd} WITH_QTENV=no "
@@ -36,10 +36,10 @@ else
     fi
     
 	./configure	$configure_cmd
-	if [[ $? != 0 ]]; then exit -1; fi
+	if [ $? != 0 ]; then exit -1; fi
 
 	make -j 16
-	if [[ $? != 0 ]]; then exit -1; fi
+	if [ $? != 0 ]; then exit -1; fi
 	
 	cd $backup_wd	
 fi
@@ -52,7 +52,7 @@ if test -f ~/.profile; then
     fi
 fi
 
-if [[ $RUNTIME_ONLY == 0 ]]
+if [ $RUNTIME_ONLY == 0 ]
 then   
     desktop_dir="/home/$(whoami)/Desktop"
     desktop_link="$desktop_dir/OMNeT++.desktop"

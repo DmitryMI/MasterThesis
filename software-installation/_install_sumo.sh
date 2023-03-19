@@ -2,7 +2,7 @@ SUMO_LINK="https://sourceforge.net/projects/sumo/files/sumo/version%201.8.0/sumo
 
 ASSUME_DOWNLOADED=1
 
-if [[ $SETVARS_GUARD != 1 ]]
+if [ $SETVARS_GUARD != 1 ]
 then
     echo "Run setvars.sh or setvars_runtime.sh before running any installation script."
     exit -1
@@ -15,7 +15,7 @@ if test -f "$INSTALLATION_DIR/sumo-1.8.0/bin/sumo"; then
 else
 	if test -f "$DOWNLOADS_DIR/sumo-src-1.8.0.tar.gz"; then
 	
-		if [[ $ASSUME_DOWNLOADED == 0 ]]; then		
+		if [ $ASSUME_DOWNLOADED == 0 ]; then		
 			echo "Cannot resume downloading. Need to restart."
 			rm $DOWNLOADS_DIR/sumo-src-1.8.0.tar.gz
 			wget --directory-prefix=$DOWNLOADS_DIR $SUMO_LINK
@@ -26,7 +26,7 @@ else
 		wget --directory-prefix=$DOWNLOADS_DIR $SUMO_LINK
 	fi
 			
-	if [[ $? != 0 ]];
+	if [ $? != 0 ];
 	then
 		exit -1
 	fi 
@@ -44,10 +44,10 @@ else
 	cd build/cmake-build
 
 	cmake ../..
-	if [[ $? != 0 ]]; then exit $?; fi
+	if [ $? != 0 ]; then exit $?; fi
 
 	make -j 16	
-	if [[ $? != 0 ]]; then exit $?; fi
+	if [ $? != 0 ]; then exit $?; fi
 
 	cd $backup_wd	
 fi
