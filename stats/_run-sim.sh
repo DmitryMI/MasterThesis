@@ -1,6 +1,8 @@
 cd $SIMULATION_DIR
 
 SUMO_PORT=9998
+OPP_RUNALL_JOBS=1
+OPP_RUNALL_BATCH=4
 
 if [ -z "$SIM_AUTO_MANAGE_SUMO" ]
 then
@@ -15,7 +17,7 @@ then
 fi
 
 pwd
-opp_runall -b4 -j8 opp_run -m -u Cmdenv -c $OPP_CONFIG_NAME -n .:../../src/drones_veins_project:../../../veins/examples/veins:../../../veins/src/veins --image-path=../../images:../../../veins/images -l ../../src/drones_veins_project -l ../../../veins/src/veins omnetpp.ini --*.manager.port=$SUMO_PORT
+opp_runall -b$OPP_RUNALL_BATCH -j$OPP_RUNALL_JOBS opp_run -m -u Cmdenv -c $OPP_CONFIG_NAME -n .:../../src/drones_veins_project:../../../veins/examples/veins:../../../veins/src/veins --image-path=../../images:../../../veins/images -l ../../src/drones_veins_project -l ../../../veins/src/veins omnetpp.ini --*.manager.port=$SUMO_PORT
 
 cd $WORKING_DIR
 
