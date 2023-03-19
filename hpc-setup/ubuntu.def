@@ -74,6 +74,18 @@ From: ubuntu:20.04
 %post
     #!/bin/bash
     
+    if [ -z $INSTALLATION_DIR_OMNETPP ]
+    then
+        echo "OMNeT++ installation dir not set"
+        $INSTALLATION_DIR_OMNETPP="/Software"
+    fi
+    
+    if [ -z $INSTALLATION_DIR_SUMO ]
+    then
+        echo "SUMO installation dir not set"
+        $INSTALLATION_DIR_SUMO="/Software"
+    fi
+    
     echo "Invoked inside the container in buildtime\n"
     apt-get update
     echo ""
@@ -100,12 +112,14 @@ From: ubuntu:20.04
 
     echo "Running installation scripts...\n"
     cd /MasterThesis/software-installation
-    echo "INSTALLATION_DIR_OMNETPP="${INSTALLATION_DIR_OMNETPP}" > _executor.sh
-    echo "INSTALLATION_DIR_SUMO="${INSTALLATION_DIR_SUMO}" >> _executor.sh
-    echo "source setvars_runtime.sh" >> _executor.sh
-    echo "source install_all.sh" >> _executor.sh
+    echo "#!/bin/bash" > ./_executor.sh
+    echo "INSTALLATION_DIR_OMNETPP=\"${INSTALLATION_DIR_OMNETPP}\"" >> ./_executor.sh
+    echo "INSTALLATION_DIR_SUMO=\"${INSTALLATION_DIR_SUMO}\"" >> ./_executor.sh
+    echo "source setvars_runtime.sh" >> ./_executor.sh
+    echo "source install_all.sh" >> ./_executor.sh
     chmod +x ./_executor.sh
-    ./executor.sh
+    ls -al
+    ./_executor.sh
     echo ""
     
     apt-get -y autoremove
