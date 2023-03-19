@@ -69,7 +69,7 @@ then
         echo "SUMO already in PATH"
     else
         sed -i '/PATH/d' /etc/environment
-        printf "PATH=\"$path_new\"" >> /etc/environment
+        printf "PATH=\"$path_new\"\n" >> /etc/environment
     fi
 
     echo "Exporting SUMO_HOME to /etc/environment"

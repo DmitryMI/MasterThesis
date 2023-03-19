@@ -55,10 +55,7 @@ From: ubuntu:20.04
     . ./setvars_runtime.sh
     . ./run-stats.sh -r
     
-%environment
-    export PATH=$PATH:/Software/omnetpp-5.7/bin
-    export SUMO_HOME=/Software/sumo-1.8.0
-    
+%environment    
 
 %post
     #!/bin/bash

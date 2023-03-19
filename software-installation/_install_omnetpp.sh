@@ -72,11 +72,14 @@ fi
 
 if [ "$SET_ROOT_VARS" == 1 ]
 then 
-    if grep -q "$INSTALLATION_DIR/omnetpp-5.7/bin" /etc/environment; then
+    if grep -q "$INSTALLATION_DIR/omnetpp-5.7/bin" /etc/environment; 
+    then
         echo "OMNeT++ binaries already in /etc/environment"
     else
         echo "Exporting omnetpp to /etc/environment"
-        path_new="$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin"
+        echo "Old PATH: $PATH"        
+        path_new="$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin\n"
+        echo "New PATH: $path_new"
         sed -i '/PATH/d' /etc/environment
         printf "PATH=\"$path_new\"" >> /etc/environment
     fi
