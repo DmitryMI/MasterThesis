@@ -8,7 +8,7 @@ else
       source $1
 fi
 
-if [[ $SETVARS_GUARD != 1 ]]
+if [ $SETVARS_GUARD != 1 ]
 then
     echo "Run setvars.sh or setvars_runtime.sh before running any installation script."
     exit -1
