@@ -92,7 +92,8 @@ From: ubuntu:20.04
 
     echo "Running installation scripts...\n"
     cd /MasterThesis/software-installation
-    ./install_all.sh setvars_runtime.sh
+    . ./setvars_runtime.sh
+    . ./install_all.sh 
     echo ""
     
     apt-get -y autoremove
