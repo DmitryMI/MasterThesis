@@ -56,7 +56,12 @@ From: ubuntu:20.04
     . ./run-stats.sh -r
     
 %environment    
-
+    export INSTALLATION_DIR_OMNETPP="/Software"
+    export INSTALLATION_DIR_SUMO="/Software"
+    export PATH="$PATH:$INSTALLATION_DIR_OMNETPP/omnetpp-5.7/bin"
+    export PATH="$PATH:$INSTALLATION_DIR_SUMO/sumo-1.8.0/bin"
+    export SUMO_HOME="$INSTALLATION_DIR_SUMO/sumo-1.8.0/bin"
+    
 %post
     #!/bin/bash
     

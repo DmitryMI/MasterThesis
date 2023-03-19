@@ -1,9 +1,18 @@
 #!/bin/bash
 
 INSTALLATION_DIR="/home/$(whoami)/Software"
+
+if [[ -z "$INSTALLATION_DIR_SUMO" ]]
+then
+    INSTALLATION_DIR_SUMO="$INSTALLATION_DIR"
+fi
+if [[ -z "$INSTALLATION_DIR_OMNETPP" ]]
+then
+    INSTALLATION_DIR_OMNETPP="$INSTALLATION_DIR"
+fi
+
 DOWNLOADS_DIR="/home/$(whoami)/Downloads"
 SLEEP_SEC=2
 RUNTIME_ONLY=0
-SET_ROOT_VARS=0
 
 SETVARS_GUARD=1
