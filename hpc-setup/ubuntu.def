@@ -38,7 +38,6 @@ From: ubuntu:20.04
     git pull
     if [ $? != 0 ]; then exit $?; fi
     
-    . /etc/environment
     echo "Container's PATH: $PATH"
     echo "Container's SUMO_HOME: $SUMO_HOME" 
     

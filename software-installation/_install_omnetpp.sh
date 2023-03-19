@@ -1,3 +1,5 @@
+#!/bin/bash
+
 OMPP_LINK="https://github.com/omnetpp/omnetpp/releases/download/omnetpp-5.7/omnetpp-5.7-linux-x86_64.tgz"
 
 if [[ $SETVARS_GUARD != 1 ]]
@@ -22,7 +24,7 @@ else
 
 	cd $INSTALLATION_DIR/omnetpp-5.7
 
-	source setenv
+	. ./setenv
 
     configure_cmd="WITH_OSGEARTH=no"
 
