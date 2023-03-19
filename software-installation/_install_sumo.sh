@@ -61,16 +61,26 @@ if test -f ~/.profile; then
     fi
 fi
 
-if [ "$EUID" == 0 ]
+if [ "$SET_ROOT_VARS" == 1 ]
 then 
-    echo "Exporting SUMO to /etc/environment"
+    echo "Exporting SUMO to /etc/environment"    
     path_new="$PATH:$INSTALLATION_DIR/sumo-1.8.0/bin"
-    sed -i '/PATH/d' /etc/environment
-    printf "PATH=\"$path_new\"" >> /etc/environment
-    
+    if [[ "$PATH" != *"$path_new"* ]]; then
+        echo "SUMO already in PATH"
+    else
+        sed -i '/PATH/d' /etc/environment
+        printf "PATH=\"$path_new\"" >> /etc/environment
+    fi
+
     echo "Exporting SUMO_HOME to /etc/environment"
-    sed -i '/SUMO_HOME/d' /etc/environment
-    echo "SUMO_HOME=$INSTALLATION_DIR/sumo-1.8.0/bin" >> /etc/environment
+    sumo_home_new="$INSTALLATION_DIR/sumo-1.8.0/bin"
+    if [[ "$SUMO_HOME" == $sumo_home_new ]]; then
+        echo "SUMO_HOME already in /etc/environment"
+    else
+        sed -i '/SUMO_HOME/d' /etc/environment
+        echo "SUMO_HOME=$INSTALLATION_DIR/sumo-1.8.0/bin" >> /etc/environment
+    fi
+    
         
     fi
 fi
