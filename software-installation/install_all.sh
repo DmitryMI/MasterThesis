@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $SETVARS_GUARD != 1 ]
+if [ -z "$SETVARS_GUARD" ]
 then
     echo "Run setvars.sh before running any installation script."
     exit 1

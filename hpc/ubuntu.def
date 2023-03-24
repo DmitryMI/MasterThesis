@@ -98,9 +98,11 @@ From: ubuntu:20.04
     echo "#!/bin/bash" > ./_executor.sh
     echo "INSTALLATION_DIR_OMNETPP=\"${INSTALLATION_DIR_OMNETPP}\"" >> ./_executor.sh
     echo "INSTALLATION_DIR_SUMO=\"${INSTALLATION_DIR_SUMO}\"" >> ./_executor.sh
-    echo "source setvars_hpc.sh" >> ./_executor.sh
-    echo "source install_all.sh" >> ./_executor.sh
+    echo "source ./setvars_hpc.sh" >> ./_executor.sh
+    echo "source ./install_all.sh" >> ./_executor.sh
     chmod +x ./_executor.sh
+    pwd
+    ls -al
     ./_executor.sh
     echo ""
     
