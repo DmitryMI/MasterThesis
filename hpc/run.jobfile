@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+#SBATCH --ntasks=21
+#SBATCH --cpus-per-task=24
+#SBATCH --partition=haswell
+#SBATCH --mem-per-cpu=2048
+#SBATCH --time=10:00:00
+#SBATCH --job-name=runSim
+#SBATCH --output=runSim-%j.out
+#SBATCH --error=runSim-%j.err
+#SBATCH --mail-type=end
+#SBATCH --mail-user=mario.franke@tu-dresden.de
+
+CONFIGS="Null-Island-Forker NoSatellite-Null-Island-pWlan-Forker RandomSlots-Null-Island-pWlan-Forker"
+NUM_CONFIGS=$(echo $CONFIGS | wc -w)
+NUM_TASKS_PER_CONFIG=$(($SLURM_NTASKS / $NUM_CONFIGS))
+
+
+for c in $CONFIGS
+do
+    for ((i=0;i<$NUM_TASKS_PER_CONFIG;i++))
+    do
+        sleep 5
+        srun --exclusive --ntasks=1 -- singularity run -H ../../..:/work/space_veins -C --net --network none ../../../singularity/singularity-space_veins.sif --chdir /work/space_veins/examples/space_veins --launchd  -- snakemake --config opp_config="${c}" --cores all -f run &
+    done
+done
+
+echo "Waiting for parallel job steps to complete..."
+wait
+echo "All parallel job steps completed!"
