@@ -4,4 +4,4 @@
 
 cd ..
 source setvars_hpc.sh
-cd ./hpc
+cd ./software_installation
