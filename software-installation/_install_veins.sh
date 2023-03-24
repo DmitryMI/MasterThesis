@@ -8,12 +8,12 @@ fi
 
 printf "Installing Veins...\n\n"
 
-if test -f "$INSTALLATION_DIR/veins/bin/veins_launchd"; then
+if test -f "$INSTALLATION_DIR_VEINS/veins/bin/veins_launchd"; then
 	echo "Veins is already installed"
 else
 	backup_wd=$(pwd)
 
-	cd $INSTALLATION_DIR
+	cd $INSTALLATION_DIR_VEINS
 
 	git clone $VEINS_GIT_LINK
 
@@ -21,7 +21,7 @@ else
 
 	git checkout tags/veins-5.2
 	
-	export PATH="$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin"
+	export PATH="$PATH:$INSTALLATION_DIR_VEINS/veins/bin"
 
 	./configure
 	if [[ $? != 0 ]]; then exit $?; fi
@@ -45,8 +45,8 @@ then
 	    echo "Type=Application" >> $desktop_link
 	    echo "Terminal=true" >> $desktop_link
 	    echo "Name=Run Veins Launchd" >> $desktop_link
-	    echo "Icon=$INSTALLATION_DIR/veins/images/veins/node/car_vl.png" >> $desktop_link
-	    echo "Exec=$INSTALLATION_DIR/veins/bin/veins_launchd -vv" >> $desktop_link
+	    echo "Icon=$INSTALLATION_DIR_VEINS/veins/images/veins/node/car_vl.png" >> $desktop_link
+	    echo "Exec=$INSTALLATION_DIR_VEINS/veins/bin/veins_launchd -vv" >> $desktop_link
 	    
 	    chmod +x $desktop_link
     fi

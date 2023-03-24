@@ -1,6 +1,6 @@
 cd $SIMULATION_DIR
 
-SUMO_PORT=9998
+LAUNCHD_PORT=9998 # Not used
 OPP_RUNALL_JOBS=8
 OPP_RUNALL_BATCH=4
 
@@ -16,8 +16,7 @@ then
     if [ $? != 0 ]; then exit $?; fi
 fi
 
-pwd
-opp_runall -b$OPP_RUNALL_BATCH -j$OPP_RUNALL_JOBS opp_run -m -u Cmdenv -c $OPP_CONFIG_NAME -n .:../../src/drones_veins_project:../../../veins/examples/veins:../../../veins/src/veins --image-path=../../images:../../../veins/images -l ../../src/drones_veins_project -l ../../../veins/src/veins omnetpp.ini --*.manager.port=$SUMO_PORT
+opp_runall -b$OPP_RUNALL_BATCH -j$OPP_RUNALL_JOBS opp_run -m -u Cmdenv -c $OPP_CONFIG_NAME -n .:../../src/drones_veins_project:../../../veins/examples/veins:../../../veins/src/veins --image-path=../../images:../../../veins/images -l ../../src/drones_veins_project -l ../../../veins/src/veins omnetpp.ini
 
 cd $WORKING_DIR
 

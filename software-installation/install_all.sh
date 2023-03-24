@@ -1,17 +1,9 @@
 #!/bin/bash
 
-if test -z "$1" 
-then
-    echo "Env file not specified"
-else
-    echo "Sourcing $1"
-    source $1
-fi
-
 if [ $SETVARS_GUARD != 1 ]
 then
-    echo "Run setvars.sh or setvars_runtime.sh before running any installation script."
-    exit -1
+    echo "Run setvars.sh before running any installation script."
+    exit 1
 fi
 
 mkdir -p $INSTALLATION_DIR_SUMO
@@ -24,6 +16,8 @@ mkdir -p $INSTALLATION_DIR_OMNETPP
 . ./_install_sumo.sh
 
 . ./_install_veins.sh
+
+. ./_install_hpc_utils.sh
 
 if [ $RUNTIME_ONLY == 0 ]
 then
