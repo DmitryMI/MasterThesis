@@ -66,6 +66,12 @@ From: ubuntu:20.04
     PATH="$PATH:$INSTALLATION_DIR_OMNETPP/omnetpp-5.7/bin"
     PATH="$PATH:$INSTALLATION_DIR_SUMO/sumo-1.8.0/bin"
     export PATH
+    
+%files
+    ../setvars.sh /MasterThesis/setvars.sh
+    ../setvars_hpc.sh /MasterThesis/setvars_hpc.sh
+    ../software-installation/ /MasterThesis/software-installation
+    
 %post
     #!/bin/bash
     
@@ -80,20 +86,10 @@ From: ubuntu:20.04
     
     echo "Installing git...\n"
     apt-get -y install git
-    echo ""
+    echo ""    
     
-    if [ ! -d /MasterThesis/.git ]
-    then
-        echo "Cloning repository...\n"        
-        git clone https://DmitryMI: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@github.com/DmitryMI/MasterThesis
-    echo ""
-    else
-        echo "Singularity repository already exists in $(pwd). Pulling..."
-        cd /MasterThesis
-        git pull
-    fi
-
     echo "Running installation scripts...\n"
+    ls -al /MasterThesis
     cd /MasterThesis/software-installation
     echo "#!/bin/bash" > ./_executor.sh
     echo "INSTALLATION_DIR_OMNETPP=\"${INSTALLATION_DIR_OMNETPP}\"" >> ./_executor.sh
@@ -101,8 +97,6 @@ From: ubuntu:20.04
     echo "source ./setvars_hpc.sh" >> ./_executor.sh
     echo "source ./install_all.sh" >> ./_executor.sh
     chmod +x ./_executor.sh
-    pwd
-    ls -al
     ./_executor.sh
     echo ""
     
@@ -110,4 +104,21 @@ From: ubuntu:20.04
     apt-get -y clean
     apt-get -y autoclean
     
+%test
+    omnetpp_path="$(which omnetpp)"
+    sumo_path="$(which sumo)"
+    if [ -z $omnetpp_path ]
+    then
+        echo "OMNeT++ not installed properly"
+        exit 1
+    else
+        echo "OMNeT++ installed to $omnetpp_path"
+    fi
     
+    if [ -z $sumo_path ]
+    then
+        echo "SUMO not installed properly"
+        exit 1
+    else
+        echo "SUMO installed to $sumo_path"
+    fi

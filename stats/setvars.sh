@@ -2,8 +2,18 @@
 
 if [ -z "$SETVARS_GLOBAL_GUARD" ]
 then
-    echo "Run $(realpath ../setvars.sh) before running this file"
-    exit 1
+    global_setvars_path=$(realpath ../setvars.sh)
+    echo $global_setvars_path
+    if [ -f "$global_setvars_path" ];
+    then
+        cd ..
+        source $global_setvars_path
+        cd ./hpc
+    else
+	    echo "Global setvars.sh not found. Some data will not be available."
+    fi
+else
+    echo "SETVARS_GLOBAL_GUARD already set to $SETVARS_GLOBAL_GUARD"
 fi
 
 OPP_CONFIG_NAME="Evaluation"

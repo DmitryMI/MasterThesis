@@ -1,6 +1,12 @@
 #!/bin/bash
 
-INSTALLATION_DIR="/home/$(whoami)/Software"
+if [ -z "$INSTALLATION_DIR" ]
+then
+    INSTALLATION_DIR="/home/$(whoami)/Software"
+    echo "INSTALLATION_DIR not set. Setting to default $INSTALLATION_DIR"
+else
+    echo "Installation directory set to $INSTALLATION_DIR"
+fi
 
 if [ -z "$INSTALLATION_DIR_SUMO" ]
 then
@@ -51,8 +57,5 @@ else
 fi
 
 SETVARS_GLOBAL_GUARD=1
-
-source ./stats/setvars.sh
-source ./hpc/setvars.sh
 
 SETVARS_GUARD=1

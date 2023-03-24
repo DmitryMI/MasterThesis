@@ -2,6 +2,7 @@
 
 # Calls global setvars_hpc.sh
 
+wd_backup=$(pwd)
 cd ..
 source setvars_hpc.sh
-cd ./software_installation
+cd $wd_backup

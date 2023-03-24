@@ -31,3 +31,5 @@ done
 mkdir -p $CONTAINERS_DIR
 
 sudo singularity build $sin_opts $CONTAINERS_DIR/$CONTAINER_NAME $CONTAINER_NAME.def
+
+singularity test $CONTAINERS_DIR/$CONTAINER_NAME
