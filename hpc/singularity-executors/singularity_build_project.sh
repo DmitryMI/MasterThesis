@@ -4,7 +4,7 @@
 #cd $SCRIPTPATH
 #pwd
 
-#cd MasterThesis/hpc/singularity-executors
+cd ./MasterThesis/hpc/singularity-executors
 echo "Running singularity_build_project.sh from $(pwd)."
 
 if [ -z "$HPC_SETVARS_GUARD" ]
@@ -13,7 +13,7 @@ then
 fi
 
 echo "BEEGFS_WORKSPACE = $BEEGFS_WORKSPACE"
-echo "SIGULARITY_WORKSPACE_MNT = $SIGULARITY_WORKSPACE_MNT"
+echo "SINGULARITY_WORKSPACE_MNT = $SINGULARITY_WORKSPACE_MNT"
 
 REPO_MNT="$SIGULARITY_WORKSPACE_MNT/MasterThesis"
 echo "REPO_MNT = $REPO_MNT"
@@ -35,11 +35,11 @@ then
     exit 1
 fi
 
-if [ -d "$SIGULARITY_WORKSPACE_MNT" ];
+if [ -d "$SINGULARITY_WORKSPACE_MNT" ];
 then
-echo "$SIGULARITY_WORKSPACE_MNT directory found, proceeding."
+echo "$SINGULARITY_WORKSPACE_MNT directory found, proceeding."
 else
-	echo "Run the container with --bind $BEEGFS_WORKSPACE:$SIGULARITY_WORKSPACE_MNT:rw to bind a directory."
+	echo "Run the container with --bind $BEEGFS_WORKSPACE:$SINGULARITY_WORKSPACE_MNT:rw to bind a directory."
 	exit 1
 fi 
 
