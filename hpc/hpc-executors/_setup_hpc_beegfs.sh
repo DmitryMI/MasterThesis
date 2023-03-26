@@ -16,5 +16,17 @@ else
 	fi
 fi
 
-mkdir -p $BEEGFS_WORKSPACE/work
+echo "Testing Scratch: $SCRATCH_WORKSPACE"
+if [ -d "$SCRATCH_WORKSPACE" ];
+then
+    echo "Scratch already allocated with path $SCRATCH_WORKSPACE"
+else
+	echo "Allocating BeeGFS..."
+	ws_allocate -F scratch -n drones-build -d 30
+	if [ $? != 0 ]; 
+	then 
+	    echo "Failed to allocate Scratch!"
+	    exit 1
+	fi
+fi
 

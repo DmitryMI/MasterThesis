@@ -22,8 +22,9 @@ then
     CONTAINERS_DIR="/home/$(whoami)/Software/hpc"
     CONTAINER_NAME="ubuntu"
     BEEGFS_WORKSPACE="/beegfs/ws/0/dmmo937c-drones-workspace"
+    SCRATCH_WORKSPACE="/scratch/ws/0/dmmo937c-drones-build"
     SINGULARITY_WORKSPACE_MNT="/mnt"
-    BEEGFS_CODEBASE_DIR="$BEEGFS_WORKSPACE"
+    CODEBASE_DIR="$SCRATCH_WORKSPACE"
     HPC_SSH_PASSWORD_FILE="/home/dmitriy/MegaDocuments/TU Dresden Materials/Thesis/Drones/HPC/hpc-ssh-password.txt"
     
     HPC_SETVARS_GUARD=1
