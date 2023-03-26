@@ -1,5 +1,10 @@
 #!/bin/bash
 
+SCRIPTPATH=$(dirname "$SCRIPT")
+cd $SCRIPTPATH
+pwd
+
+cd MasterThesis/hpc/singularity-executors
 pwd
 
 if [ -z "$HPC_SETVARS_GUARD" ]
