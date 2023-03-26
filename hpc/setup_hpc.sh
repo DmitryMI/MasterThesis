@@ -52,7 +52,6 @@ fi
 echo "Checking if HPC already has Singularity container..."
 
 #remote_query="sha1sum -b $BEEGFS_WORKSPACE/$CONTAINER_NAME | cut -d \" \" -f1"
-#remote_query_result=$(echo "$remote_query" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de | tail -n 1)
 remote_query="singularity inspect $BEEGFS_WORKSPACE/$CONTAINER_NAME | sha1sum"
 remote_query_result=$(echo "$remote_query" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de | tail -n 1)
 
