@@ -32,12 +32,24 @@ else
     echo "Using $HPC_SSH_PASSWORD_FILE as SSH password file."
 fi
 
-echo "Uploading BeeGFS allocation scripts to HPC home directory..."
-sshpass -f "$HPC_SSH_PASSWORD_FILE" scp ./_setup_hpc_beegfs.sh dmmo937c@taurusexport.hrsk.tu-dresden.de:~/
-sshpass -f "$HPC_SSH_PASSWORD_FILE" scp ./setvars.sh dmmo937c@taurusexport.hrsk.tu-dresden.de:~/
+echo "Uploading hpc-executors scripts to HPC home directory..."
+. ./sync_executors.sh
 
 echo "Invoking BeeGFS allocation on HPC..."
-echo "source ./setvars.sh && source ./_setup_hpc_beegfs.sh && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
+echo "source ./setvars.sh && source ./hpc-executors/_setup_hpc_beegfs.sh && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
+if [ $? != 0 ]
+then
+    echo "Failed to allocate BeeGFS."
+    exit 1
+fi
+
+echo "Invoking clone-repo.sh on HPC..."
+echo "source ./setvars.sh && source ./hpc-executors/clone_repo.sh && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
+if [ $? != 0 ]
+then
+    echo "Failed to clone repository"
+    exit 1
+fi
 
 echo "Uploading Slurm scripts to $BEEGFS_WORKSPACE"
 sshpass -f "$HPC_SSH_PASSWORD_FILE" scp ./build.jobfile dmmo937c@taurusexport.hrsk.tu-dresden.de:$BEEGFS_WORKSPACE
@@ -71,4 +83,4 @@ else
 fi
 
 
-echo "HPC Setup complete: BeeGFS allocated, Singularity container compiled and uploaded"
+echo "HPC Setup complete: BeeGFS allocated, Singularity container compiled and uploaded, git repository cloned/pulled"
