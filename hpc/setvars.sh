@@ -25,7 +25,7 @@ then
     SINGULARITY_WORKSPACE_MNT="/mnt"
     BEEGFS_CODEBASE_DIR="$BEEGFS_WORKSPACE"
     HPC_SSH_PASSWORD_FILE="/home/dmitriy/MegaDocuments/TU Dresden Materials/Thesis/Drones/HPC/hpc-ssh-password.txt"
-
+    
     HPC_SETVARS_GUARD=1
 else
     echo "HPC_SETVARS_GUARD already set to $HPC_SETVARS_GUARD"  

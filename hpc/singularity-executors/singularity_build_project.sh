@@ -1,8 +1,8 @@
 #!/bin/bash
 
-SCRIPTPATH=$(dirname "$SCRIPT")
-cd $SCRIPTPATH
-pwd
+#SCRIPTPATH=$(dirname "$SCRIPT")
+#cd $SCRIPTPATH
+#pwd
 
 cd MasterThesis/hpc/singularity-executors
 pwd
