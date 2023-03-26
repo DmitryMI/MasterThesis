@@ -4,15 +4,19 @@
 #cd $SCRIPTPATH
 #pwd
 
-cd MasterThesis/hpc/singularity-executors
-pwd
+#cd MasterThesis/hpc/singularity-executors
+echo "Running singularity_build_project.sh from $(pwd)."
 
 if [ -z "$HPC_SETVARS_GUARD" ]
 then
     source "../setvars.sh"
 fi
 
+echo "BEEGFS_WORKSPACE = $BEEGFS_WORKSPACE"
+echo "SIGULARITY_WORKSPACE_MNT = $SIGULARITY_WORKSPACE_MNT"
+
 REPO_MNT="$SIGULARITY_WORKSPACE_MNT/MasterThesis"
+echo "REPO_MNT = $REPO_MNT"
 
 check_omnetpp=$(which omnetpp)
 echo "Checking OMNet++: $check_omnetpp"
