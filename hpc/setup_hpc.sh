@@ -16,6 +16,14 @@ then
     fi
 fi
 
+./_test_hpc_connection.sh
+
+if [ $? != 0 ]
+then
+    echo "HPC connection test failed! Is VPN enabled?"
+    exit 1
+fi
+
 if [ ! -f "$HPC_SSH_PASSWORD_FILE" ]
 then
     echo "SSH password file $HPC_SSH_PASSWORD_FILE does not exist!"
@@ -43,11 +51,16 @@ fi
 
 echo "Checking if HPC already has Singularity container..."
 
-remote_query="sha1sum -b $BEEGFS_WORKSPACE/$CONTAINER_NAME | cut -d \" \" -f1"
+#remote_query="sha1sum -b $BEEGFS_WORKSPACE/$CONTAINER_NAME | cut -d \" \" -f1"
+#remote_query_result=$(echo "$remote_query" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de | tail -n 1)
+remote_query="singularity inspect $BEEGFS_WORKSPACE/$CONTAINER_NAME | sha1sum"
 remote_query_result=$(echo "$remote_query" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de | tail -n 1)
+
 echo "Remote container-query returned: $remote_query_result"
 
-local_query_result=$(sha1sum -b $CONTAINERS_DIR/$CONTAINER_NAME  | cut -d " " -f1)
+#local_query_result=$(sha1sum -b $CONTAINERS_DIR/$CONTAINER_NAME  | cut -d " " -f1)
+local_query_result=$(singularity inspect $CONTAINERS_DIR/$CONTAINER_NAME | sha1sum)
+
 echo "Local container-query returned: $local_query_result"
 
 if [ "$local_query_result" == "$remote_query_result" ]
@@ -55,8 +68,8 @@ then
     echo "HPC has singularity container"
 else
     echo "Uploading Singularity container to $BEEGFS_WORKSPACE..."
-    sshpass -f "$HPC_SSH_PASSWORD_FILE" scp $CONTAINERS_DIR/$CONTAINER_NAME dmmo937c@taurusexport.hrsk.tu-dresden.de:$BEEGFS_WORKSPACE
+    # sshpass -f "$HPC_SSH_PASSWORD_FILE" scp $CONTAINERS_DIR/$CONTAINER_NAME dmmo937c@taurusexport.hrsk.tu-dresden.de:$BEEGFS_WORKSPACE
 fi
 
 
-echo "Building drones_veins_project using Singularity container..."
+echo "HPC Setup complete: BeeGFS allocated, Singularity container compiled and uploaded"
