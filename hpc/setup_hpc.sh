@@ -79,8 +79,8 @@ then
     echo "HPC has singularity container"
 else
     echo "Uploading Singularity container to $SCRATCH_WORKSPACE..."
-    # sshpass -f "$HPC_SSH_PASSWORD_FILE" scp $CONTAINERS_DIR/$CONTAINER_NAME dmmo937c@taurusexport.hrsk.tu-dresden.de:$SCRATCH_WORKSPACE
+    sshpass -f "$HPC_SSH_PASSWORD_FILE" scp $CONTAINERS_DIR/$CONTAINER_NAME dmmo937c@taurusexport.hrsk.tu-dresden.de:$SCRATCH_WORKSPACE
 fi
 
 
-echo "HPC Setup complete: BeeGFS allocated, Singularity container compiled and uploaded, git repository cloned/pulled"
+echo "HPC Setup complete: File Systems allocated, Singularity container compiled and uploaded, git repository cloned/pulled"

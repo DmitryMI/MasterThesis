@@ -17,12 +17,15 @@
 
 using namespace drones_veins_project;
 
+#ifdef WITH_OSG
 #include <osg/Group>
 #include <osg/Material>
 #include <osg/Geometry>
 #include <osg/LineWidth>
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
+#endif
+
 #include <string>
 #include "veins/base/utils/FindModule.h"
 #include "veins/base/modules/BaseWorldUtility.h"
