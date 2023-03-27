@@ -8,7 +8,7 @@ then
     then
         cd ..
         source $global_setvars_path
-        cd ./hpc
+        cd ./stats
     else
 	    echo "Global setvars.sh not found. Some data will not be available."
     fi
