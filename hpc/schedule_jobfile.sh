@@ -21,6 +21,8 @@ sshpass -f "$HPC_SSH_PASSWORD_FILE" scp $1 dmmo937c@taurusexport.hrsk.tu-dresden
 echo "Invoking remote scheduler..."
 sbatch_out=$(echo "cd $BEEGFS_WORKSPACE && sbatch $jobfile_name" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de | tail -n 1)
 
+code=$?
+
 echo $sbatch_out
 
 if [[ "$sbatch_out" == *"Submitted"* ]]
@@ -29,3 +31,5 @@ then
 else
     echo "Failed to schedule jobfile"
 fi
+
+exit $code

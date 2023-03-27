@@ -70,3 +70,22 @@ tail $RUNFILE -v -n 5
 
 cd $WORKING_DIR
 
+echo "Uploading runfile.txt to BeeGFS..."
+cd ../hpc/
+./upload_file.sh ../stats/runfile.txt "$BEEGFS_WORKSPACE"
+if [ $? != 0 ]
+then
+    echo "Failed to upload runfile!"
+    exit 1
+fi
+
+echo "Scheduling run job..."
+./schedule_jobfile.sh run.jobfile
+if [ $? != 0 ]
+then
+    echo "Failed to schedule the job!"
+    exit 1
+fi
+
+echo "Job scheduled!"
+cd $WORKING_DIR
