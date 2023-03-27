@@ -4,7 +4,7 @@
 #cd $SCRIPTPATH
 #pwd
 
-cd ./MasterThesis/hpc/singularity-executors
+cd ~/scripts/hpc/singularity-executors
 echo "Running singularity_build_project.sh from $(pwd)."
 
 if [ -z "$HPC_SETVARS_GUARD" ]

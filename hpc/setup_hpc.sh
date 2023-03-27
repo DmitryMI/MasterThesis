@@ -36,7 +36,7 @@ echo "Uploading hpc-executors scripts to HPC home directory..."
 . ./sync_executors.sh
 
 echo "Invoking BeeGFS allocation on HPC..."
-echo "source ./setvars.sh && source ./hpc-executors/_setup_hpc_beegfs.sh && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
+echo "source ./scripts/hpc/setvars.sh && cd ./scripts/hpc/hpc-executors/ source ./_setup_hpc_beegfs.sh && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
 if [ $? != 0 ]
 then
     echo "Failed to allocate BeeGFS."
@@ -44,7 +44,7 @@ then
 fi
 
 echo "Invoking clone-repo.sh on HPC..."
-echo "source ./setvars.sh && source ./hpc-executors/clone_repo.sh && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
+echo "cd ./scripts/hpc/hpc-executors/ && source ./clone_repo.sh && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
 if [ $? != 0 ]
 then
     echo "Failed to clone repository"

@@ -17,7 +17,7 @@ source ~/setvars.sh
 echo "BEEGFS_WORKSPACE = $BEEGFS_WORKSPACE"
 echo "SINGULARITY_WORKSPACE_MNT = $SINGULARITY_WORKSPACE_MNT"
 
-sin_app="/root/singularity-executors/singularity_build_project.sh"
+sin_app="/root/scripts/hpc/singularity-executors/singularity_build_project.sh"
 
 app="singularity exec -H ~/:/root --bind $SCRATCH_WORKSPACE:$SINGULARITY_WORKSPACE_MNT:rw  ./ubuntu \"$sin_app\""
 

@@ -1,7 +1,8 @@
 #!/bin/bash
 
-cd ./MasterThesis/hpc/singularity-executors
+cd ~/scripts/hpc/singularity-executors
 echo "Running singularity_build_project.sh from $(pwd)."
+ls
 
 source "../../setvars_hpc.sh"
 
@@ -10,7 +11,11 @@ then
     source "../setvars.sh"
 fi
 
-JOBS=1
+if [ -z "$JOBS" ]
+then    
+    JOBS=8
+    echo "Variable JOBS not set. Setting to default $JOBS"
+fi
 
 while getopts ':hj:c:' OPTION; do
 
@@ -22,11 +27,14 @@ while getopts ':hj:c:' OPTION; do
 
     j)
       JOBS="$OPTARG"
-      echo "Will run $JOBS jobs in parallel"
+      echo "Using cmd arg -j$JOBS. Will run $JOBS jobs in parallel"
       ;;
 
   esac
 
 done
 
-$INSTALLATION_DIR_RUNMAKER/runmaker/runmaker4.py -j$JOBS $BEEGFS_WORKSPACE/runfile.txt
+cd $SINGULARITY_WORKSPACE_MNT/MasterThesis/drones_veins_project/drones_veins_project/simulation/drones_veins_project/
+pwd
+ls
+$INSTALLATION_DIR_RUNMAKER/runmaker/runmaker4.py -j$JOBS $SINGULARITY_BEEGFS_MNT/runfile.txt

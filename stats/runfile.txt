@@ -1,2 +1,12 @@
 
-. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c SimpleSetup -r 0
+. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c Evaluation -r 0
+. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c Evaluation -r 1
+. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c Evaluation -r 2
+. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c Evaluation -r 3
+. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c Evaluation -r 4
+. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c Evaluation -r 5
+. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c Evaluation -r 6
+. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c Evaluation -r 7
+. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c Evaluation -r 8
+. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c Evaluation -r 9
+. /mnt/MasterThesis/drones_veins_project/drones_veins_project/bin/drones_veins_project_run -u Cmdenv -c Evaluation -r 10

@@ -1,6 +1,15 @@
+cd ~/scripts/hpc/hpc-executors
+pwd
+
 if [ -z "$HPC_SETVARS_GUARD" ]
 then
-    source "../setvars.sh"
+    vars=$(realpath "../setvars.sh")
+    if [ ! -f "$vars" ]
+    then
+        echo "$vars does not exist!"
+        exit 1
+    fi
+    source $vars
 fi
 
 if [ -d "$CODEBASE_DIR/MasterThesis/.git" ]
