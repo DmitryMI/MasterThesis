@@ -24,6 +24,7 @@ then
     BEEGFS_WORKSPACE="/beegfs/ws/0/dmmo937c-drones-workspace"
     SCRATCH_WORKSPACE="/scratch/ws/0/dmmo937c-drones-build"
     SINGULARITY_WORKSPACE_MNT="/mnt"
+    SINGULARITY_BEEGFS_MNT="/tmp"
     CODEBASE_DIR="$SCRATCH_WORKSPACE"
     HPC_SSH_PASSWORD_FILE="/home/dmitriy/MegaDocuments/TU Dresden Materials/Thesis/Drones/HPC/hpc-ssh-password.txt"
     

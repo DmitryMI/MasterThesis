@@ -15,11 +15,11 @@ fi
 
 jobfile_name=$(basename $1)
 
-echo "Uploading Slurm Jobfile to $BEEGFS_WORKSPACE"
-sshpass -f "$HPC_SSH_PASSWORD_FILE" scp $1 dmmo937c@taurusexport.hrsk.tu-dresden.de:$BEEGFS_WORKSPACE
+echo "Uploading Slurm Jobfile to $SCRATCH_WORKSPACE"
+sshpass -f "$HPC_SSH_PASSWORD_FILE" scp $1 dmmo937c@taurusexport.hrsk.tu-dresden.de:$SCRATCH_WORKSPACE
 
 echo "Invoking remote scheduler..."
-sbatch_out=$(echo "cd $BEEGFS_WORKSPACE && sbatch $jobfile_name" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de | tail -n 1)
+sbatch_out=$(echo "cd $SCRATCH_WORKSPACE && sbatch $jobfile_name" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de | tail -n 1)
 
 code=$?
 
