@@ -19,5 +19,6 @@ fi
 OPP_CONFIG_NAME="Evaluation"
 RESULTS_DIR=$(pwd)/results
 VEINS_LAUNCHD_PATH="$INSTALLATION_DIR_VEINS/veins/bin/veins_launchd"
+MAKE_DIR=$(realpath ../drones_veins_project)
 
 RUNSIM_SETVARS_GUARD=1

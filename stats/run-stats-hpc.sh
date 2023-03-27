@@ -14,6 +14,17 @@ fi
 
 source "../hpc/setvars.sh"
 
+echo "Building project..."
+WORKING_DIR=$(pwd)
+source ./_build-sim.sh
+if [ $? != 0 ]
+then
+    echo "Building failed!"
+    exit $?
+fi
+
+echo "Building finished!"
+
 RUNFILE_GEN_SCRIPT="$INSTALLATION_DIR_RUNMAKER/veins_scripts/running/generateRunsFile.pl"
 SIMULATION_DIR=$(realpath "../drones_veins_project/drones_veins_project/simulation/drones_veins_project")
 PROJECT_EXECUTRABLE_REL="drones_veins_project/drones_veins_project/bin/drones_veins_project_run"
@@ -33,7 +44,6 @@ fi
 LINE_TEMPLATE=". $SINGULARITY_WORKSPACE_MNT/MasterThesis/$PROJECT_EXECUTRABLE_REL -u Cmdenv -c %s -r %s"
 
 input=$(realpath "opp-configs.txt")
-wd_backup=$(pwd)
 cd $SIMULATION_DIR
 while IFS= read -r opp_config
 do
@@ -58,5 +68,5 @@ done < "$input"
 echo "Generated $RUNFILE:"
 tail $RUNFILE -v -n 5
 
-cd $wd_backup
+cd $WORKING_DIR
 
