@@ -21,7 +21,7 @@ simple RebroadcastDecider like IRebroadcastDecider
         @class(drones_veins_project::RebroadcastDecider);
         @display("i=block/app2");  
         
-        double rebroadcastProbability = default(0.5);
+        double rebroadcastProbability = default(0.1);
         
     gates:
     	input parentInGate @directIn;

@@ -20,5 +20,7 @@ module CarApplicationLayer extends BaseApplicationLayer
 {
     parameters:
         @class(drones_veins_project::CarApplicationLayer);
-        @display("i=block/app2");       
+        @display("i=block/app2");      
+        
+        bool jammingAnnouncementEnabled = default(true);
 }

@@ -1,6 +1,7 @@
 PROJ_NAME="drones"
 GRID_SIZE=7
 STREET_LENGTH=100
+GRID_SUBD=1
 SUMO_TOOLS_PATH="/home/$(whoami)/Software/sumo-1.8.0/tools"
 OMNETPP_INI_PATH=""
 PROJ_DIR="./generated/"
@@ -8,7 +9,7 @@ PROJ_DIR="./generated/"
 # Number of trips (vehicles) will be (TRIPS_END_TIME - TRIPS_START_TIME) / TRIPS_PERIOD
 TRIPS_START_TIME=0
 TRIPS_END_TIME=60
-TRIPS_PERIOD=1		# Must be positive!
+TRIPS_PERIOD=1
 
 # Number of intermediate points in a trip
 TRIPS_INTERMEDIATES=64
@@ -26,6 +27,11 @@ while getopts ":h-:" optchar; do
 					val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
 				    	STREET_LENGTH=${val}
 				    	echo "Grid Generator: Manhatten Grid street length set to $STREET_LENGTH"
+				    	;;
+			    grid_subd)
+			        val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+				    	GRID_SUBD=${val}
+				    	echo "Grid Generator: Manhatten Grid block subdivision set to $GRID_SUBD"
 				    	;;
 				omnetpp_ini)
 				    val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
@@ -59,9 +65,11 @@ cd $PROJ_DIR
 netgenerate --grid --grid.number $GRID_SIZE --grid.length $STREET_LENGTH --default.lanenumber 1 --output-file $PROJ_NAME.net.xml
 
 # Generating buildings
-../grid-generator-vs/grid_generator_vs.py $PROJ_NAME --grid.x-number $GRID_SIZE --grid.y-number $GRID_SIZE --grid.length $STREET_LENGTH --ini_path $OMNETPP_INI_PATH
+../grid-generator-vs/grid_generator_vs.py $PROJ_NAME --grid.x-number $GRID_SIZE --grid.y-number $GRID_SIZE --grid.length $STREET_LENGTH --block_size $GRID_SUBD --ini_path $OMNETPP_INI_PATH
 
 # Generating random trips
+TRIPS_MIN_DISTANCE=$(expr $GRID_SIZE \* $STREET_LENGTH)
+# echo "RandomTrips will use min distance of $TRIPS_MIN_DISTANCE"
 python3 $SUMO_TOOLS_PATH/randomTrips.py -n $PROJ_NAME.net.xml -b $TRIPS_START_TIME -e $TRIPS_END_TIME -p $TRIPS_PERIOD --random -i $TRIPS_INTERMEDIATES -o $PROJ_NAME.trips.xml
 
 # Applying duarouter-randomTrips bugfix

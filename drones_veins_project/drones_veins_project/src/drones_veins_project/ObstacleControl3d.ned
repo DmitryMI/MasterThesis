@@ -29,4 +29,5 @@ simple ObstacleControl3d extends ObstacleControl
         xml additionalObstaclesXml = default(xml("<obstacles/>"));
         bool obstaclesShadingEnabled = default(false);
         bool wireframeModeEnabled = default(false);
+        bool osgFlipY = default(true);
 }

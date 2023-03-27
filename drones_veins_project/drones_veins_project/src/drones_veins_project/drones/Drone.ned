@@ -48,9 +48,6 @@ module Drone
    	            @display("p=130,172;i=block/cogwheel");
    	            speed = uniform(10mps, 30mps);
    	            angle = uniform(0deg, 360deg);
-   	            x = default(0);		// Will be overwritten by Drone Manager if drone is spawned dynamically
-   	            y = default(0);		// Will be overwritten by Drone Manager if drone is spawned dynamically
-   	            z = default(50);	// Drone's altitude
    	    }
    	    nodeOsgVisualizer: NodeOsgVisualizer
         {

@@ -43,7 +43,6 @@ double CarJammingDetector::getMinimalStandingDuration()
 	return minimalStandingDuration;
 }
 
-
 CarJammingDetector::~CarJammingDetector()
 {
 
@@ -51,6 +50,7 @@ CarJammingDetector::~CarJammingDetector()
 
 void CarJammingDetector::onJammingDetected()
 {
+	jamStartTimestamp = lastDrivingTimestamp;
 	jammingStateChangedCallback(true);
 }
 
@@ -61,14 +61,20 @@ void CarJammingDetector::onUnjammingDetected()
 
 bool CarJammingDetector::isJammedNow()
 {
-	return lastUpdatedSpeed < 1 && simTime() - lastDrivingTimestamp >= minimalStandingDuration;
+	auto time = simTime();
+	return lastUpdatedSpeed < 1 && time - lastDrivingTimestamp >= minimalStandingDuration;
+}
+
+omnetpp::simtime_t CarJammingDetector::getJamStartTimestamp()
+{
+	return jamStartTimestamp;
 }
 
 void CarJammingDetector::updateJammingDetector(double speed)
 {
 	lastUpdatedSpeed = speed;
 
-	if(speed > 0)
+	if (speed > 0)
 	{
 		lastDrivingTimestamp = simTime();
 	}

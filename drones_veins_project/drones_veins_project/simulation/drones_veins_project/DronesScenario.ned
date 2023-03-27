@@ -25,7 +25,7 @@ package org.car2x.veins.subprojects.drones_veins_project;
 
 import org.car2x.veins.base.connectionManager.ConnectionManager;
 import org.car2x.veins.base.modules.BaseWorldUtility;
-import org.car2x.veins.modules.mobility.traci.TraCIScenarioManager*;
+import org.car2x.veins.modules.mobility.traci.*;
 import org.car2x.veins.modules.obstacle.IObstacleControl;
 import org.car2x.veins.modules.world.annotations.AnnotationManager;
 import org.car2x.veins.nodes.Car;
@@ -47,6 +47,7 @@ network DronesScenario
         
         string obstacleControlType = default("ObstacleControl3d");
         string carType = default("org.car2x.veins.subprojects.drones_veins_project.cars.Car3d");
+        string traciScenarioManagerType = default("org.car2x.veins.modules.mobility.traci.TraCIScenarioManagerLaunchd");
         
     submodules:
         drone[0]: Drone {            
@@ -78,17 +79,18 @@ network DronesScenario
                 @display("p=30,0;i=misc/globe");
         }
         
-        manager: TraCIScenarioManagerLaunchd {
+       	
+        manager: <traciScenarioManagerType> like ITraciScenarioManager{
             parameters:
                 @display("p=512,128");
                 moduleType = carType;
         }
-        
+ 
         roadsCanvasVisualizer: RoadsCanvasVisualizer {
             @display("p=300,0");
         }
         
-        roadsOsgVisualizer: RoadsOsgVisualizer {
+        roadsOsgVisualizer: RoadsOsgVisualizer2 {
             @display("p=350,0");
         }
         

@@ -27,7 +27,7 @@ class veins::LAddress::L2Type extends void;
 
 packet CarJammingAnnouncement extends BaseFrame1609_4 {    
     veins::LAddress::L2Type senderAddress = -1;
-    int serial = 0;
+    long serial = 0;
     
     string carRoadId;
     veins::Coord carPosition;

@@ -16,7 +16,9 @@
 #ifndef REBROADCASTING_REBROADCASTDECIDER_H_
 #define REBROADCASTING_REBROADCASTDECIDER_H_
 
-#include "drones_veins_project/drones_veins_project.h"
+#include <map>
+#include "veins/base/utils/SimpleAddress.h"
+#include "../drones_veins_project.h"
 
 namespace drones_veins_project
 {
@@ -25,13 +27,19 @@ namespace drones_veins_project
 	{
 	private:
 		int parentInGate;
+
+		void registerMessage(cMessage* msg);
+
+	protected:
+		std::map<veins::LAddress::L2Type, int> receivedMessagesTable;
+
 	public:
 
 		RebroadcastDecider();
 		virtual ~RebroadcastDecider();
 
 		virtual void initialize(int stage) override;
-		virtual bool shouldRebroadcast();
+		virtual bool shouldRebroadcast(cMessage* msg);
 		virtual void handleMessage(omnetpp::cMessage* msg) override;
 		int getParentInGate();
 	};

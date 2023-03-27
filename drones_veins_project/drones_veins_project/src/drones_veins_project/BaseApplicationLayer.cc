@@ -20,6 +20,13 @@
 
 using namespace drones_veins_project;
 
+veins::LAddress::L2Type BaseApplicationLayer::addressCounter = 1;
+
+veins::LAddress::L2Type BaseApplicationLayer::getAddress()
+{
+	return address;
+}
+
 BaseApplicationLayer::BaseApplicationLayer()
 {
 	// TODO Auto-generated constructor stub
@@ -50,7 +57,15 @@ void BaseApplicationLayer::initialize(int stage)
 {
 	DemoBaseApplLayer::initialize(stage);
 
-	rebroadcastDeciderInGate = findGate("rebroadcastDeciderInGate");
+	if (stage == 0)
+	{
+		address = addressCounter;
+		addressCounter++;
+
+		rebroadcastDeciderInGate = findGate("rebroadcastDeciderInGate");
+
+		WATCH(address);
+	}
 }
 
 void BaseApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
@@ -59,16 +74,16 @@ void BaseApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
 
 	if (CarJammingAnnouncement *jamAnnouncement = dynamic_cast<CarJammingAnnouncement*>(wsm))
 	{
+		// handleCarJammingAnnouncement is responsible for forwarding the message to RD
 		handleCarJammingAnnouncement(jamAnnouncement);
 	}
-	else
+
+	RebroadcastDecider *rd = getRebroadcastDecider();
+	if (rd)
 	{
-		RebroadcastDecider *rd = getRebroadcastDecider();
-		if (rd)
-		{
-			sendDirect(wsm->dup(), rd, rd->getParentInGate());
-		}
+		sendDirect(wsm->dup(), rd, rd->getParentInGate());
 	}
+
 }
 
 void BaseApplicationLayer::onBSM(veins::DemoSafetyMessage *bsm)
@@ -85,7 +100,7 @@ void BaseApplicationLayer::handleSelfMsg(cMessage *msg)
 {
 	if (CarJammingAnnouncement *jamAnnouncement = dynamic_cast<CarJammingAnnouncement*>(msg))
 	{
-		sendDown(jamAnnouncement->dup());
+		sendDown(jamAnnouncement);
 	}
 	else if (msg->getKind() == SEND_BEACON_EVT)
 	{
@@ -105,7 +120,8 @@ void BaseApplicationLayer::handleSelfMsg(cMessage *msg)
 void BaseApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *msg)
 {
 	RebroadcastDecider *rebroadcastDecider = getRebroadcastDecider();
-	if (rebroadcastDecider->shouldRebroadcast())
+
+	if (rebroadcastDecider->shouldRebroadcast(msg))
 	{
 		scheduleAt(simTime() + 2 + uniform(0.01, 0.2), msg->dup());
 	}

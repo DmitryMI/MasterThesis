@@ -35,8 +35,22 @@ CarApplicationLayer::~CarApplicationLayer()
 void CarApplicationLayer::initialize(int stage)
 {
 	// Required for proper initialization
-	DemoBaseApplLayer::initialize(stage);
+	BaseApplicationLayer::initialize(stage);
 
+	WATCH(totalTimeInJam);
+}
+
+void CarApplicationLayer::finish()
+{
+	BaseApplicationLayer::finish();
+
+	if(jammingDetector.isJammedNow())
+	{
+		totalTimeInJam += (simTime() - jammingDetector.getJamStartTimestamp()).dbl();
+	}
+
+	recordScalar("totalTimeInJam", totalTimeInJam);
+	recordScalar("receivedJammingAnnouncementsNum", receivedJammingAnnouncements.size());
 }
 
 std::string CarApplicationLayer::getCarDescriptor()
@@ -56,16 +70,26 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 	if (jammed)
 	{
 		EV << "Car " << getCarDescriptor() << " jammed!";
+		setIconColor("red");
 
-		CarJammingAnnouncement *msg = new CarJammingAnnouncement();
-		populateWSM(msg);
+		if(par("jammingAnnouncementEnabled").boolValue())
+		{
+			CarJammingAnnouncement *msg = new CarJammingAnnouncement();
+			populateWSM(msg);
 
-		msg->setCarPosition(curPosition);
-		msg->setCarRoadId(mobility->getRoadId().c_str());
-		sendDown(msg);
+			msg->setCarPosition(curPosition);
+			msg->setCarRoadId(mobility->getRoadId().c_str());
+			msg->setSenderAddress(getAddress());
+			msg->setSerial(messageSerialCounter);
+			messageSerialCounter++;
+			sendDown(msg);
+		}
 	}
 	else
 	{
+		totalTimeInJam += (simTime() - jammingDetector.getJamStartTimestamp()).dbl();
+
+		setIconColor("white");
 		EV << "Car " << getCarDescriptor() << " is no longer jammed!";
 	}
 }
@@ -88,6 +112,24 @@ void CarApplicationLayer::onWSA(veins::DemoServiceAdvertisment *wsa)
 void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *msg)
 {
 	BaseApplicationLayer::handleCarJammingAnnouncement(msg);
+
+	veins::LAddress::L2Type sender = msg->getSenderAddress();
+	if(sender == getAddress())
+	{
+		// Ignore own messages
+		return;
+	}
+
+	if (mobility->getRoadId()[0] != ':')
+	{
+		std::string roadId = msg->getCarRoadId();
+		traciVehicle->changeRoute(roadId, 9999);
+	}
+
+	if(receivedJammingAnnouncements.count(sender) == 0)
+	{
+		receivedJammingAnnouncements.insert(sender);
+	}
 }
 
 void CarApplicationLayer::handleSelfMsg(cMessage *msg)
@@ -97,6 +139,8 @@ void CarApplicationLayer::handleSelfMsg(cMessage *msg)
 
 void CarApplicationLayer::handlePositionUpdate(cObject *obj)
 {
+	setIconColor("white");
+
 	DemoBaseApplLayer::handlePositionUpdate(obj);
 
 	updateJammingDetector();

@@ -19,12 +19,14 @@
 #include <omnetpp/cmodule.h>
 #include "veins/base/utils/Coord.h"
 #include "veins/modules/obstacle/Obstacle.h"
+#ifdef WITH_OSG
 #include <osg/StateSet>
 #include <osg/Vec3>
 #include <osg/Vec4>
 #include <osg/Geode>
 #include <osg/Group>
 #include <vector>
+#endif
 
 namespace drones_veins_project
 {
@@ -32,19 +34,22 @@ namespace drones_veins_project
 	class ObstacleShadowingVisualizer : public omnetpp::cSimpleModule
 	{
 	private:
+#ifdef WITH_OSG
 		std::vector<osg::ref_ptr<osg::Group>> displayGroups;
 		uint64_t displayGroupCounter = 0;
+#endif
+		bool osgFlipY;
 
 	public:
 		ObstacleShadowingVisualizer();
 		virtual ~ObstacleShadowingVisualizer();
-
+#ifdef WITH_OSG
 		virtual osg::ref_ptr<osg::StateSet> createLineStateSet(const osg::Vec4& color);
 		virtual osg::ref_ptr<osg::StateSet> createShapeStateSet(const osg::Vec4& color);
 
 		virtual osg::ref_ptr<osg::Geode> createLine(const osg::Vec3& from, const osg::Vec3& to);
 		virtual osg::ref_ptr<osg::Geode> createSphere(const osg::Vec3& pos, double radius, osg::Vec4& colorVec);
-
+#endif
 		virtual void initialize(int stage) override;
 
 		virtual void handleMessage(omnetpp::cMessage* msg) override;

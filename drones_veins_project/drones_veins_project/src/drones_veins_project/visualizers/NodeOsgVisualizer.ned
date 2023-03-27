@@ -25,4 +25,5 @@ module NodeOsgVisualizer
         string color = default("green");
         double lineWidth = default(2);
         double scale = default(1);
+        bool osgFlipY = default(true);
 }

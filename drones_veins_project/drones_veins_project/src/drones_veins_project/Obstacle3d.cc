@@ -16,6 +16,8 @@
 #include "Obstacle3d.h"
 #include <vector>
 #include <algorithm>
+#include "veins/base/utils/FindModule.h"
+#include "veins/base/modules/BaseWorldUtility.h"
 
 #ifdef WITH_OSG
 #include "veins/base/utils/FindModule.h"
@@ -208,17 +210,33 @@ std::vector<double> Obstacle3d::getIntersections(const Coord &senderPos, const C
 	//return Obstacle::getIntersections(senderPos, receiverPos);
 
 	std::vector<veins::Coord> intersectionPoints;
+/*
+	if(
+			abs(senderPos.x - 923.4) < 0.01 &&
+			abs(senderPos.y - 747.986) < 0.01 &&
+			abs(senderPos.z - 1.895) < 0.01 &&
+			abs(receiverPos.x - 626.6) < 0.01 &&
+			abs(receiverPos.y - 536.5149) < 0.01 &&
+			abs(receiverPos.z - 1.895) < 0.01 &&
+			abs(coords[0].x - 635) < 0.01 &&
+			abs(coords[0].y - 542.5) < 0.01 &&
+			abs(coords[0].z - 0) < 0.01
+			)
+	{
+		EV << "BREAK";
+	}
+	*/
 	getIntersectionPoints(senderPos, receiverPos, intersectionPoints);
 
 	std::vector<double> intersectionFactors;
 	for (const veins::Coord &intersectionPoint : intersectionPoints)
 	{
 		double k;
-		if(receiverPos.x != senderPos.x)
+		if (receiverPos.x != senderPos.x)
 		{
 			k = (intersectionPoint.x - senderPos.x) / (receiverPos.x - senderPos.x);
 		}
-		else if(receiverPos.y != senderPos.y)
+		else if (receiverPos.y != senderPos.y)
 		{
 			k = (intersectionPoint.y - senderPos.y) / (receiverPos.y - senderPos.y);
 		}
@@ -229,39 +247,37 @@ std::vector<double> Obstacle3d::getIntersections(const Coord &senderPos, const C
 		intersectionFactors.push_back(k);
 	}
 	std::sort(intersectionFactors.begin(), intersectionFactors.end());
+	if(intersectionFactors.size() == 1)
+	{
+		intersectionFactors.push_back(intersectionFactors[0]);
+	}
 	return intersectionFactors;
 }
 
-osg::Geode* Obstacle3d::createWall(int wallIndex1, int wallIndex2, osg::PrimitiveSet::Mode mode)
+#ifdef WITH_OSG
+
+osg::Geode* Obstacle3d::createWall(int wallIndex1, int wallIndex2, osg::PrimitiveSet::Mode mode, bool osgFlipY)
 {
 	Coord coord1 = coords[wallIndex1];
 	Coord coord2 = coords[wallIndex2];
 
 	auto verts = new osg::Vec3Array();
-	verts->push_back(osg::Vec3(coord1.x, coord1.y, 0));
-	verts->push_back(osg::Vec3(coord2.x, coord2.y, 0));
-	verts->push_back(osg::Vec3(coord2.x, coord2.y, height));
-	verts->push_back(osg::Vec3(coord1.x, coord1.y, height));
 
-	auto primitiveSet = new osg::DrawArrays(mode);
-	primitiveSet->setFirst(0);
-	primitiveSet->setCount(verts->size());
-
-	auto geometry = new osg::Geometry();
-	geometry->setVertexArray(verts);
-	geometry->addPrimitiveSet(primitiveSet);
-	auto geode = new osg::Geode();
-	geode->addDrawable(geometry);
-
-	return geode;
-}
-
-osg::Geode* Obstacle3d::createHorizontalPolygon(float height, osg::PrimitiveSet::Mode mode)
-{
-	auto verts = new osg::Vec3Array();
-	for (auto &coord : coords)
+	if (!osgFlipY)
 	{
-		verts->push_back(osg::Vec3(coord.x, coord.y, height));
+		verts->push_back(osg::Vec3(coord1.x, coord1.y, 0));
+		verts->push_back(osg::Vec3(coord2.x, coord2.y, 0));
+		verts->push_back(osg::Vec3(coord2.x, coord2.y, height));
+		verts->push_back(osg::Vec3(coord1.x, coord1.y, height));
+	}
+	else
+	{
+		veins::BaseWorldUtility *world = veins::FindModule<veins::BaseWorldUtility*>::findGlobalModule();
+		ASSERT(world);
+		verts->push_back(osg::Vec3(coord1.x, world->getPgs()->y - coord1.y, 0));
+		verts->push_back(osg::Vec3(coord2.x, world->getPgs()->y - coord2.y, 0));
+		verts->push_back(osg::Vec3(coord2.x, world->getPgs()->y - coord2.y, height));
+		verts->push_back(osg::Vec3(coord1.x, world->getPgs()->y - coord1.y, height));
 	}
 
 	auto primitiveSet = new osg::DrawArrays(mode);
@@ -277,7 +293,42 @@ osg::Geode* Obstacle3d::createHorizontalPolygon(float height, osg::PrimitiveSet:
 	return geode;
 }
 
-void Obstacle3d::createOsgGeometry(const cFigure::Color &color, bool obstaclesShadingEnabled, bool wireframeModeEnabled)
+osg::Geode* Obstacle3d::createHorizontalPolygon(float height, osg::PrimitiveSet::Mode mode, bool osgFlipY)
+{
+	auto verts = new osg::Vec3Array();
+
+	if (!osgFlipY)
+	{
+		for (auto &coord : coords)
+		{
+			verts->push_back(osg::Vec3(coord.x, coord.y, height));
+		}
+	}
+	else
+	{
+		veins::BaseWorldUtility *world = veins::FindModule<veins::BaseWorldUtility*>::findGlobalModule();
+		ASSERT(world);
+		for (auto &coord : coords)
+		{
+			verts->push_back(osg::Vec3(coord.x, world->getPgs()->y - coord.y, height));
+		}
+	}
+
+	auto primitiveSet = new osg::DrawArrays(mode);
+	primitiveSet->setFirst(0);
+	primitiveSet->setCount(verts->size());
+
+	auto geometry = new osg::Geometry();
+	geometry->setVertexArray(verts);
+	geometry->addPrimitiveSet(primitiveSet);
+	auto geode = new osg::Geode();
+	geode->addDrawable(geometry);
+
+	return geode;
+}
+
+void Obstacle3d::createOsgGeometry(const cFigure::Color &color, bool obstaclesShadingEnabled, bool wireframeModeEnabled,
+		bool osgFlipY)
 {
 	auto borderMaterial = new osg::Material();
 	osg::Vec4 borderColorVec(0, 0, 0, 1.0);
@@ -321,42 +372,40 @@ void Obstacle3d::createOsgGeometry(const cFigure::Color &color, bool obstaclesSh
 
 		if (!wireframeModeEnabled)
 		{
-			osg::Geode *wall = createWall(i, j, osg::PrimitiveSet::POLYGON);
+			osg::Geode *wall = createWall(i, j, osg::PrimitiveSet::POLYGON, osgFlipY);
 			wall->setStateSet(polygonStateSet);
 			osgNode->addChild(wall);
 		}
-		osg::Geode *wallBorder = createWall(i, j, osg::PrimitiveSet::LINE_LOOP);
+		osg::Geode *wallBorder = createWall(i, j, osg::PrimitiveSet::LINE_LOOP, osgFlipY);
 		wallBorder->setStateSet(borderStateSet);
 		osgNode->addChild(wallBorder);
 	}
 
 	if (!wireframeModeEnabled)
 	{
-		osg::Geode *polyFloor = createHorizontalPolygon(0, osg::PrimitiveSet::POLYGON);
+		osg::Geode *polyFloor = createHorizontalPolygon(0, osg::PrimitiveSet::POLYGON, osgFlipY);
 		polyFloor->setStateSet(polygonStateSet);
 		osgNode->addChild(polyFloor);
 	}
 
-	osg::Geode *polyFloorBorder = createHorizontalPolygon(0, osg::PrimitiveSet::LINES);
+	osg::Geode *polyFloorBorder = createHorizontalPolygon(0, osg::PrimitiveSet::LINES, osgFlipY);
 	polyFloorBorder->setStateSet(borderStateSet);
 	osgNode->addChild(polyFloorBorder);
 
 	if (!wireframeModeEnabled)
 	{
-		osg::Geode *polyCeil = createHorizontalPolygon(height, osg::PrimitiveSet::POLYGON);
+		osg::Geode *polyCeil = createHorizontalPolygon(height, osg::PrimitiveSet::POLYGON, osgFlipY);
 		polyCeil->setStateSet(polygonStateSet);
 		osgNode->addChild(polyCeil);
 	}
 
-	osg::Geode *polyCeilBorder = createHorizontalPolygon(height, osg::PrimitiveSet::LINES);
+	osg::Geode *polyCeilBorder = createHorizontalPolygon(height, osg::PrimitiveSet::LINES, osgFlipY);
 	polyCeilBorder->setStateSet(borderStateSet);
 	osgNode->addChild(polyCeilBorder);
 }
 
-#ifdef WITH_OSG
-
 void Obstacle3d::drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr, bool obstaclesShadingEnabled,
-		bool wireframeModeEnabled)
+		bool wireframeModeEnabled, bool osgFlipY)
 {
 	ASSERT(canvas);
 
@@ -372,8 +421,8 @@ void Obstacle3d::drawOnOsgCanvas(cOsgCanvas *canvas, std::string &colorStr, bool
 
 	auto color = cFigure::Color(colorStr.c_str());
 
-	createOsgGeometry(color, obstaclesShadingEnabled, wireframeModeEnabled);
+	createOsgGeometry(color, obstaclesShadingEnabled, wireframeModeEnabled, osgFlipY);
 
 	scene->addChild(osgNode);
-#endif
 }
+#endif

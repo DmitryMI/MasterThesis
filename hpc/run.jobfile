@@ -1,0 +1,12 @@
+#!/bin/bash
+#SBATCH --ntasks=2
+#SBATCH --cpus-per-task=8
+#SBATCH --partition=haswell
+#SBATCH --mem-per-cpu=2048
+#SBATCH --time=1:00:00
+#SBATCH --job-name=drones_veins_project_run
+#SBATCH --output=/home/dmmo937c/logs/drones_veins_project_run-%j.out
+#SBATCH --error=/home/dmmo937c/logs//drones_veins_project_run-%j.err
+#SBATCH --mail-type=end
+#SBATCH --mail-user=dmitriy.monakhov@mailbox.tu-dresden.de
+srun --exclusive --ntasks=2 singularity exec -C --net --network none -H ~/:/root --bind /scratch/ws/0/dmmo937c-drones-build:/mnt:rw,/beegfs/ws/0/dmmo937c-drones-workspace:/tmp:rw ./ubuntu "/root/scripts/hpc/singularity-executors/singularity_run_project.sh"
