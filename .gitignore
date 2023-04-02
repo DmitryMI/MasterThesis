@@ -405,6 +405,7 @@ FodyWeavers.xsd
 **/.settings/language.settings.xml
 
 **/results/**
+**/stats/eval**
 
 **.cmdenv-log
 

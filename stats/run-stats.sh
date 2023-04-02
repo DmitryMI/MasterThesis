@@ -85,7 +85,7 @@ fi
 if [[ $DO_COLLECT == 1 ]]
 then
     echo "Collecting..."
-    mkdir -p $RESULTS_DIR
+    mkdir -p $EVAL_DIR
     PATH_TO_RAW="$SIMULATION_DIR/results"
     source _collect.sh
     echo ""
