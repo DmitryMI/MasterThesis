@@ -9,12 +9,12 @@
 #SBATCH --job-name=build_drones_veins_project
 #SBATCH --output=/home/dmmo937c/logs/build_drones_veins_project-%j.out
 #SBATCH --error=/home/dmmo937c/logs/build_drones_veins_project-%j.err
-#SBATCH --mail-type=end
+#SBATCH --mail-type=all
 #SBATCH --mail-user=dmitriy.monakhov@mailbox.tu-dresden.de
 
 source ~/scripts/hpc/setvars.sh
 
-echo "BEEGFS_WORKSPACE = $SCRATCH_WORKSPACE"
+echo "SCRATCH_WORKSPACE = $SCRATCH_WORKSPACE"
 echo "SINGULARITY_WORKSPACE_MNT = $SINGULARITY_WORKSPACE_MNT"
 
 if [ -z "$SINGULARITY_WORKSPACE_MNT" ]
@@ -29,9 +29,11 @@ then
     exit 1
 fi
 
-sin_app="/root/scripts/hpc/singularity-executors/singularity_build_project.sh"
+# sin_app="/root/scripts/hpc/singularity-executors/singularity_build_project.sh"
+sin_app="ls -al /root"
 
-app="singularity exec -H ~/:/root --bind $SCRATCH_WORKSPACE:$SINGULARITY_WORKSPACE_MNT ./ubuntu \"$sin_app\""
+app="singularity exec -H ~/:/root --bind $SCRATCH_WORKSPACE:$SINGULARITY_WORKSPACE_MNT:rw ./ubuntu $sin_app"
 
-
-srun $app
+echo $app
+# srun $app
+srun singularity exec -C -H ~/:/root --bind $SCRATCH_WORKSPACE:$SINGULARITY_WORKSPACE_MNT:rw ./ubuntu "/root/scripts/hpc/singularity-executors/singularity_build_project.sh"
