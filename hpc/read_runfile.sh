@@ -5,4 +5,4 @@ then
     source "./setvars.sh"
 fi
 
-echo "squeue --me && cat $BEEGFS_WORKSPACE/runfile.txt && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
+echo "head $BEEGFS_WORKSPACE/runfile.txt && squeue --me && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de

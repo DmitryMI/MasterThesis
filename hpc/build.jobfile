@@ -12,14 +12,26 @@
 #SBATCH --mail-type=end
 #SBATCH --mail-user=dmitriy.monakhov@mailbox.tu-dresden.de
 
-source ~/setvars.sh
+source ~/scripts/hpc/setvars.sh
 
-echo "BEEGFS_WORKSPACE = $BEEGFS_WORKSPACE"
+echo "BEEGFS_WORKSPACE = $SCRATCH_WORKSPACE"
 echo "SINGULARITY_WORKSPACE_MNT = $SINGULARITY_WORKSPACE_MNT"
+
+if [ -z "$SINGULARITY_WORKSPACE_MNT" ]
+then
+    echo "SINGULARITY_WORKSPACE_MNT not set!"
+    exit 1
+fi
+
+if [ -z "$SCRATCH_WORKSPACE" ]
+then
+    echo "SCRATCH_WORKSPACE not set!"
+    exit 1
+fi
 
 sin_app="/root/scripts/hpc/singularity-executors/singularity_build_project.sh"
 
-app="singularity exec -H ~/:/root --bind $SCRATCH_WORKSPACE:$SINGULARITY_WORKSPACE_MNT:rw  ./ubuntu \"$sin_app\""
+app="singularity exec -H ~/:/root --bind $SCRATCH_WORKSPACE:$SINGULARITY_WORKSPACE_MNT ./ubuntu \"$sin_app\""
 
 
 srun $app

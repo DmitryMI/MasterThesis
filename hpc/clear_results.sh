@@ -7,4 +7,4 @@ fi
 
 results_dir="$CODEBASE_DIR/MasterThesis/drones_veins_project/drones_veins_project/simulation/drones_veins_project/results"
 
-echo "rm -rf $results_dir && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh
+echo "rm -rf $results_dir && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
