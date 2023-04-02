@@ -17,7 +17,7 @@ else
 fi
 
 OPP_CONFIG_NAME="Evaluation"
-RESULTS_DIR=$(pwd)/results
+EVAL_DIR=$(pwd)/eval
 VEINS_LAUNCHD_PATH="$INSTALLATION_DIR_VEINS/veins/bin/veins_launchd"
 MAKE_DIR=$(realpath ../drones_veins_project)
 

@@ -86,6 +86,7 @@ if [[ $DO_COLLECT == 1 ]]
 then
     echo "Collecting..."
     mkdir -p $RESULTS_DIR
+    PATH_TO_RAW="$SIMULATION_DIR/results"
     source _collect.sh
     echo ""
 fi
@@ -93,7 +94,7 @@ fi
 if [[ $DO_EVAL == 1 ]]
 then
     echo "Evaluating..."
-    cd $RESULTS_DIR
+    cd $EVAL_DIR
     Rscript ../_eval-jammed-vehicles-num.R --opp_config $OPP_CONFIG_NAME
     echo ""
     Rscript ../_eval-received-announcements-num.R --opp_config $OPP_CONFIG_NAME
