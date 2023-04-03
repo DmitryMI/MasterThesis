@@ -3,6 +3,7 @@
 if [[ $RUNSIM_SETVARS_GUARD != 1 ]]
 then
     echo "Run setvars before running this script."
+    exit 1
 fi
 
 MAKE_DIR=$(realpath ../drones_veins_project)
@@ -85,6 +86,13 @@ fi
 if [[ $DO_COLLECT == 1 ]]
 then
     echo "Collecting..."
+    
+    if [ -z "$EVAL_DIR" ]
+    then
+        echo "run-stats.sh collect: EVAL_DIR not set!"
+        exit 1
+    fi
+    
     mkdir -p $EVAL_DIR
     PATH_TO_RAW="$SIMULATION_DIR/results"
     source _collect.sh
