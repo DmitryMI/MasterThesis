@@ -13,7 +13,7 @@ fi
 
 if [ -z "$JOBS" ]
 then    
-    JOBS=8
+    JOBS=24
     echo "Variable JOBS not set. Setting to default $JOBS"
 fi
 

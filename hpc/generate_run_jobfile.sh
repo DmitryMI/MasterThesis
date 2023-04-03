@@ -12,9 +12,9 @@ echo "#SBATCH --cpus-per-task=$CPUS_PER_TASK" >> run.jobfile
 echo "#SBATCH --partition=haswell" >> run.jobfile
 echo "#SBATCH --mem-per-cpu=2048" >> run.jobfile
 echo "#SBATCH --time=1:00:00" >> run.jobfile
-echo "#SBATCH --job-name=drones_veins_project_run" >> run.jobfile
-echo "#SBATCH --output=/home/dmmo937c/logs/drones_veins_project_run-%j.out" >> run.jobfile
-echo "#SBATCH --error=/home/dmmo937c/logs//drones_veins_project_run-%j.err" >> run.jobfile
+echo "#SBATCH --job-name=run_drones_veins_project" >> run.jobfile
+echo "#SBATCH --output=/home/dmmo937c/logs/run_drones_veins_project-%j.out" >> run.jobfile
+echo "#SBATCH --error=/home/dmmo937c/logs/run_drones_veins_project-%j.err" >> run.jobfile
 echo "#SBATCH --mail-type=all" >> run.jobfile
 echo "#SBATCH --mail-user=dmitriy.monakhov@mailbox.tu-dresden.de" >> run.jobfile
 if [ ! -z "$DEPENDENCY" ]
