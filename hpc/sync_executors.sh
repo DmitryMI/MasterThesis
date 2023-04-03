@@ -5,7 +5,7 @@ then
     source "./setvars.sh"
 fi
 
-echo "mkdir -p scripts/hpc && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
+echo "mkdir -p scripts/hpc && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh -o LogLevel=error dmmo937c@taurus.hrsk.tu-dresden.de
 
 echo "Uploading executor scripts to HPC home directory..."
 sshpass -f "$HPC_SSH_PASSWORD_FILE" scp -r ./ dmmo937c@taurusexport.hrsk.tu-dresden.de:~/scripts/hpc

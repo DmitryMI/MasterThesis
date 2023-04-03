@@ -93,7 +93,7 @@ then
         exit 1
     fi
     
-    mkdir -p $EVAL_DIR
+    mkdir -p "$EVAL_DIR"
     PATH_TO_RAW="$SIMULATION_DIR/results"
     source _collect.sh
     echo ""
