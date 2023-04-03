@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --partition=haswell
+#SBATCH --mem-per-cpu=1024
+#SBATCH --time=00:55:00
+#SBATCH --job-name=eval_drones_veins_project
+#SBATCH --output=/home/dmmo937c/logs/eval_drones_veins_project-%j.out
+#SBATCH --error=/home/dmmo937c/logs/eval_drones_veins_project-%j.err
+#SBATCH --mail-type=all
+#SBATCH --mail-user=dmitriy.monakhov@mailbox.tu-dresden.de
+
+source ~/scripts/hpc/setvars.sh
+
+if [ -z "$SINGULARITY_WORKSPACE_MNT" ]
+then
+    echo "SINGULARITY_WORKSPACE_MNT not set!"
+    exit 1
+fi
+
+if [ -z "$SCRATCH_WORKSPACE" ]
+then
+    echo "SCRATCH_WORKSPACE not set!"
+    exit 1
+fi
+
+srun singularity exec -C -H ~/:/root --bind $SCRATCH_WORKSPACE:$SINGULARITY_WORKSPACE_MNT:rw ./ubuntu "/root/scripts/hpc/singularity-executors/singularity_eval_project.sh"
