@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CPUS_PER_TASK=24
-NTASKS_MAX=21
+NTASKS_MAX=20
 
 if [ -z "$RUNSIM_SETVARS_GUARD" ]
 then
