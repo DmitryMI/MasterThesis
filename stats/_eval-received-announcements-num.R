@@ -51,7 +51,8 @@ ra_div_jammed_query <- "SELECT (ReceivedAnnouncementsPerCarAvg / JammedNumAvg) A
 ra_div_jammed_table <- sqldf(ra_div_jammed_query)
 head(ra_div_jammed_table, n=100)
 
-pdf_name <- paste(opt$opp_config, "-ReceivedAnnouncementsAvg.pdf", sep="")
+# pdf_name <- paste(opt$opp_config, "-JammedVehiclesNumber-", Sys.time(), ".pdf", sep="")
+pdf_name <- paste(opt$opp_config, "-ReceivedAnnouncements-", Sys.time(), ".pdf", sep="")
 plot_name <- paste("Boxplot for ", "ReceivedAnnouncementsAvg ", "(", opt$opp_config, ")", sep="")
 pdf(pdf_name) 
 par(cex.main=1)

@@ -44,15 +44,8 @@ jammed_vehicles_avg_table <- sqldf(jammed_vehicles_avg_query)
 head(jammed_vehicles_avg_table, n=100)
 
 
-pdf_name <- paste(opt$opp_config, "-JammedVehiclesNumber-Boxplot.pdf", sep="")
-plot_name <- paste("Boxplot for ", "JammedVehiclesNumber ", "(", opt$opp_config, ")", sep="")
-pdf(pdf_name) 
-par(cex.main=1)
-boxplot(jammed_vehicles_table$JammedNum ~ jammed_vehicles_table$NumberOfDrones, main=plot_name, ylab="Jammed vehicles", xlab="Number of Drones")
-dev.off()
-
-pdf_name <- paste(opt$opp_config, "-JammedVehiclesNumber-AvgLine.pdf", sep="")
-plot_name <- paste("Boxplot for ", "JammedVehiclesNumber Average ", "(", opt$opp_config, ")", sep="")
+pdf_name <- paste(opt$opp_config, "-JammedVehiclesNumber-", Sys.time(), ".pdf", sep="")
+plot_name <- paste("Boxplot for ", "Number of Jammed Vehicles ", "(", opt$opp_config, ")", sep="")
 pdf(pdf_name) 
 par(cex.main=1)
 plot(jammed_vehicles_avg_table$JammedNumAvg ~ jammed_vehicles_avg_table$NumberOfDrones, type = "l", main=plot_name, ylab="Jammed vehicles Average", xlab="Number of Drones")

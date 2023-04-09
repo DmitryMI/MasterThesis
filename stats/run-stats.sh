@@ -2,8 +2,7 @@
 
 if [[ $RUNSIM_SETVARS_GUARD != 1 ]]
 then
-    echo "Run setvars before running this script."
-    exit 1
+    source ./setvars.sh
 fi
 
 MAKE_DIR=$(realpath ../drones_veins_project)
