@@ -7,6 +7,8 @@ if [ -z "$CODEBASE_DIR" ]
 then
     echo "CODEBASE_DIR is not set!"
     exit 1
+else
+    echo "CODEBASE_DIR = $CODEBASE_DIR"
 fi
 
 cd $CODEBASE_DIR/MasterThesis/stats/

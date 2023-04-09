@@ -1,8 +1,3 @@
-
-cd $WORKING_DIR
-
-pwd
-
 mkdir -p $EVAL_DIR
 
 input=$(realpath "opp-configs.txt")
