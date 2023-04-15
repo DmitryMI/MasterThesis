@@ -47,7 +47,8 @@ def main():
         root.append(route)
 
     rou_dir = os.path.dirname(rou_file)
-    rou_file_name = os.path.basename(rou_file)
+    rou_file_base = os.path.basename(rou_file)
+    rou_file_name = os.path.splitext(rou_file_base)[0]
     
     # result_tree = et.ElementTree(result_root)
     tree.write(f"{os.path.join(rou_dir, rou_file_name)}.extracted.xml")
