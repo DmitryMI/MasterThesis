@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.11
+
 import argparse
 import xml.etree.ElementTree as et
 import os.path

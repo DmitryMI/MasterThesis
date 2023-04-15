@@ -48,6 +48,24 @@ sed -i -e "s/<routes.*>/<routes>/g" $PROJ_NAME.trips.xml
 # Generating actual vehicle routes based on trips
 duarouter -n $PROJ_NAME.net.xml --route-files $PROJ_NAME.trips.xml -o $PROJ_NAME.rou.xml
 
+if [ $? != 0 ]
+then
+    echo "Duarouter failed!"
+    exit $?
+fi
+
+echo "Extracting routes..."
+../grid-generator-vs/route_extractor.py $PROJ_NAME.rou.xml
+
+if [ $? != 0 ]
+then
+    echo "Route extractor failed!"
+    exit $?
+fi
+
+rm $PROJ_NAME.rou.xml
+mv $PROJ_NAME.rou.extracted.xml $PROJ_NAME.rou.xml
+
 if [ $DO_VISUALIZE == 1 ]
 then
     # Visualize the road network and buildings
