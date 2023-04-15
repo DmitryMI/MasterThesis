@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>32f340db-e75d-42e2-838d-cda12fadcdcb</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>grid_generator_vs.py</StartupFile>
+    <StartupFile>route_extractor.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -12,7 +12,7 @@
     <Name>grid-generator-vs</Name>
     <RootNamespace>grid-generator-vs</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>drones-simple --proj_dir "C:\Users\DmitriyPC\Documents\GitHub\MasterThesis\generated" --grid.x-number 3 --grid.y-number 3 --grid.length 500</CommandLineArguments>
+    <CommandLineArguments>"C:\Users\DmitriyPC\Documents\GitHub\MasterThesis\drones_veins_project\drones_veins_project\simulation\drones_veins_project\drones.rou.xml"</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -25,6 +25,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="grid_generator_vs.py" />
+    <Compile Include="route_extractor.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
