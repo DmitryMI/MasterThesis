@@ -1,3 +1,6 @@
+echo "THIS SCRIPT IS DEPRECATED! USE GRID-GENERATOR-SIMPLE.SH!"
+exit 1
+
 PROJ_NAME="drones"
 GRID_SIZE=7
 STREET_LENGTH=100
@@ -65,7 +68,8 @@ cd $PROJ_DIR
 netgenerate --grid --grid.number $GRID_SIZE --grid.length $STREET_LENGTH --default.lanenumber 1 --output-file $PROJ_NAME.net.xml
 
 # Generating buildings
-../grid-generator-vs/grid_generator_vs.py $PROJ_NAME --grid.x-number $GRID_SIZE --grid.y-number $GRID_SIZE --grid.length $STREET_LENGTH --block_size $GRID_SUBD --ini_path $OMNETPP_INI_PATH
+# ../grid-generator-vs/grid_generator_vs.py $PROJ_NAME --grid.x-number $GRID_SIZE --grid.y-number $GRID_SIZE --grid.length $STREET_LENGTH --block_size $GRID_SUBD --ini_path $OMNETPP_INI_PATH
+../grid-generator-vs/grid_generator_vs.py $PROJ_NAME --grid.x-number $GRID_SIZE --grid.y-number $GRID_SIZE --grid.length $STREET_LENGTH --block_size $GRID_SUBD
 
 # Generating random trips
 TRIPS_MIN_DISTANCE=$(expr $GRID_SIZE \* $STREET_LENGTH)
@@ -77,7 +81,7 @@ str_to_replace=' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNam
 sed -i -e "s/<routes.*>/<routes>/g" $PROJ_NAME.trips.xml
 
 # Generating actual vehicle routes based on trips
-duarouter -n $PROJ_NAME.net.xml --route-files $PROJ_NAME.trips.xml -o $PROJ_NAME.rou.xml
+duarouter -n $PROJ_NAME.net.xml --route-files $PROJ_NAME.trips.xml -o $PROJ_NAME.rou.xml --named-routes true
 
 # Visualize the road network and buildings
 netedit -s $PROJ_NAME.net.xml -a $PROJ_NAME.poly.xml

@@ -85,6 +85,10 @@ network DronesScenario
                 @display("p=512,128");
                 moduleType = carType;
         }
+        
+        inserter: TraCIVehicleInserter {
+            
+        }
  
         roadsCanvasVisualizer: RoadsCanvasVisualizer {
             @display("p=300,0");

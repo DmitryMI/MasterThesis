@@ -1,5 +1,10 @@
 #!/bin/bash
 
+PROJ_NAME="Drones Veins Project"
+PROJ_BRIEF="Improving urban traffic flow with drone-supported vehicular networks"
+PROJ_NAME_AS_FILE_NAME="drones_veins_project"
+PROJ_NAME_AS_MACRO_NAME="DRONES_VEINS_PROJECT"
+
 if [ -z "$INSTALLATION_DIR" ]
 then
     INSTALLATION_DIR="/home/$(whoami)/Software"
