@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CPUS_PER_TASK=24
-NTASKS_MAX=20
+NTASKS_MAX=1
 
 if [ -z "$RUNSIM_SETVARS_GUARD" ]
 then
@@ -30,6 +30,8 @@ echo "Building finished!"
 
 RUNFILE_GEN_SCRIPT="$INSTALLATION_DIR_RUNMAKER/veins_scripts/running/generateRunsFile.pl"
 SIMULATION_DIR=$(realpath "../drones_veins_project/drones_veins_project/simulation/drones_veins_project")
+#PROJECT_INI_REL="drones_veins_project/drones_veins_project/simulation/drones_veins_project/omnetpp.ini"
+#PROJECT_INI=$(realpath "../$PROJECT_INI_REL")
 PROJECT_EXECUTRABLE_REL="drones_veins_project/drones_veins_project/bin/drones_veins_project_run"
 PROJECT_EXECUTABLE=$(realpath "../$PROJECT_EXECUTRABLE_REL")
 RUNFILE="$(realpath ./runfile.txt)"
@@ -44,7 +46,7 @@ then
     exit 1
 fi
 
-LINE_TEMPLATE=". $SINGULARITY_WORKSPACE_MNT/MasterThesis/$PROJECT_EXECUTRABLE_REL -u Cmdenv -c %s -r %s"
+LINE_TEMPLATE=". $SINGULARITY_WORKSPACE_MNT/MasterThesis/$PROJECT_EXECUTRABLE_REL --result-dir=/$SINGULARITY_BEEGFS_MNT/omnetpp-results -u Cmdenv -c %s -r %s"
 
 input=$(realpath "opp-configs.txt")
 cd $SIMULATION_DIR

@@ -93,7 +93,15 @@ then
     fi
     
     mkdir -p "$EVAL_DIR"
-    PATH_TO_RAW="$SIMULATION_DIR/results"
+    
+    if [ -z "$PATH_TO_RAW" ]
+    then
+        PATH_TO_RAW="$SIMULATION_DIR/results"
+        echo "PATH_TO_RAW not set! Setting to default $PATH_TO_RAW"
+    else
+        echo "PATH_TO_RAW = $PATH_TO_RAW"        
+    fi
+    
     source _collect.sh
     echo ""
 fi
