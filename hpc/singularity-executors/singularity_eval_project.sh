@@ -1,17 +1,18 @@
 #!/bin/bash
 
 source "/root/scripts/setvars_hpc.sh"
+source "/root/scripts/setvars.sh"
 source "/root/scripts/hpc/setvars.sh"
 
-if [ -z "$CODEBASE_DIR" ]
+if [ -z "$SINGULARITY_WORKSPACE_MNT" ]
 then
-    echo "CODEBASE_DIR is not set!"
+    echo "SINGULARITY_WORKSPACE_MNT is not set!"
     exit 1
 else
-    echo "CODEBASE_DIR = $CODEBASE_DIR"
+    echo "SINGULARITY_WORKSPACE_MNT = $SINGULARITY_WORKSPACE_MNT"
 fi
 
-cd $CODEBASE_DIR/MasterThesis/stats/
+cd $SINGULARITY_WORKSPACE_MNT/MasterThesis/stats/
 source "./setvars.sh"
 
 if [ -z "$SINGULARITY_BEEGFS_MNT" ]

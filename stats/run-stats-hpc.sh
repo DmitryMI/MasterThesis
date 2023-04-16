@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CPUS_PER_TASK=24
-NTASKS_MAX=1
+NTASKS_MAX=10
 
 if [ -z "$RUNSIM_SETVARS_GUARD" ]
 then
@@ -46,7 +46,7 @@ then
     exit 1
 fi
 
-LINE_TEMPLATE=". $SINGULARITY_WORKSPACE_MNT/MasterThesis/$PROJECT_EXECUTRABLE_REL --result-dir=/$SINGULARITY_BEEGFS_MNT/omnetpp-results -u Cmdenv -c %s -r %s"
+LINE_TEMPLATE=". $SINGULARITY_WORKSPACE_MNT/MasterThesis/$PROJECT_EXECUTRABLE_REL --result-dir=$SINGULARITY_BEEGFS_MNT/omnetpp-results -u Cmdenv -c %s -r %s"
 
 input=$(realpath "opp-configs.txt")
 cd $SIMULATION_DIR
