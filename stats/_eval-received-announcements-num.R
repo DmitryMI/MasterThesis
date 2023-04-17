@@ -1,6 +1,7 @@
 require(sqldf)
 require(readr)
 library("optparse")
+library(ggplot2)
 
 option_list = list(
     make_option(c("-i", "--opp_config"), type="character", default=NULL, help="OMNeT++ config name", metavar="character")
