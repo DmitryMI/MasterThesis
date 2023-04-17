@@ -6,7 +6,7 @@ then
 fi
 
 CPUS=1
-MEM=2048
+MEM=4096
 
 ./sync_executors.sh
 
