@@ -34,7 +34,7 @@ get_jammed_by_itervars_avg_table <- function(jammed_by_itervars_table, itervars_
     itervars_str <- paste(itervars_str, itervar, sep = ", ")
   }
   
-  query <- stringr::str_interp("SELECT AVG(JammedNumber), ${itervars_str} from jammed_by_itervars_table GROUP BY ${itervars_str}")
+  query <- stringr::str_interp("SELECT AVG(JammedNumber) as JammedNumber, ${itervars_str} from jammed_by_itervars_table GROUP BY ${itervars_str}")
   print(query)
   table <- sqldf(query)
   
