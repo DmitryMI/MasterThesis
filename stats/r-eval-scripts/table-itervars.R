@@ -23,7 +23,7 @@ get_run_itervars_table <- function(scalars, itervars){
   table <- NULL
   for(i in 1:nrow(itervars)) {
     itervar <- itervars[i,]
-    itervar_query <- stringr::str_interp("select Run, attrvalue as ${itervar} from run_table where Type == 'itervar' and attrname == '${itervar}'")
+    itervar_query <- stringr::str_interp("select Run, CAST(attrvalue as FLOAT) as ${itervar} from run_table where Type == 'itervar' and attrname == '${itervar}'")
     # print(itervar_query, end="\n")
     temp_table = sqldf(itervar_query)
     if (is.null(table))    {

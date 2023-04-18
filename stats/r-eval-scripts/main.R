@@ -7,6 +7,7 @@ source("scalars-loader.R")
 source("table-itervars.R")
 source("table-jammed-vehicles.R")
 source("table-received-announcements.R")
+source("plotting.R")
 
 get_itervars_str <- function(itervars_table){
   itervars_str <- itervars_table[1,]
@@ -75,10 +76,23 @@ received_by_run_table <- get_received_announcements_by_run_table(received_announ
 received_by_itervars_table <- get_received_announcements_by_itervars_table(received_by_run_table, itervars_table, run_itervars_table)
 received_by_itervars_avg_table <- get_received_announcements_by_itervars_avg_table(received_by_itervars_table, itervars_table)
 
-# Jammed join received_table
+# Jammed and Received in one table
 select_str <- get_itervars_prefixed_str(itervars_table, "jammed_by_itervars_avg_table")
 join_str <- get_itervars_join(itervars_table, "jammed_by_itervars_avg_table", "received_by_itervars_avg_table")
 received_and_jammed_query <- stringr::str_interp("SELECT ReceivedAnnouncements, JammedNumber, ${itervars_prefixed} FROM jammed_by_itervars_avg_table LEFT JOIN received_by_itervars_avg_table ON ${join_str}")
 print(received_and_jammed_query)
 received_and_jammed_table <- sqldf(received_and_jammed_query)
 print(received_and_jammed_table)
+
+# Jamed DIV Received
+itervars_str <- get_itervars_str(itervars_table)
+received_div_jammed_query <- stringr::str_interp("SELECT (ReceivedAnnouncements / JammedNumber) as ReceivedDivJammed, ${itervars_str} FROM received_and_jammed_table")
+print(received_div_jammed_query)
+received_div_jammed_table <- sqldf(received_div_jammed_query)
+print(received_div_jammed_table)
+
+accident_probabilities_values <- sqldf("select distinct AccidentProbability from received_div_jammed_table")
+number_of_vehicles_values <-sqldf("select distinct NumberOfVehicles from received_div_jammed_table")
+print(accident_probabilities_values)
+print(number_of_vehicles_values)
+plot_default(received_div_jammed_table, accident_probabilities_values, number_of_vehicles_values)
