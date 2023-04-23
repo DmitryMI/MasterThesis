@@ -6,6 +6,8 @@ library(ggplot2)
 source("scalars-loader.R")
 source("table-itervars.R")
 source("table-jammed-vehicles.R")
+source("table-vehicle-jam-time.R")
+source("table-vehicle-speed.R")
 source("table-received-announcements.R")
 source("plotting.R")
 
@@ -72,14 +74,14 @@ jammed_by_itervars_avg_table <- get_jammed_by_itervars_avg_table(jammed_by_iterv
 
 # Received announcements
 received_table <- get_received_announcements_table(scalars)
-received_by_run_table <- get_received_announcements_by_run_table(received_announcements_table)
+received_by_run_table <- get_received_announcements_by_run_table(received_table)
 received_by_itervars_table <- get_received_announcements_by_itervars_table(received_by_run_table, itervars_table, run_itervars_table)
 received_by_itervars_avg_table <- get_received_announcements_by_itervars_avg_table(received_by_itervars_table, itervars_table)
 
 # Jammed and Received in one table
 select_str <- get_itervars_prefixed_str(itervars_table, "jammed_by_itervars_avg_table")
 join_str <- get_itervars_join(itervars_table, "jammed_by_itervars_avg_table", "received_by_itervars_avg_table")
-received_and_jammed_query <- stringr::str_interp("SELECT ReceivedAnnouncements, JammedNumber, ${itervars_prefixed} FROM jammed_by_itervars_avg_table LEFT JOIN received_by_itervars_avg_table ON ${join_str}")
+received_and_jammed_query <- stringr::str_interp("SELECT ReceivedAnnouncements, JammedNumber, ${select_str} FROM jammed_by_itervars_avg_table LEFT JOIN received_by_itervars_avg_table ON ${join_str}")
 print(received_and_jammed_query)
 received_and_jammed_table <- sqldf(received_and_jammed_query)
 print(received_and_jammed_table)
@@ -91,8 +93,25 @@ print(received_div_jammed_query)
 received_div_jammed_table <- sqldf(received_div_jammed_query)
 print(received_div_jammed_table)
 
+# Time in jam
+jam_time_table1 <- get_vehicles_jam_time_table(scalars)
+jam_time_table2 <- get_vehicles_jam_time_by_run_table(jam_time_table1)
+jam_time_table3 <- get_vehicles_jam_time_by_itervars_table(jam_time_table2, itervars_table, run_itervars_table)
+jam_time_table <- get_jam_time_by_itervars_avg_table(jam_time_table3, itervars_table)
+print(jam_time_table)
+
+# Average vehicle speed
+speed_table1 <- get_vehicles_speed_table(scalars)
+speed_table2 <- get_vehicle_speed_by_run_table(speed_table1)
+speed_table3 <- get_vehicle_speed_by_itervars_table(speed_table2, itervars_table, run_itervars_table)
+speed_table <- get_vehicle_speed_by_itervars_avg_table(speed_table3, itervars_table)
+print(speed_table)
+
 accident_probabilities_values <- sqldf("select distinct AccidentProbability from received_div_jammed_table")
 number_of_vehicles_values <-sqldf("select distinct NumberOfVehicles from received_div_jammed_table")
 print(accident_probabilities_values)
 print(number_of_vehicles_values)
-plot_default(received_div_jammed_table, accident_probabilities_values, number_of_vehicles_values)
+plot_default(received_div_jammed_table, ReceivedDivJammed, accident_probabilities_values, number_of_vehicles_values)
+plot_default(jam_time_table, TotalTimeInJam, accident_probabilities_values, number_of_vehicles_values)
+plot_default(speed_table, Speed, accident_probabilities_values, number_of_vehicles_values)
+

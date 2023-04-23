@@ -34,7 +34,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   }
 }
 
-plot_default <- function(received_div_jammed_table, param1_values, param2_values){
+plot_default <- function(data_table, y_id, param1_values, param2_values){
   print("Drawing...")
 
   param1_name = names(param1_values)[1]
@@ -42,11 +42,12 @@ plot_default <- function(received_div_jammed_table, param1_values, param2_values
   param2_name = names(param2_values)[1]
   print(stringr::str_interp("Multiline param: ${param2_name}"))
   
-  map <- aes(x = NumberOfDrones, y = ReceivedDivJammed, color = NumberOfVehicles)
+  # ReceivedDivJammed
+  map <- aes(x = NumberOfDrones, y = {{ y_id }}, color = NumberOfVehicles)
   
   for(i in 1:nrow(param1_values)){
     param1_value <- param1_values[i,]
-    query_slice1 = stringr::str_interp("select * from received_div_jammed_table where ${param1_name} == ${param1_value}")
+    query_slice1 = stringr::str_interp("select * from data_table where ${param1_name} == ${param1_value}")
     data_slice1 <- sqldf(query_slice1)
     
     multiline_plot <- NULL
