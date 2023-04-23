@@ -10,7 +10,7 @@ echo "#!/bin/bash" > eval.jobfile
 echo "#SBATCH --ntasks=1" >> eval.jobfile
 echo "#SBATCH --cpus-per-task=1" >> eval.jobfile 
 echo "#SBATCH --partition=haswell" >> eval.jobfile
-echo "#SBATCH --mem-per-cpu=4096" >> eval.jobfile
+echo "#SBATCH --mem-per-cpu=8192" >> eval.jobfile
 echo "#SBATCH --time=04:00:00" >> eval.jobfile
 echo "#SBATCH --job-name=eval_drones_veins_project" >> eval.jobfile
 echo "#SBATCH --output=/home/dmmo937c/logs/eval_drones_veins_project-%j.out" >> eval.jobfile

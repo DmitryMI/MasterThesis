@@ -1,6 +1,7 @@
 mkdir -p $EVAL_DIR
 
-FLAGS="-v"
+# FLAGS="-v"
+FLAGS=""
 
 if [ -z "$PATH_TO_RAW" ]
 then
