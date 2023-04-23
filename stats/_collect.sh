@@ -14,7 +14,8 @@ then
     exit 1
 fi
 
-query=$(./get-scavetool-query.py)
+#query=$(./get-scavetool-query.py)
+query=$(./get-scavetool-query.sh)
 
 input=$(realpath "opp-configs.txt")
 while IFS= read -r opp_config
