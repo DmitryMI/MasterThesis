@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 with open("scavetool-variables.txt", "r") as f:
     lines = f.readlines()

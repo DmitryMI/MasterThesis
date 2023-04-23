@@ -22,6 +22,12 @@ do
     echo "Config: $opp_config"
     echo "Exporting $PATH_TO_RAW from to $EVAL_DIR/$opp_config.csv..."
     scavetool export $FLAGS -o $EVAL_DIR/$opp_config.csv -f "$query" $PATH_TO_RAW/$opp_config-*.sca
+    
+    if [ $? != 0 ]
+    then
+        exit 1
+    fi
+    
     echo "Done for $opp_config"
     echo ""
     
