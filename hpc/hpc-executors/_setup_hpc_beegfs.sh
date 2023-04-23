@@ -1,5 +1,16 @@
 #!/bin/bash
 
+if [ -z "$BEEGFS_WORKSPACE" ]
+then
+    echo "BEEGFS_WORKSPACE not defined!"
+    exit 1
+fi
+
+if [ -z "$SCRATCH_WORKSPACE" ]
+then
+    echo "SCRATCH_WORKSPACE not defined!"
+    exit 1
+fi
 
 # Allocating BeeGFS
 echo "Testing BeeGFS: $BEEGFS_WORKSPACE"

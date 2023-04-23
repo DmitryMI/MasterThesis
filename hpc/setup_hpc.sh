@@ -36,7 +36,7 @@ echo "Uploading hpc-executors scripts to HPC home directory..."
 . ./sync_executors.sh
 
 echo "Invoking BeeGFS allocation on HPC..."
-echo "source ./scripts/hpc/setvars.sh && cd ./scripts/hpc/hpc-executors/ source ./_setup_hpc_beegfs.sh && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
+echo "cd ./scripts/hpc/ && source ./setvars.sh && cd ./hpc-executors/ && source ./_setup_hpc_beegfs.sh && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
 if [ $? != 0 ]
 then
     echo "Failed to allocate BeeGFS."
