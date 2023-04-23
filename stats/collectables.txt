@@ -1,0 +1,4 @@
+totalTimeInJam
+receivedJammingAnnouncementsNum
+totalDistance
+totalTime
