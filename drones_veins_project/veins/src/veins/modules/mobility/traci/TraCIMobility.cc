@@ -55,8 +55,10 @@ void TraCIMobility::Statistics::initialize()
 	totalCO2Emission = 0;
 }
 
-void TraCIMobility::Statistics::watch(cSimpleModule&)
+void TraCIMobility::Statistics::watch(cSimpleModule& mobility)
 {
+	WATCH(totalDistance);
+	WATCH(totalTime);
 }
 
 void TraCIMobility::Statistics::recordScalars(cSimpleModule &module)
