@@ -73,7 +73,7 @@ def validate(schema, file_path, args):
             return False
 
         if entry_type not in schema:
-            if args.verbose:
+            if args.verbosity >= VERBOSITY_INFO:
                 print(f"Entry {entry_type} unknown!")
             return False
 
