@@ -406,6 +406,8 @@ FodyWeavers.xsd
 
 **/results/**
 **/stats/eval**
+**/stats/ScaveValidator-Report.txt
+
 
 **.cmdenv-log
 
