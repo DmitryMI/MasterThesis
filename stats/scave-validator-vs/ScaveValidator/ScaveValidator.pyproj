@@ -11,6 +11,9 @@
     <OutputPath>.</OutputPath>
     <Name>ScaveValidator</Name>
     <RootNamespace>ScaveValidator</RootNamespace>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>../scave-schema.txt "C:\Users\DmitriyPC\Documents\MEGA\Документы\TU Dresden Materials\Thesis\Drones\Results\results" -v 1</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
