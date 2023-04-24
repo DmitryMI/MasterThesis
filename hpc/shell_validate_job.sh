@@ -21,8 +21,7 @@ echo "SCRATCH_WORKSPACE = $SCRATCH_WORKSPACE"
 
 sshpass -f "$HPC_SSH_PASSWORD_FILE" scp $PYTHON_FILE_TO_SCHEDULE dmmo937c@taurusexport.hrsk.tu-dresden.de:$SCRATCH_WORKSPACE
 
-file_name=$(basename $PYTHON_FILE_TO_SCHEDULE)
-app="./run-stats.sh -v"
+app="run-stats.sh -v"
 
 cmd="srun --partition=haswell --ntasks=1 --nodes=1 --cpus-per-task=$CPUS --time=0:30:00 --mem-per-cpu=$MEM \"$app\""
-echo "cd $CODEBASE_DIR/stats && $cmd" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh -o LogLevel=error dmmo937c@taurus.hrsk.tu-dresden.de
+echo "cd $CODEBASE_DIR/MasterThesis/stats && $cmd" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh -o LogLevel=error dmmo937c@taurus.hrsk.tu-dresden.de

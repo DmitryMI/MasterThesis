@@ -70,6 +70,8 @@ def validate(schema, file_path, args):
         is_ok, entry_type, items = parse_line(line, args)
 
         if not is_ok:
+            if args.verbosity >= VERBOSITY_INFO:
+                print(f"Parser failed in file {file_path}: in line {i + 1} ({line_stip})")
             return False
 
         if entry_type not in schema:
@@ -81,7 +83,7 @@ def validate(schema, file_path, args):
 
         if items_number_expected != len(items):
             if args.verbosity >= VERBOSITY_INFO:
-                print(f"Validation failed in file {file_path}: wrong number of items for entry '{entry_type}' in line {i + 1}")
+                print(f"Validation failed in file {file_path}: wrong number of items for entry '{entry_type}' in line {i + 1} ({line_stip})")
             return False
 
     return True
