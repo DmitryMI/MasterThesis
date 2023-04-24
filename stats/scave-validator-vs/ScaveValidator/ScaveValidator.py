@@ -151,7 +151,11 @@ def main():
 
         valid = validate(schema, key, args)
         validation_list[key] = valid
-        print(f"\"{key}\" {valid}")
+        
+        if args.verbosity >= VERBOSITY_DEBUG:
+            print(f"\"{key}\" {valid}")
+        elif args.verbosity >= VERBOSITY_INFO and not valid:
+            print(f"\"{key}\" {valid}")
 
     if args.report is not None:
         if args.verbosity >= VERBOSITY_INFO:
