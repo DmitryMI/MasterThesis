@@ -77,7 +77,8 @@ def main():
     else:
         for root, dirs, files in os.walk(target_path, topdown=False):
             for f in files:
-                validation_list[f] = None
+                full_name = os.path.join(root, f)
+                validation_list[full_name] = None
 
     for key, value in validation_list.items():
         if value is not None:
