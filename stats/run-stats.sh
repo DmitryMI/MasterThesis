@@ -14,6 +14,7 @@ DO_RUN=0
 DO_COLLECT=0
 DO_EVAL=0
 DO_CLEAN=0
+DO_VALIDATE=0
 
 while getopts ":hbrcex-:" optchar; do
 	case ${optchar} in	
@@ -41,6 +42,10 @@ while getopts ":hbrcex-:" optchar; do
      	e)
      		echo "Evaluation enabled"
      		DO_EVAL=1	
+     		;;
+        e)
+     		echo "Validation enabled"
+     		DO_VALIDATE=1	
      		;;
      	x)
      	    echo "Clean enabled"
@@ -79,6 +84,36 @@ if [[ $DO_RUN == 1 ]]
     then
     echo "Running..."
     source _run-sim.sh
+    echo ""
+fi
+
+if [[ $DO_VALIDATE == 1 ]]
+then
+    echo "Validating..."
+    
+    if [ -z "$EVAL_DIR" ]
+    then
+        echo "run-stats.sh validate: EVAL_DIR not set!"
+        exit 1
+    fi
+    
+    mkdir -p "$EVAL_DIR"
+    
+    if [ -z "$PATH_TO_RAW" ]
+    then
+        PATH_TO_RAW="$SIMULATION_DIR/results"
+        echo "PATH_TO_RAW not set! Setting to default $PATH_TO_RAW"
+    else
+        echo "PATH_TO_RAW = $PATH_TO_RAW"        
+    fi
+    
+    ./scave-validator-vs/ScaveValidator/ScaveValidator.py ./scave-validator-vs/scave-schema.txt $PATH_TO_RAW -v -o ScaveValidator-Report.txt
+    
+    if [ $? != 0 ]
+    then
+        exit $?
+    fi
+    
     echo ""
 fi
 
