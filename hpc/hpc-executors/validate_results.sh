@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd ~/scripts/hpc/hpc-executors
 pwd
 
