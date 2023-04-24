@@ -108,7 +108,7 @@ then
         echo "PATH_TO_RAW = $PATH_TO_RAW"        
     fi
     
-    ./scave-validator-vs/ScaveValidator/ScaveValidator.py ./scave-validator-vs/scave-schema.txt "$PATH_TO_RAW" -v true -o ScaveValidator-Report.txt
+    ./scave-validator-vs/ScaveValidator/ScaveValidator.py ./scave-validator-vs/scave-schema.txt "$PATH_TO_RAW" -v 1 -o ScaveValidator-Report.txt
     
     if [ $? != 0 ]
     then
