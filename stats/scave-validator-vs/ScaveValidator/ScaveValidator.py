@@ -90,7 +90,7 @@ def main():
         print(f"\"{key}\" {valid}")
 
     if args.report is not None:
-        with open("ScaveValidator-Report.txt", "w") as report:
+        with open("args.report", "w") as report:
             for key, value in validation_list.items():
                 if value is None:
                     print("Error: dictionary value is None!")
