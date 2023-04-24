@@ -16,13 +16,14 @@ DO_EVAL=0
 DO_CLEAN=0
 DO_VALIDATE=0
 
-while getopts ":hbrcex-:" optchar; do
+while getopts ":hbrcevx-:" optchar; do
 	case ${optchar} in	
 		
         h) # display Help		 	
 		 	echo "-b to build"
 		 	echo "-r to run the simulation"
 		 	echo "-c to collect results using scavatool"
+		 	echo "-v to validate results using ScaveValidator"
 		 	echo "-e to plot results"
 		 	echo "No flag is equal to -brce"
 		 	exit;;
@@ -43,7 +44,7 @@ while getopts ":hbrcex-:" optchar; do
      		echo "Evaluation enabled"
      		DO_EVAL=1	
      		;;
-        e)
+        v)
      		echo "Validation enabled"
      		DO_VALIDATE=1	
      		;;
@@ -55,7 +56,7 @@ while getopts ":hbrcex-:" optchar; do
 	esac
 done
 
-if [ $DO_BUILD == 0 ] && [ $DO_RUN == 0 ] && [ $DO_COLLECT == 0 ] && [ $DO_EVAL == 0 ] && [ $DO_CLEAN == 0 ]
+if [ $DO_BUILD == 0 ] && [ $DO_RUN == 0 ] && [ $DO_COLLECT == 0 ] && [ $DO_EVAL == 0 ] && [ $DO_CLEAN == 0 ] && [ $DO_VALIDATE == 0 ]
 then
     echo "No action specified, doing the whole pipeline."
     DO_BUILD=1   
@@ -107,7 +108,7 @@ then
         echo "PATH_TO_RAW = $PATH_TO_RAW"        
     fi
     
-    ./scave-validator-vs/ScaveValidator/ScaveValidator.py ./scave-validator-vs/scave-schema.txt $PATH_TO_RAW -v -o ScaveValidator-Report.txt
+    ./scave-validator-vs/ScaveValidator/ScaveValidator.py ./scave-validator-vs/scave-schema.txt "$PATH_TO_RAW" -v true -o ScaveValidator-Report.txt
     
     if [ $? != 0 ]
     then
