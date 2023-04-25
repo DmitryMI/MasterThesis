@@ -2,3 +2,5 @@ totalTimeInJam
 receivedJammingAnnouncementsNum
 totalDistance
 totalTime
+repetition
+configname
