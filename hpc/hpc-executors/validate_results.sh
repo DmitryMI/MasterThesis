@@ -43,16 +43,18 @@ do
     hide_dirname="$fdirname-invalid"
     hide_dirpath="$fdirdirpath/$hide_dirname"
     hide_fpath="$hide_dirpath/$fname"
-    echo "Moving $failed_file_path to $hide_fpath"
     
-    if [ ! "$hide_dir_exists" ]
+    if [ "$hide_dir_exists" == 0 ]
     then
         if [ ! -d "$hide_dirpath" ] 
         then
+            echo "Creating directory $hide_dirpath..."
             mkdir -p "$hide_dirpath"
         fi        
         hide_dir_exists=1
     fi
+    
+    echo "Moving $failed_file_path to $hide_fpath"
     
     # mv $failed_file_path $hide_fpath
 done < "$input"
