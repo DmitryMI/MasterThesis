@@ -234,6 +234,7 @@ def main():
     parser.add_argument("--filters_file", required=False)
     parser.add_argument("-v", "--verbosity", required=False, type=int, default=log_level)
     parser.add_argument("-w", "--rewrite", required=False, type=bool, default=True)
+    parser.add_argument("--no_progress_bar", required=False, type=bool, default=False)
 
     args = parser.parse_args()
 
@@ -317,10 +318,16 @@ def main():
 
         progress = float(i) / len(sca_file_list)
         if last_reported_progress is None or progress - last_reported_progress >= PROGRESS_REPORT_STEP:
-            print_progress_bar( i, len(sca_file_list), prefix="Scave:",)
+            if not args.no_progress_bar:
+                print_progress_bar( i, len(sca_file_list), prefix="Scave:",)
+            else:
+                print(f"Scave: {progress:.2f}%")
             last_reported_progress = progress
-
-    print_progress_bar(len(sca_file_list), len(sca_file_list), prefix="Scave:",)
+            
+    if not args.no_progress_bar:
+        print_progress_bar(len(sca_file_list), len(sca_file_list), prefix="Scave:",)
+    else:
+        print(f"Scave: 100.00%")
 
 if __name__ == "__main__":
     main()

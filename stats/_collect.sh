@@ -4,7 +4,7 @@ mkdir -p $EVAL_DIR
 
 # SCAVETOOL_FLAGS="-v"
 SCAVETOOL_FLAGS=""
-SCAVE_FLAGS="-v 1"
+SCAVE_FLAGS="-v 1 --no_progress_bar"
 
 if [ -z "$PATH_TO_RAW" ]
 then
@@ -27,7 +27,7 @@ do
     echo "Config: $opp_config"
     echo "Exporting from $PATH_TO_RAW to $EVAL_DIR/$opp_config.csv..."
     # scavetool export $SCAVETOOL_FLAGS -o $EVAL_DIR/$opp_config.csv -f "$query" $PATH_TO_RAW/$opp_config-*.sca
-    python3 ./scave-vs/Scave/Scave.py $PATH_TO_RAW $EVAL_DIR/$opp_config.csv -r "$opp_config-.*" -s ./scave-validator-vs/scave-schema.txt --filters_file "scavetool-variables.txt" $SCAVE_FLAGS
+    python3 ./scave-vs/Scave/Scave.py "$PATH_TO_RAW" "$EVAL_DIR/$opp_config.csv" -r "$opp_config-.*" -s "./scave-validator-vs/scave-schema.txt" --filters_file "scavetool-variables.txt" $SCAVE_FLAGS
     
     if [ $? != 0 ]
     then
