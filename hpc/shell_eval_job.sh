@@ -8,7 +8,7 @@ fi
 CPUS=1
 
 # Out of Memory with 16384 MB on ~30k files!
-MEM=1024
+MEM=2046
 
 # Timeout with 1:00:00 on ~30k files!
 TIME="1:00:00"
