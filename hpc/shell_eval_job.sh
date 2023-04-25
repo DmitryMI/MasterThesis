@@ -8,10 +8,10 @@ fi
 CPUS=1
 
 # Out of Memory with 16384 MB on ~30k files!
-MEM=32768
+MEM=2046
 
 # Timeout with 1:00:00 on ~30k files!
-TIME="5:00:00"
+TIME="1:00:00"
 
 ./sync_executors.sh
 
