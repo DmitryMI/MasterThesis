@@ -9,6 +9,12 @@ then
     SIM_AUTO_MANAGE_SUMO=0
 fi
 
+if [ -z "$OPP_CONFIG_NAME" ]
+then
+    echo "OPP_CONFIG_NAME not defined!"
+    exit 1
+fi
+
 if [ $SIM_AUTO_MANAGE_SUMO != 0 ]
 then
     echo "Starting veins_launchd from $VEINS_LAUNCHD_PATH..."
