@@ -295,6 +295,10 @@ def main():
             full_name = os.path.join(root, f)
             sca_file_list.append(full_name)
 
+    if len(sca_file_list) == 0:
+        slog("Nothing to do.")
+        quit(0)
+
     last_reported_progress = None
     for i, sca_file_path in enumerate(sca_file_list):
         scave = ScaveFile(sca_file_path, output_path, filt_list, schema)
