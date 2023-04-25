@@ -11,6 +11,7 @@ import time
 VERBOSITY_SILENT = 0
 VERBOSITY_INFO = 1
 VERBOSITY_DEBUG = 2
+VERBOSITY_VERY_VERBOSE = 3
 
 TABLE_HEADER = "run,type,module,name,attrname,attrvalue,value"
 TABLE_COLUMNS = TABLE_HEADER.split(',')
@@ -101,7 +102,7 @@ def parse_line(line):
     if token != "":
         items.append(token)
 
-    slog(f"Line parser info: {entry_type} {items}", VERBOSITY_DEBUG)
+    slog(f"Line parser info: {entry_type} {items}", VERBOSITY_VERY_VERBOSE)
 
     return True, entry_type, items
 
@@ -117,9 +118,10 @@ def create_csv(csv_path, rewrite):
         csv.write(TABLE_HEADER)
 
 class ScaveFile:
-    def __init__(self, sca_path, csv_path, filter_list, schema=None):
+    def __init__(self, sca_path, csv_path, filter_list, schema=None, csv_file=None):
         self.sca_path = sca_path
         self.csv_path = csv_path
+        self.csv_file = csv_file
         self.filter_list = filter_list
         self.schema = schema
 
@@ -188,16 +190,20 @@ class ScaveFile:
             else:
                 csv_values.append("")
 
-        with open(self.csv_path, "a") as csv:
-            csv.write(",".join(csv_values))
-            csv.write("\n")
+        if self.csv_file is None:
+            with open(self.csv_path, "a") as csv:
+                csv.write(",".join(csv_values))
+                csv.write("\n")
+        else:
+            csv_file.write(",".join(csv_values))
+            csv_file.write("\n")
 
         return True
 
     def scave_file(self):
         with open(self.sca_path, "r") as f:
             lines = f.readlines()
-
+        
         for i, line in enumerate(lines):
             line_stip = line.rstrip()
             if not line_stip:
@@ -222,7 +228,7 @@ class ScaveFile:
 
             scave_ok = self._scave_line(entry_type, items)
             if not scave_ok:
-                slog(f"Line {line_stip} in file {self.sca_path} filtered out!", VERBOSITY_DEBUG)                
+                slog(f"Line {line_stip} in file {self.sca_path} filtered out!", VERBOSITY_VERY_VERBOSE)                
 
         return True
 
@@ -328,17 +334,19 @@ def main():
         quit(0)
 
     last_reported_progress = None
-    for i, sca_file_path in enumerate(sca_file_list):
-        scave = ScaveFile(sca_file_path, output_path, filt_list, schema)
-        scave.scave_file()
+    
+    with open(output_path, "a") as csv_file:    
+        for i, sca_file_path in enumerate(sca_file_list):
+            scave = ScaveFile(sca_file_path, output_path, filt_list, schema, csv_file)
+            scave.scave_file()
 
-        progress = float(i) / len(sca_file_list)
-        if last_reported_progress is None or progress - last_reported_progress >= PROGRESS_REPORT_STEP:
-            if not args.no_progress_bar:
-                print_progress_bar( i, len(sca_file_list), prefix="Scave:",)
-            else:
-                print(f"Scave: {progress:.2f}%")
-            last_reported_progress = progress
+            progress = float(i) / len(sca_file_list)
+            if last_reported_progress is None or progress - last_reported_progress >= PROGRESS_REPORT_STEP:
+                if not args.no_progress_bar:
+                    print_progress_bar( i, len(sca_file_list), prefix="Scave:",)
+                else:
+                    print(f"Scave: {progress:.2f}%")
+                last_reported_progress = progress
             
     if not args.no_progress_bar:
         print_progress_bar(len(sca_file_list), len(sca_file_list), prefix="Scave:",)
