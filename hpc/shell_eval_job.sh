@@ -30,4 +30,5 @@ echo "SINGULARITY_WORKSPACE_MNT = $SINGULARITY_WORKSPACE_MNT"
 app="$CODEBASE_DIR/MasterThesis/hpc/hpc-executors/hpc_eval_project.sh"
 
 cmd="srun --partition=haswell --ntasks=1 --nodes=1 --cpus-per-task=$CPUS --time=$TIME --mem-per-cpu=$MEM $app"
-echo "cd $SCRATCH_WORKSPACE/MasterThesis/hpc/hpc-executors && $cmd" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh -o LogLevel=error dmmo937c@taurus.hrsk.tu-dresden.de
+echo "cd $CODEBASE_DIR/MasterThesis/hpc/hpc-executors && $cmd" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh -o LogLevel=error dmmo937c@taurus.hrsk.tu-dresden.de
+# echo "cd $SCRATCH_WORKSPACE && $cmd" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh -o LogLevel=error dmmo937c@taurus.hrsk.tu-dresden.de
