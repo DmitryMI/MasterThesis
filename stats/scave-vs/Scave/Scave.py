@@ -16,7 +16,7 @@ TABLE_HEADER = "run,type,module,name,attrname,attrvalue,value"
 TABLE_COLUMNS = TABLE_HEADER.split(',')
 
 PROGRESS_REPORT_STEP = 0.01
-FILE_LIST_SIZE_REPORT_STEP = 50
+FILE_LIST_SIZE_REPORT_STEP = 1000
 
 log_level = VERBOSITY_INFO
 
