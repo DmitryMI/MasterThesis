@@ -138,6 +138,10 @@ class ScaveFile:
             return False
 
         elif entry_type == "attr":
+            attrname = items[0]
+            if self.filter_list and attrname not in self.filter_list:
+                return False
+
             row_values = {}
             row_values["run"] = self._run
             row_values["type"] = "runattr"
@@ -152,6 +156,10 @@ class ScaveFile:
             row_values["attrvalue"] = items[1]
 
         elif entry_type == "param":
+            attrname = items[0]
+            if self.filter_list and attrname not in self.filter_list:
+                return False
+
             row_values = {}
             row_values["run"] = self._run
             row_values["type"] = "param"
