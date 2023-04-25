@@ -45,9 +45,10 @@ do
     hide_fpath="$hide_dirpath/$fname"
     echo "Moving $failed_file_path to $hide_fpath"
     
-    if [ ! $hide_dir_exists ]
+    if [ ! "$hide_dir_exists" ]
     then
-        if [ ! -d "$hide_dirpath" ] then
+        if [ ! -d "$hide_dirpath" ] 
+        then
             mkdir -p "$hide_dirpath"
         fi        
         hide_dir_exists=1
