@@ -265,6 +265,8 @@ def main():
     filt_str = args.filters
     if filt_str is not None:
         filt_list = filt_str.split('|')
+    else:
+        filt_list = None
 
     if args.filters_file is not None:
         if not os.path.exists(args.filters_file):
