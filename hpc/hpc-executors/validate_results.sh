@@ -54,7 +54,21 @@ do
         hide_dir_exists=1
     fi
     
-    echo "Moving $failed_file_path to $hide_fpath"
+    if [ ! -f "$failed_file_path" ]
+    then
+        echo "File ..$fname does not exist. Skipping"
+    else
+        echo "Moving $fname to ../$hide_dirname/$fname"
     
-    # mv $failed_file_path $hide_fpath
+        mv $failed_file_path $hide_fpath
+    
+        if [ $? != 0 ]
+        then
+            echo "Failed to move file!"
+            exit 1
+        fi
+    fi
+    
+   
+    
 done < "$input"
