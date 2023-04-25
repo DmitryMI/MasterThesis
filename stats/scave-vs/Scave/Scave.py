@@ -20,7 +20,7 @@ def slog(msg, level=VERBOSITY_INFO):
     if level <= log_level:
         print(msg)
 
-def print_progress_bar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
+def print_progress_bar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '*', printEnd = "\r"):
     """
     Call in a loop to create terminal progress bar
     @params:

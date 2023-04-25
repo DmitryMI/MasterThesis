@@ -13,7 +13,7 @@ MEM=2046
 # Timeout with 1:00:00 on ~30k files!
 TIME="1:00:00"
 
-./sync_executors.sh
+# ./sync_executors.sh
 
 echo "cd ./scripts/hpc/hpc-executors/ && source ./clone_repo.sh && exit" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh dmmo937c@taurus.hrsk.tu-dresden.de
 if [ $? != 0 ]

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mkdir -p $EVAL_DIR
 
 # SCAVETOOL_FLAGS="-v"
