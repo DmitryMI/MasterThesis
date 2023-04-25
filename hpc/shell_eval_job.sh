@@ -11,7 +11,7 @@ CPUS=1
 MEM=2048
 
 # Timeout with 1:00:00 on ~30k files!
-TIME="1:00:00"
+TIME="2:00:00"
 
 # ./sync_executors.sh
 
