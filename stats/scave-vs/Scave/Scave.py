@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-print("Before imports")
+# print("Before imports")
 
 import argparse
 import os
@@ -16,7 +16,7 @@ TABLE_HEADER = "run,type,module,name,attrname,attrvalue,value"
 TABLE_COLUMNS = TABLE_HEADER.split(',')
 
 PROGRESS_REPORT_STEP = 0.01
-FILE_LIST_SIZE_REPORT_STEP = 1000
+FILE_LIST_SIZE_REPORT_STEP = 50
 
 log_level = VERBOSITY_INFO
 
@@ -221,9 +221,9 @@ class ScaveFile:
 def main():
     global log_level
 
-    print("Scave by Dmitriy")
+    # print("Scave by Dmitriy")
     
-    time.sleep(3)
+    # time.sleep(3)
     
     parser = argparse.ArgumentParser(
             prog="Scave Tool (better one)",
@@ -261,6 +261,8 @@ def main():
 
     if file_regex_str is not None:
         fregex = re.compile(file_regex_str)
+    else:
+        fregex = None
 
     if schema_path is not None and not os.path.exists(schema_path):
         print(f"File {schema_path} does not exist!")
@@ -297,7 +299,7 @@ def main():
     last_reported_list_size = 0
     for root, dirs, files in os.walk(target_path, topdown=False):
         for f in files:
-            print(f)
+            # print(f)
             if ".sca" not in f:
                 continue
 

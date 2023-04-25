@@ -8,7 +8,7 @@ fi
 CPUS=1
 
 # Out of Memory with 16384 MB on ~30k files!
-MEM=4096
+MEM=2048
 
 # Timeout with 1:00:00 on ~30k files!
 TIME="1:00:00"
@@ -30,5 +30,5 @@ echo "SINGULARITY_WORKSPACE_MNT = $SINGULARITY_WORKSPACE_MNT"
 app="$CODEBASE_DIR/MasterThesis/hpc/hpc-executors/hpc_eval_project.sh"
 
 cmd="srun --partition=haswell --ntasks=1 --nodes=1 --cpus-per-task=$CPUS --time=$TIME --mem-per-cpu=$MEM $app"
-echo "cd $CODEBASE_DIR/MasterThesis/hpc/hpc-executors && $cmd" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh -o LogLevel=error dmmo937c@taurus.hrsk.tu-dresden.de
+echo "cd $CODEBASE_DIR/MasterThesis/ && $cmd" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh -t dmmo937c@taurus.hrsk.tu-dresden.de
 # echo "cd $SCRATCH_WORKSPACE && $cmd" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh -o LogLevel=error dmmo937c@taurus.hrsk.tu-dresden.de
