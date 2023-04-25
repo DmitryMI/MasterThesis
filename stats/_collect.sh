@@ -27,7 +27,9 @@ do
     echo "Config: $opp_config"
     echo "Exporting from $PATH_TO_RAW to $EVAL_DIR/$opp_config.csv..."
     # scavetool export $SCAVETOOL_FLAGS -o $EVAL_DIR/$opp_config.csv -f "$query" $PATH_TO_RAW/$opp_config-*.sca
-    python3 ./scave-vs/Scave/Scave.py "$PATH_TO_RAW" "$EVAL_DIR/$opp_config.csv" -r "$opp_config-.*" -s "./scave-validator-vs/scave-schema.txt" --filters_file "scavetool-variables.txt" $SCAVE_FLAGS
+    # regex="$opp_config-.*"
+    regex="$opp_config-.*"
+    python3 ./scave-vs/Scave/Scave.py "$PATH_TO_RAW" "$EVAL_DIR/$opp_config.csv" -r "$regex" -s "./scave-validator-vs/scave-schema.txt" --filters_file "scavetool-variables.txt" $SCAVE_FLAGS
     
     if [ $? != 0 ]
     then

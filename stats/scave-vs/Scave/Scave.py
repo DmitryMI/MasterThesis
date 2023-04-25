@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 print("Before imports")
 
@@ -6,6 +6,7 @@ import argparse
 import os
 import os.path
 import re
+import time
 
 VERBOSITY_SILENT = 0
 VERBOSITY_INFO = 1
@@ -222,6 +223,8 @@ def main():
 
     print("Scave by Dmitriy")
     
+    time.sleep(3)
+    
     parser = argparse.ArgumentParser(
             prog="Scave Tool (better one)",
             description="Converting .sca files into .csv tables",
@@ -294,6 +297,7 @@ def main():
     last_reported_list_size = 0
     for root, dirs, files in os.walk(target_path, topdown=False):
         for f in files:
+            print(f)
             if ".sca" not in f:
                 continue
 
