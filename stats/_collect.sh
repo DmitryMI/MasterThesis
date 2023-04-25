@@ -22,7 +22,7 @@ input=$(realpath "opp-configs.txt")
 while IFS= read -r opp_config
 do
     echo "Config: $opp_config"
-    echo "Exporting $PATH_TO_RAW from to $EVAL_DIR/$opp_config.csv..."
+    echo "Exporting from $PATH_TO_RAW to $EVAL_DIR/$opp_config.csv..."
     scavetool export $FLAGS -o $EVAL_DIR/$opp_config.csv -f "$query" $PATH_TO_RAW/$opp_config-*.sca
     
     if [ $? != 0 ]
