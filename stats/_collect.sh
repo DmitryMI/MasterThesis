@@ -4,7 +4,7 @@ mkdir -p $EVAL_DIR
 
 # SCAVETOOL_FLAGS="-v"
 SCAVETOOL_FLAGS=""
-SCAVE_FLAGS="-v 1 --no_progress_bar"
+SCAVE_FLAGS="-v 1 --no_progress_bar true"
 
 if [ -z "$PATH_TO_RAW" ]
 then

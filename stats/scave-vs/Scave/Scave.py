@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+print("Before imports")
+
 import argparse
 import os
 import os.path
