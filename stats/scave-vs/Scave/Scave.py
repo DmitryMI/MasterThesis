@@ -13,6 +13,7 @@ TABLE_HEADER = "run,type,module,name,attrname,attrvalue,value"
 TABLE_COLUMNS = TABLE_HEADER.split(',')
 
 PROGRESS_REPORT_STEP = 0.01
+FILE_LIST_SIZE_REPORT_STEP = 1000
 
 log_level = VERBOSITY_INFO
 
@@ -280,10 +281,12 @@ def main():
             filt_line = filt_line.rstrip()
             filt_list.append(filt_line)    
 
+    slog(f"Filter list: {filt_list}")
     create_csv(output_path, args.rewrite)
 
+    slog(f"Enumerating files...")
     sca_file_list = []
-
+    last_reported_list_size = 0
     for root, dirs, files in os.walk(target_path, topdown=False):
         for f in files:
             if ".sca" not in f:
@@ -294,7 +297,13 @@ def main():
 
             full_name = os.path.join(root, f)
             sca_file_list.append(full_name)
-
+            
+            if len(sca_file_list) - last_reported_list_size > FILE_LIST_SIZE_REPORT_STEP:
+                slog(f"Found {len(sca_file_list)} files so far...")
+                last_reported_list_size = len(sca_file_list)
+    
+    slog(f"Found {len(sca_file_list)} files.")
+    
     if len(sca_file_list) == 0:
         slog("Nothing to do.")
         quit(0)
