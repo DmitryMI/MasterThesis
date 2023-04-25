@@ -28,5 +28,5 @@ echo "SCRATCH_WORKSPACE = $SCRATCH_WORKSPACE"
 # app="~/scripts/hpc/hpc-executors/validate_results.sh"
 app="$CODEBASE_DIR/MasterThesis/hpc/hpc-executors/validate_results.sh"
 
-cmd="srun --partition=haswell --ntasks=1 --nodes=1 --cpus-per-task=$CPUS --time=0:30:00 --mem-per-cpu=$MEM $app"
+cmd="srun --partition=haswell --ntasks=1 --nodes=1 --cpus-per-task=$CPUS --time=5:00:00 --mem-per-cpu=$MEM $app"
 echo "cd $CODEBASE_DIR/MasterThesis/stats && $cmd" | sshpass -f "$HPC_SSH_PASSWORD_FILE" ssh -o LogLevel=error dmmo937c@taurus.hrsk.tu-dresden.de

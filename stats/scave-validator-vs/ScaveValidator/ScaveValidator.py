@@ -105,7 +105,6 @@ def read_schema(schema_path, args):
     return schema
 
 def main():
-
     parser = argparse.ArgumentParser(
             prog="Scave Validator",
             description="Validates .sca files",
