@@ -218,6 +218,8 @@ class ScaveFile:
 def main():
     global log_level
 
+    print("Scave by Dmitriy")
+    
     parser = argparse.ArgumentParser(
             prog="Scave Tool (better one)",
             description="Converting .sca files into .csv tables",
