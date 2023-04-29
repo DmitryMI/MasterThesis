@@ -20,6 +20,7 @@
 #include "rebroadcasting/RebroadcastDecider.h"
 #include "CarJammingAnnouncement_m.h"
 #include "veins/base/utils/SimpleAddress.h"
+#include <vector>
 
 namespace drones_veins_project
 {
@@ -30,6 +31,7 @@ namespace drones_veins_project
 
 		int rebroadcastDeciderInGate;
 		veins::LAddress::L2Type address;
+		std::vector<double> latencies;
 
 	protected:
 		RebroadcastDecider* getRebroadcastDecider();
@@ -48,6 +50,7 @@ namespace drones_veins_project
 		virtual void handleMessage(cMessage* msg) override;
 
 		virtual void initialize(int stage) override;
+		virtual void finish() override;
 
 		int getRebroadcastDeciderInGate();
 

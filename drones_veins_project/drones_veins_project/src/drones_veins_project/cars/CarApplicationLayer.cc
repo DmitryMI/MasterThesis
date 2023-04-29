@@ -81,6 +81,8 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 			msg->setCarRoadId(mobility->getRoadId().c_str());
 			msg->setSenderAddress(getAddress());
 			msg->setSerial(messageSerialCounter);
+			msg->setTimestamp();
+			msg->setSenderTimestamp(simTime());
 			messageSerialCounter++;
 			sendDown(msg);
 		}

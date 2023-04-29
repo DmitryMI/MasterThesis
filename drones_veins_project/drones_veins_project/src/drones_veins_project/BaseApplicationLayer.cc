@@ -68,6 +68,24 @@ void BaseApplicationLayer::initialize(int stage)
 	}
 }
 
+void BaseApplicationLayer::finish()
+{
+	veins::DemoBaseApplLayer::finish();
+	double latency_avg = 0;
+	if (latencies.size() > 0)
+	{
+		double latency_sum = 0;
+		for (double latency : latencies)
+		{
+			latency_sum += latency;
+		}
+
+		latency_avg = latency_sum / latencies.size();
+	}
+
+	recordScalar("latencyAverage", latency_avg);
+}
+
 void BaseApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
 {
 	DemoBaseApplLayer::onWSM(wsm);
@@ -119,6 +137,11 @@ void BaseApplicationLayer::handleSelfMsg(cMessage *msg)
 
 void BaseApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *msg)
 {
+	double time = simTime().dbl();
+	double latency = time - msg->getSenderTimestamp().dbl();
+	ASSERT(latency > 0);
+	latencies.push_back(latency);
+
 	RebroadcastDecider *rebroadcastDecider = getRebroadcastDecider();
 
 	if (rebroadcastDecider->shouldRebroadcast(msg))
