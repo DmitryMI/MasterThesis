@@ -3,3 +3,4 @@ receivedJammingAnnouncementsNum
 totalDistance
 totalTime
 busyTime
+latencyAverage
