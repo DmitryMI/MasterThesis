@@ -108,6 +108,9 @@ speed_table3 <- get_vehicle_speed_by_itervars_table(speed_table2, itervars_table
 speed_table <- get_vehicle_speed_by_itervars_avg_table(speed_table3, itervars_table)
 print(speed_table)
 
+# Channel busy time ratio
+
+
 accident_probabilities_values <- sqldf("select distinct AccidentProbability from received_div_jammed_table")
 number_of_vehicles_values <-sqldf("select distinct NumberOfVehicles from received_div_jammed_table")
 print(accident_probabilities_values)

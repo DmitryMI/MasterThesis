@@ -2,3 +2,4 @@ totalTimeInJam
 receivedJammingAnnouncementsNum
 totalDistance
 totalTime
+busyTime
