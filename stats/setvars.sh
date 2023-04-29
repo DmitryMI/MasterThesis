@@ -16,7 +16,6 @@ else
     echo "SETVARS_GLOBAL_GUARD already set to $SETVARS_GLOBAL_GUARD"
 fi
 
-OPP_CONFIG_NAME="Evaluation"
 EVAL_DIR=$(pwd)/eval
 VEINS_LAUNCHD_PATH="$INSTALLATION_DIR_VEINS/veins/bin/veins_launchd"
 MAKE_DIR=$(realpath ../drones_veins_project)

@@ -43,7 +43,8 @@ get_itervars_join <- function(itervars_table, prefix1, prefix2){
 }
 
 option_list = list(
-  make_option(c("-i", "--collected_csv"), type="character", default="../eval/Evaluation.csv", help="Path to collected CSV file", metavar="character")
+  make_option(c("-i", "--collected_csv"), type="character", default="../eval/Evaluation.csv", help="Path to collected CSV file", metavar="character"),
+  make_option(c("-o", "--output_dir"), type="character", default="../eval", help="Path to output directory", metavar="character")
 ); 
 
 opt_parser = OptionParser(option_list=option_list);
@@ -111,7 +112,20 @@ accident_probabilities_values <- sqldf("select distinct AccidentProbability from
 number_of_vehicles_values <-sqldf("select distinct NumberOfVehicles from received_div_jammed_table")
 print(accident_probabilities_values)
 print(number_of_vehicles_values)
-plot_default(received_div_jammed_table, ReceivedDivJammed, accident_probabilities_values, number_of_vehicles_values)
-plot_default(jam_time_table, TotalTimeInJam, accident_probabilities_values, number_of_vehicles_values)
-plot_default(speed_table, Speed, accident_probabilities_values, number_of_vehicles_values)
 
+time <- Sys.time()
+
+pdf_name <- paste(opp_config_name, "-ReceivedAnnouncements-", time, ".pdf", sep="")
+pdf(pdf_name)
+plot_default(received_div_jammed_table, ReceivedDivJammed, accident_probabilities_values, number_of_vehicles_values)
+dev.off()
+
+pdf_name <- paste(opp_config_name, "-JamTime-", time, ".pdf", sep="")
+pdf(pdf_name)
+plot_default(jam_time_table, TotalTimeInJam, accident_probabilities_values, number_of_vehicles_values)
+dev.off()
+
+pdf_name <- paste(opp_config_name, "-VehicleSpeed-", time, ".pdf", sep="")
+pdf(pdf_name)
+plot_default(speed_table, Speed, accident_probabilities_values, number_of_vehicles_values)
+dev.off()

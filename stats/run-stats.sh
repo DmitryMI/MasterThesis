@@ -145,10 +145,25 @@ fi
 if [[ $DO_EVAL == 1 ]]
 then
     echo "Evaluating..."
-    cd $EVAL_DIR
-    Rscript ../_eval-jammed-vehicles-num.R --opp_config $OPP_CONFIG_NAME
-    echo ""
-    Rscript ../_eval-received-announcements-num.R --opp_config $OPP_CONFIG_NAME
+    
+    input=$(realpath "opp-configs.txt")
+    while IFS= read -r opp_config
+    do
+        echo "Config: $opp_config"
+        echo "Evaluating from $EVAL_DIR/$opp_config.csv to $EVAL_DIR/$opp_config.pdf..."
+        
+        Rscript ./r-eval-scripts/main.R -i $EVAL_DIR/$opp_config.csv -o $EVAL_DIR
+
+        if [ $? != 0 ]
+        then
+            exit 1
+        fi
+        
+        echo "Done for $opp_config"
+        echo ""
+        
+    done < "$input"
+    
     
     echo ""
 fi
