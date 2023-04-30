@@ -409,6 +409,7 @@ FodyWeavers.xsd
 **/stats/ScaveValidator-Report.txt
 **/hpc/eval.jobfile*
 **/hpc/run.jobfile*
+**.Rhistory
 
 **.cmdenv-log
 
