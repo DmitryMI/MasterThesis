@@ -405,7 +405,7 @@ FodyWeavers.xsd
 **/.settings/language.settings.xml
 
 **/results/**
-**/stats/eval**
+**/**/eval**
 **/stats/ScaveValidator-Report.txt
 **/hpc/eval.jobfile*
 **/hpc/run.jobfile*

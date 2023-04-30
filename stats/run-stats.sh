@@ -152,7 +152,8 @@ then
         echo "Config: $opp_config"
         echo "Evaluating from $EVAL_DIR/$opp_config.csv to $EVAL_DIR/$opp_config.pdf..."
         
-        Rscript ./r-eval-scripts/main.R -i $EVAL_DIR/$opp_config.csv -o $EVAL_DIR
+        cd ./r-eval-scripts
+        Rscript ./main.R -i $EVAL_DIR/$opp_config.csv -o $EVAL_DIR
 
         if [ $? != 0 ]
         then
