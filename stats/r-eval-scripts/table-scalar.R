@@ -1,3 +1,10 @@
+get_scalar_table_where <- function(scalars, param_name, where_str){
+  query <- stringr::str_interp("select Run, Module, Value as ${param_name} from scalars where Name == '${param_name}' AND ${where_str}")
+  print(query)
+  table <- sqldf(query)
+  return(table)
+}
+
 get_scalar_table <- function(scalars, param_name){
   query <- stringr::str_interp("select Run, Module, Value as ${param_name} from scalars where Name == '${param_name}'")
   print(query)

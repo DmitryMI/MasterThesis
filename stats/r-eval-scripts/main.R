@@ -119,7 +119,8 @@ busytime_table3 <- get_scalar_by_itervars_table(busytime_table2, itervars_table,
 busytime_table <- get_scalar_by_itervars_avg_table(busytime_table3, itervars_table, "busyTime")
 
 # E2E Latency
-latency_table1 <- get_scalar_table(scalars, "latencyAverage")
+# latency_table1 <- get_scalar_table(scalars, "latencyAverage")
+latency_table1 <- get_scalar_table_where(scalars, "latencyAverage", "Module LIKE '%node%'")
 latency_table2 <- get_scalar_by_run_table(latency_table1, "latencyAverage")
 latency_table3 <- get_scalar_by_itervars_table(latency_table2, itervars_table, run_itervars_table, "latencyAverage")
 latency_table <- get_scalar_by_itervars_avg_table(latency_table3, itervars_table, "latencyAverage")
