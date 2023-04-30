@@ -116,6 +116,7 @@ def create_csv(csv_path, rewrite):
     
     with open(csv_path, "w") as csv:
         csv.write(TABLE_HEADER)
+        csv.write("\n")
 
 class ScaveFile:
     def __init__(self, sca_path, csv_path, filter_list, schema=None, csv_file=None):

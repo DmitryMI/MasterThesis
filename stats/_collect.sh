@@ -20,6 +20,7 @@ fi
 
 #query=$(./get-scavetool-query.py)
 query=$(./get-scavetool-query.sh)
+echo "Scave query: $query"
 
 input=$(realpath "opp-configs.txt")
 while IFS= read -r opp_config

@@ -157,8 +157,11 @@ then
 
         if [ $? != 0 ]
         then
+            cd ..
             exit 1
         fi
+        
+        cd ..
         
         echo "Done for $opp_config"
         echo ""
