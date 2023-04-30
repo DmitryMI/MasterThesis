@@ -1,18 +1,11 @@
-cd $SIMULATION_DIR
 
 LAUNCHD_PORT=9998 # Not used
-OPP_RUNALL_JOBS=8
+OPP_RUNALL_JOBS=16
 OPP_RUNALL_BATCH=4
 
 if [ -z "$SIM_AUTO_MANAGE_SUMO" ]
 then
     SIM_AUTO_MANAGE_SUMO=0
-fi
-
-if [ -z "$OPP_CONFIG_NAME" ]
-then
-    echo "OPP_CONFIG_NAME not defined!"
-    exit 1
 fi
 
 if [ $SIM_AUTO_MANAGE_SUMO != 0 ]
@@ -22,9 +15,29 @@ then
     if [ $? != 0 ]; then exit $?; fi
 fi
 
-opp_runall -b$OPP_RUNALL_BATCH -j$OPP_RUNALL_JOBS opp_run -m -u Cmdenv -c $OPP_CONFIG_NAME -n .:../../src/drones_veins_project:../../../veins/examples/veins:../../../veins/src/veins --image-path=../../images:../../../veins/images -l ../../src/drones_veins_project -l ../../../veins/src/veins omnetpp.ini
+input=$(realpath "opp-configs.txt")
+while IFS= read -r opp_config
+do
+    echo "Config: $opp_config"
+    echo "Evaluating from $EVAL_DIR/$opp_config.csv to $EVAL_DIR/$opp_config.pdf..."
+        
+    cd $SIMULATION_DIR
 
-cd $WORKING_DIR
+    opp_runall -b$OPP_RUNALL_BATCH -j$OPP_RUNALL_JOBS opp_run -m -u Cmdenv -c $opp_config -n .:../../src/drones_veins_project:../../../veins/examples/veins:../../../veins/src/veins --image-path=../../images:../../../veins/images -l ../../src/drones_veins_project -l ../../../veins/src/veins omnetpp.ini --repeat=10
+
+
+    if [ $? != 0 ]
+    then
+        cd $WORKING_DIR
+        exit 1
+    fi
+    
+    cd $WORKING_DIR
+        
+    echo "Done for $opp_config"        
+    echo ""
+        
+done < "$input"
 
 if [ $SIM_AUTO_MANAGE_SUMO != 0 ]
 then

@@ -195,8 +195,8 @@ class ScaveFile:
                 csv.write(",".join(csv_values))
                 csv.write("\n")
         else:
-            csv_file.write(",".join(csv_values))
-            csv_file.write("\n")
+            self.csv_file.write(",".join(csv_values))
+            self.csv_file.write("\n")
 
         return True
 
