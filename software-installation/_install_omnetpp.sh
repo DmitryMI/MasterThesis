@@ -1,6 +1,13 @@
 #!/bin/bash
 
-OMPP_LINK="https://github.com/omnetpp/omnetpp/releases/download/omnetpp-5.7/omnetpp-5.7-linux-x86_64.tgz"
+if [ -z "$OMNETPP_VER" ]
+then
+    echo "OMNETPP_VER not set!"
+    exit 1
+fi
+
+# https://github.com/omnetpp/omnetpp/releases/download/omnetpp-6.0.1/omnetpp-6.0.1-linux-x86_64.tgz
+OMPP_LINK="https://github.com/omnetpp/omnetpp/releases/download/omnetpp-$OMNETPP_VER/omnetpp-$OMNETPP_VER-linux-x86_64.tgz"
 
 if [ $SETVARS_GUARD != 1 ]
 then
@@ -11,22 +18,29 @@ fi
 
 printf "Installing OMNeT++...\n\n"
 
-if test -f "$INSTALLATION_DIR/omnetpp-5.7/bin/omnetpp"; then
+if test -f "$INSTALLATION_DIR/omnetpp-$OMNETPP_VER/bin/omnetpp"; then
 	printf "OMNeT++ already installed.\n"
 else
+    sudo pip install posix-ipc
+    
 	wget --continue --directory-prefix=$DOWNLOADS_DIR $OMPP_LINK
 
-	tar -xzf $DOWNLOADS_DIR/omnetpp-5.7-linux-x86_64.tgz -C $INSTALLATION_DIR
+    if [ ! -d $INSTALLATION_DIR/omnetpp-$OMNETPP_VER ]
+    then
+	    tar -xzf $DOWNLOADS_DIR/omnetpp-$OMNETPP_VER-linux-x86_64.tgz -C $INSTALLATION_DIR
+	else
+	    echo "$INSTALLATION_DIR/omnetpp-$OMNETPP_VER already exists"
+	fi
 
 	backup_wd=$(pwd)
 
-	#patch -u $INSTALLATION_DIR/omnetpp-5.7/configure.user -i omnetpp_configure_user.patch
+	#patch -u $INSTALLATION_DIR/omnetpp-$OMNETPP_VER/configure.user -i omnetpp_configure_user.patch
 
-	cd $INSTALLATION_DIR/omnetpp-5.7
+	cd $INSTALLATION_DIR/omnetpp-$OMNETPP_VER
 
 	. ./setenv
 
-    configure_cmd="WITH_OSGEARTH=no"
+    configure_cmd="WITH_OSGEARTH=no PREFER_CLANG=no PREFER_LLD=no"
 
     if [ $RUNTIME_ONLY == 1 ]
     then
@@ -45,10 +59,10 @@ else
 fi
 
 if test -f ~/.profile; then
-    if grep -q "$INSTALLATION_DIR/omnetpp-5.7/bin" ~/.profile; then
+    if grep -q "$INSTALLATION_DIR/omnetpp-$OMNETPP_VER/bin" ~/.profile; then
         echo "OMNeT++ binaries already in .profile"
     else
-        echo "export PATH=\$PATH:$INSTALLATION_DIR/omnetpp-5.7/bin" >> ~/.profile
+        echo "export PATH=\$PATH:$INSTALLATION_DIR/omnetpp-$OMNETPP_VER/bin" >> ~/.profile
     fi
 fi
 
@@ -65,8 +79,8 @@ then
 	    echo "Type=Application" >> $desktop_link
 	    echo "Terminal=false" >> $desktop_link
 	    echo "Name=OMNeT++" >> $desktop_link
-	    echo "Icon=$INSTALLATION_DIR/omnetpp-5.7/images/logo/logo128m.png" >> $desktop_link
-	    echo "Exec=$INSTALLATION_DIR/omnetpp-5.7/bin/omnetpp" >> $desktop_link
+	    echo "Icon=$INSTALLATION_DIR/omnetpp-$OMNETPP_VER/images/logo/logo128m.png" >> $desktop_link
+	    echo "Exec=$INSTALLATION_DIR/omnetpp-$OMNETPP_VER/bin/omnetpp" >> $desktop_link
 	    
 	    chmod +x $desktop_link
     fi

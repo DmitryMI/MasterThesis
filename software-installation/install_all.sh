@@ -2,8 +2,7 @@
 
 if [ -z "$SETVARS_GUARD" ]
 then
-    echo "Run setvars.sh before running any installation script."
-    exit 1
+    source ../setvars.sh
 fi
 
 mkdir -p $INSTALLATION_DIR_SUMO
@@ -12,6 +11,8 @@ mkdir -p $INSTALLATION_DIR_OMNETPP
 . ./_install_prereq.sh
 
 . ./_install_omnetpp.sh
+
+if [ $? != 0 ]; then exit 1; fi
 
 . ./_install_sumo.sh
 

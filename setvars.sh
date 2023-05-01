@@ -5,6 +5,16 @@ PROJ_BRIEF="Improving urban traffic flow with drone-supported vehicular networks
 PROJ_NAME_AS_FILE_NAME="drones_veins_project"
 PROJ_NAME_AS_MACRO_NAME="DRONES_VEINS_PROJECT"
 
+if [ -z "$OMNETPP_VER" ]
+then
+    # OMNETPP_VER="6.0.1"
+    OMNETPP_VER="5.7"
+    echo "OMNETPP_VER not set. Setting to default $OMNETPP_VER"
+else
+    echo "OMNETPP_VER set to $OMNETPP_VER"
+fi
+
+
 if [ -z "$INSTALLATION_DIR" ]
 then
     INSTALLATION_DIR="/home/$(whoami)/Software"
