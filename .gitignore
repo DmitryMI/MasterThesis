@@ -410,6 +410,7 @@ FodyWeavers.xsd
 **/hpc/eval.jobfile*
 **/hpc/run.jobfile*
 **.Rhistory
+**/runfile.txt
 
 **.cmdenv-log
 
