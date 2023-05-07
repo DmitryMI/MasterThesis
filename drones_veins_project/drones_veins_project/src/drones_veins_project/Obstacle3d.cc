@@ -139,7 +139,7 @@ void Obstacle3d::getWallIntersections(const veins::Coord &lineStart, const veins
 			continue;
 		}
 		// EV << "Intersection found with wall (" << i << ", " << i + 1 << ") at (" << intersectionPoint.x << ", "
-				<< intersectionPoint.y << ", " << intersectionPoint.z << ")\n";
+		//		<< intersectionPoint.y << ", " << intersectionPoint.z << ")\n";
 
 		if (std::find(outIntersections.begin(), outIntersections.end(), intersectionPoint) != outIntersections.end())
 		{
