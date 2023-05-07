@@ -203,6 +203,7 @@ std::vector<std::pair<veins::Obstacle*, std::vector<double>>> ObstacleControl::g
         // if obstacles has neither borders nor matter: bail.
         if (o->getShape().size() < 2) continue;
         auto foundIntersections = o->getIntersections(senderPos, receiverPos);
+        ASSERT(foundIntersections.size() % 2 == 0);
         if (!foundIntersections.empty() || o->containsPoint(senderPos) || o->containsPoint(receiverPos)) {
             allIntersections.emplace_back(o, foundIntersections);
         }

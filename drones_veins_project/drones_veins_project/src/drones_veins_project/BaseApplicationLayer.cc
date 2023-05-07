@@ -137,10 +137,13 @@ void BaseApplicationLayer::handleSelfMsg(cMessage *msg)
 
 void BaseApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *msg)
 {
-	double time = simTime().dbl();
-	double latency = time - msg->getSenderTimestamp().dbl();
-	ASSERT(latency > 0);
-	latencies.push_back(latency);
+    if (simTime() >= getSimulation()->getWarmupPeriod())
+    {
+        double time = simTime().dbl();
+        double latency = time - msg->getSenderTimestamp().dbl();
+        ASSERT(latency > 0);
+        latencies.push_back(latency);
+    }
 
 	RebroadcastDecider *rebroadcastDecider = getRebroadcastDecider();
 

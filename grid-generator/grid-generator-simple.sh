@@ -22,7 +22,7 @@ then
     TRIPS_INTERMEDIATES=64
 fi
 
-mkdir $PROJ_DIR
+mkdir -p $PROJ_DIR
 
 pwd
 
@@ -39,7 +39,7 @@ netgenerate --grid --grid.number $GRID_SIZE --grid.length $STREET_LENGTH --defau
 # Generating random trips
 TRIPS_MIN_DISTANCE=$(expr $GRID_SIZE \* $STREET_LENGTH)
 # echo "RandomTrips will use min distance of $TRIPS_MIN_DISTANCE"
-python3 $SUMO_TOOLS_PATH/randomTrips.py -n $PROJ_NAME.net.xml -b $TRIPS_START_TIME -e $TRIPS_END_TIME -p $TRIPS_PERIOD --random -i $TRIPS_INTERMEDIATES -o $PROJ_NAME.trips.xml
+python3 $SUMO_TOOLS_PATH/randomTrips.py -n $PROJ_NAME.net.xml -b $TRIPS_START_TIME -e $TRIPS_END_TIME -p $TRIPS_PERIOD --random -i $TRIPS_INTERMEDIATES -o $PROJ_NAME.trips.xml --min-distance 1000000
 
 # Applying duarouter-randomTrips bugfix
 str_to_replace=' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd"'

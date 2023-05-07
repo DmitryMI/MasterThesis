@@ -53,6 +53,7 @@ public:
     void handleMessage(cMessage* msg) override;
     void receiveSignal(cComponent* source, simsignal_t signalID, cObject* obj, cObject* details) override;
     void receiveSignal(cComponent* source, simsignal_t signalID, const SimTime& t, cObject* details) override;
+    int getNumVehicles();
 
 protected:
     /**

@@ -72,6 +72,11 @@ void TraCIVehicleInserter::initialize(int stage)
     mobRng = getRNG(vehicleRngIndex);
 }
 
+int TraCIVehicleInserter::getNumVehicles()
+{
+    return numVehicles;
+}
+
 void TraCIVehicleInserter::finish()
 {
     unsubscribe(TraCIScenarioManager::traciModuleAddedSignal, this);

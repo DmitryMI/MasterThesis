@@ -82,8 +82,15 @@ bool Obstacle3d::getLineToLineIntersection(const veins::Coord &line1Start, const
 bool Obstacle3d::getWallIntersection(const veins::Coord &lineStart, const veins::Coord &lineEnd, int wallStartIndex,
 		int wallEndIndex, veins::Coord &intersectionPoint) const
 {
+	// EV << "getWallIntersection(S(" << lineStart.x << ", " << lineStart.y << ", " << lineStart.z << "), E(" << lineEnd.x
+	// 		<< ", " << lineEnd.y << ", " << lineEnd.z << ")) " << "W(" << wallStartIndex << ", " << wallEndIndex << ")"
+	//		<< "\n";
+
 	veins::Coord wallStart = coords[wallStartIndex];
 	veins::Coord wallEnd = coords[wallEndIndex];
+
+	// EV << "Wall S: " << wallStart.x << ", " << wallStart.y << ", " << wallStart.z << "\n";
+	// EV << "Wall E: " << wallEnd.x << ", " << wallEnd.y << ", " << wallEnd.z << "\n";
 
 	veins::Coord xyIntersection;
 
@@ -92,11 +99,16 @@ bool Obstacle3d::getWallIntersection(const veins::Coord &lineStart, const veins:
 		return false;
 	}
 
+	float k;
 	if (lineEnd.x == lineStart.x)
 	{
-		return false;
+		k = (xyIntersection.y - lineStart.y) / (lineEnd.y - lineStart.y);
 	}
-	float k = (xyIntersection.x - lineStart.x) / (lineEnd.x - lineStart.x);
+	else
+	{
+		k = (xyIntersection.x - lineStart.x) / (lineEnd.x - lineStart.x);
+	}
+
 	float intersectionZ = lineStart.z + k * (lineEnd.z - lineStart.z);
 
 	if (0 <= intersectionZ && intersectionZ <= height)
@@ -113,15 +125,33 @@ bool Obstacle3d::getWallIntersection(const veins::Coord &lineStart, const veins:
 void Obstacle3d::getWallIntersections(const veins::Coord &lineStart, const veins::Coord &lineEnd,
 		std::vector<veins::Coord> &outIntersections) const
 {
+	// EV << "getWallIntersections(S(" << lineStart.x << ", " << lineStart.y << ", " << lineStart.z << "), E(" << lineEnd.x
+	//		<< ", " << lineEnd.y << ", " << lineEnd.z << "))\n";
+
 	veins::Coord intersectionPoint;
-	for (int i = 0; i < coords.size() - 1; i++)
+	int coords_size = (int) coords.size();
+
+	// EV << "coords_size == " << coords_size << "\n";
+	for (int i = 0; i < coords_size - 1; i++)
 	{
 		if (!getWallIntersection(lineStart, lineEnd, i, i + 1, intersectionPoint))
 		{
 			continue;
 		}
-		outIntersections.push_back(intersectionPoint);
+		// EV << "Intersection found with wall (" << i << ", " << i + 1 << ") at (" << intersectionPoint.x << ", "
+				<< intersectionPoint.y << ", " << intersectionPoint.z << ")\n";
+
+		if (std::find(outIntersections.begin(), outIntersections.end(), intersectionPoint) != outIntersections.end())
+		{
+			EV << "Found duplicate intersection, probably the line goes exactly through a corner. Dropped.\n";
+		}
+		else
+		{
+			outIntersections.push_back(intersectionPoint);
+		}
+
 	}
+	// EV << "Found " << outIntersections.size() << " intersections with walls\n";
 }
 
 bool Obstacle3d::getHorizonToLineIntersection(const veins::Coord &lineStart, const veins::Coord &lineEnd,
@@ -197,35 +227,38 @@ void Obstacle3d::getIntersectionPoints(const veins::Coord &lineStart, const vein
 	veins::Coord ceilingIntersection;
 	if (getHorizontalIntersection(lineStart, lineEnd, 0, floorIntersection))
 	{
-		outIntersections.push_back(floorIntersection);
+		// EV << "Found floor intersection" << "\n";
+		if (std::find(outIntersections.begin(), outIntersections.end(), floorIntersection) != outIntersections.end())
+		{
+			EV << "Found duplicate intersection, probably the line goes exactly through a corner. Dropped.\n";
+		}
+		else
+		{
+			outIntersections.push_back(floorIntersection);
+		}
 	}
 	if (getHorizontalIntersection(lineStart, lineEnd, height, ceilingIntersection))
 	{
-		outIntersections.push_back(ceilingIntersection);
+		// EV << "Found ceiling intersection" << "\n";
+		if (std::find(outIntersections.begin(), outIntersections.end(), ceilingIntersection) != outIntersections.end())
+		{
+			EV << "Found duplicate intersection, probably the line goes exactly through a corner. Dropped.\n";
+		}
+		else
+		{
+			outIntersections.push_back(ceilingIntersection);
+		}
 	}
+
+	ASSERT(outIntersections.size() % 2 == 0);
 }
 
 std::vector<double> Obstacle3d::getIntersections(const Coord &senderPos, const Coord &receiverPos) const
 {
 	//return Obstacle::getIntersections(senderPos, receiverPos);
 
-	std::vector<veins::Coord> intersectionPoints;
-/*
-	if(
-			abs(senderPos.x - 923.4) < 0.01 &&
-			abs(senderPos.y - 747.986) < 0.01 &&
-			abs(senderPos.z - 1.895) < 0.01 &&
-			abs(receiverPos.x - 626.6) < 0.01 &&
-			abs(receiverPos.y - 536.5149) < 0.01 &&
-			abs(receiverPos.z - 1.895) < 0.01 &&
-			abs(coords[0].x - 635) < 0.01 &&
-			abs(coords[0].y - 542.5) < 0.01 &&
-			abs(coords[0].z - 0) < 0.01
-			)
-	{
-		EV << "BREAK";
-	}
-	*/
+	std::vector < veins::Coord > intersectionPoints;
+
 	getIntersectionPoints(senderPos, receiverPos, intersectionPoints);
 
 	std::vector<double> intersectionFactors;
@@ -247,10 +280,12 @@ std::vector<double> Obstacle3d::getIntersections(const Coord &senderPos, const C
 		intersectionFactors.push_back(k);
 	}
 	std::sort(intersectionFactors.begin(), intersectionFactors.end());
-	if(intersectionFactors.size() == 1)
+	if (intersectionFactors.size() == 1)
 	{
 		intersectionFactors.push_back(intersectionFactors[0]);
 	}
+
+	ASSERT(intersectionFactors.size() % 2 == 0);
 	return intersectionFactors;
 }
 

@@ -89,6 +89,8 @@ network DronesScenario
         inserter: TraCIVehicleInserter {
             
         }
+        
+        vehicleCounter: VehicleCounter;
  
         roadsCanvasVisualizer: RoadsCanvasVisualizer {
             @display("p=300,0");

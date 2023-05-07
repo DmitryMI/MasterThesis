@@ -14,7 +14,7 @@
 // 
 
 #include "CarApplicationLayer.h"
-#include <cassert>
+#include "../VehicleCounter.h"
 
 Define_Module(drones_veins_project::CarApplicationLayer);
 
@@ -38,11 +38,22 @@ void CarApplicationLayer::initialize(int stage)
 	BaseApplicationLayer::initialize(stage);
 
 	WATCH(totalTimeInJam);
+
+	if (stage == 0)
+	{
+	    VehicleCounter* counter = VehicleCounter::getInstance();
+	    ASSERT(counter);
+	    counter->incrementVehiclesSpawned();
+	}
 }
 
 void CarApplicationLayer::finish()
 {
 	BaseApplicationLayer::finish();
+
+	VehicleCounter* counter = VehicleCounter::getInstance();
+	ASSERT(counter);
+	counter->incrementVehiclesDestroyed();
 
 	if(jammingDetector.isJammedNow())
 	{
@@ -56,7 +67,7 @@ void CarApplicationLayer::finish()
 std::string CarApplicationLayer::getCarDescriptor()
 {
 	cModule *module = getParentModule();
-	assert(module);
+	ASSERT(module);
 	std::string carName(module->getName());
 	std::stringstream ss;
 	ss << carName << "(roadId: " << mobility->getRoadId() << ", position: " << curPosition << ")";
@@ -128,10 +139,14 @@ void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *m
 		traciVehicle->changeRoute(roadId, 9999);
 	}
 
-	if(receivedJammingAnnouncements.count(sender) == 0)
+	if (simTime() >= getSimulation()->getWarmupPeriod())
 	{
-		receivedJammingAnnouncements.insert(sender);
+        if (receivedJammingAnnouncements.count(sender) == 0)
+        {
+            receivedJammingAnnouncements.insert(sender);
+        }
 	}
+
 }
 
 void CarApplicationLayer::handleSelfMsg(cMessage *msg)
