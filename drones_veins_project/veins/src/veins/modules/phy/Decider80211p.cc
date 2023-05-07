@@ -87,7 +87,10 @@ simtime_t Decider80211p::processNewSignal(AirFrame* msg)
 
             // channel turned busy
             // measure communication density
-            myBusyTime += signal.getDuration().dbl();
+            if(simTime() >= getSimulation()->getWarmupPeriod())
+            {
+            	myBusyTime += signal.getDuration().dbl();
+            }
         }
         return signal.getReceptionEnd();
     }
@@ -415,7 +418,7 @@ void Decider80211p::switchToTx()
 
 void Decider80211p::finish()
 {
-    simtime_t totalTime = simTime() - myStartTime;
+    simtime_t totalTime = simTime() - myStartTime - getSimulation()->getWarmupPeriod();
     phy->recordScalar("busyTime", myBusyTime / totalTime.dbl());
     if (collectCollisionStats) {
         phy->recordScalar("ncollisions", collisions);
