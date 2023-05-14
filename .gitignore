@@ -429,3 +429,6 @@ text/*/*.pdf
 text/*/*.run.xml
 text/*/*.tdo
 text/*/*.toc
+text/nsm-thesis/thesis.synctex(busy)
+text/nsm-thesis/texput.pipe
+text/nsm-thesis/texput.lgpl
