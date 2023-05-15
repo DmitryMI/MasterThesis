@@ -114,7 +114,7 @@ According to Toor et al \cite{toor2008}, Vehicular ad hoc network (VANET) is a s
 
 A common challenge in implementing mobile ad hoc networks (including VANETs), according to \textcite{wisitrophan2007} is the broadcast storm. Authors define the broadcast storm as a frequent contention and collisions in transmission among neighboring nodes, when the nodes unconditionally broadcast packets. Authors further argue, that multiple solutions exist to alleviate this problem in usual MANET environment, but only few are suitable to resolve the broadcast storm issue in VANET context.
 
-In my work the broadcast storm is also an issue that needs to be addressed. In my scenario the broadcast storm would be observed between vehicles and between drones if no suppression technique is present. At first, I will list the techniques, explored by \textcite{wisitrophan2007} for vehicular ad hoc networks and choose the one that is suitable for my scenario.
+In my work the broadcast storm is also an issue that needs to be addressed. In my scenario the broadcast storm would be observed between vehicles and between drones if no suppression technique is present. At first, I will list some of the techniques, explored by \textcite{wisitrophan2007} for vehicular ad hoc networks and choose the one that is suitable for my scenario.
 
 \begin{itemize}
 
@@ -130,6 +130,30 @@ In my work the broadcast storm is also an issue that needs to be addressed. In m
 
 In my work I will use the Slotted 1-Persistence Broadcasting for both vehicles and drones, because it is the simplest to implement and it shows sufficient performance in my scenario. In fact, since my scenario consists of high-density urban grid of roads, the communication between vehicles is highly obstructed, hence the collisions and contention in vehicle-to-vehicle is minimal.
 
+\section {Related Work}
+\TODO{Related Work: merging VANETs and DroneNETs}
+
+\section {Simulation Software}
+
+As is was mentioned earlier, conducting a full-scale real-life experiment will be very expensive. Therefore a good idea is to use software to simulate the scenario and evaluate the results. 
+
+There are multiple network simulators available on the market. A survey, conducted by \textcite{pan2008survey} contains a list of most popular tools:
+\begin{itemize}
+\item OPNET \cite[Page~5]{pan2008survey}
+\item Network Simulator 2 \cite[Page~7]{pan2008survey}
+\item Network Simulator 3 \cite[Page~8]{pan2008survey}
+\item OMNeT++ \cite[Page~10]{pan2008survey}
+\end{itemize}
+
+The one most suitable for my purposes is the OMNeT++. It is free for academical usage, but the main reason why I chose it is the fact that Veins \cite{Sommer2019} is based on OMNeT++. Veins will be discussed in the next section.
+
+According to \textcite[Page~2]{Varga2010}, OMNeT++ is a discrete-event simulator. According to the author, discrete-event simulator simulates a system whose state, defined by the state of all entities of the system, changes only at discrete points in time and the change of state is triggers by the occurrence of an event.
+
+\section {Veins}
+
+In order to simulate a hybrid network of drones and vehicles a network simulator is not enough. A combined solution is needed to create a realistic scenario consisting of vehicles, buildings and drones. The software must implement a combination of a network simulator and a traffic simulator. My solution is based on Veins by \textcite{Sommer2019}.
+
+\TODO{Veins high-level scheme}
 
 \chapter{Implementation}
 
