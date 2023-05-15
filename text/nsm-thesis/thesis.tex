@@ -108,9 +108,28 @@ Before the beginning of the work, I will explain the basic terms, technologies a
 
 A good definition of ad hoc networks was given by Ram Ramanathan and Jason Redi in IEEE communications Magazine \cite{ramanathan2002brief}: An ad hoc network is a (possibly mobile) collection of communications devices (nodes) that wish to communicate, but have no fixed infrastructure available, and have no pre-determined organization of available links. The authors further make a good point, stating that individual nodes are responsible for dynamically discovering which other nodes they can directly communicate with and the nodes are required to relay packets on behalf of other nodes in order to deliver data across the network.
 
-This feature \FIXME{Move to Broadcast storm section and add source} of ad hoc networks that nodes need to relay other nodes' messages requires additional attention, because it causes the problem of broadcast storm.
-
 According to Toor et al \cite{toor2008}, Vehicular ad hoc network (VANET) is a special case of a mobile ad hoc network, where communication links are formed between the vehicles.
+
+\section{Broadcast Storm}
+
+A common challenge in implementing mobile ad hoc networks (including VANETs), according to \textcite{wisitrophan2007} is the broadcast storm. Authors define the broadcast storm as a frequent contention and collisions in transmission among neighboring nodes, when the nodes unconditionally broadcast packets. Authors further argue, that multiple solutions exist to alleviate this problem in usual MANET environment, but only few are suitable to resolve the broadcast storm issue in VANET context.
+
+In my work the broadcast storm is also an issue that needs to be addressed. In my scenario the broadcast storm would be observed between vehicles and between drones if no suppression technique is present. At first, I will list the techniques, explored by \textcite{wisitrophan2007} for vehicular ad hoc networks and choose the one that is suitable for my scenario.
+
+\begin{itemize}
+
+\item \textbf{Weighted p-Persistence Broadcasting} - upon receiving a packet from node \emph{i}, node \emph{j} checks the packet ID and rebroadcasts with probability $\rho_{ij}$ if it receives the packet for the first time; otherwise, it discards the packet. \cite[Page~88]{wisitrophan2007}.
+
+\item \textbf{Slotted 1-Persistence Broadcasting} - upon receiving a packet, a node checks the packet ID and rebroadcasts with probability 1 at the assigned time slot, if it receives the packet for the first time and has not received any duplicates before the assigned time slot; otherwise, it discards the packet \cite[Page~88]{wisitrophan2007}.
+
+\item \textbf{Slotted p-Persistence Broadcasting} - Upon receiving a packet, a node checks the packet ID and rebroadcasts with the pre-determined probability $\rho$ at the assigned time slot, if it receives the packet for the first time and has not received any duplicates before its assigned time slot; otherwise, it discards the packet \cite[Page~89]{wisitrophan2007}.
+
+\end{itemize}
+
+\textcite{wisitrophan2007} also discuss Received-Signal-Strength-Based broadcast suppression schemes, but since in my work it is assumed that the vehicles always know their exact location, these techniques are not relevant.
+
+In my work I will use the Slotted 1-Persistence Broadcasting for both vehicles and drones, because it is the simplest to implement and it shows sufficient performance in my scenario. In fact, since my scenario consists of high-density urban grid of roads, the communication between vehicles is highly obstructed, hence the collisions and contention in vehicle-to-vehicle is minimal.
+
 
 \chapter{Implementation}
 
