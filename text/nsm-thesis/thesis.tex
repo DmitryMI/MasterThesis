@@ -30,6 +30,7 @@
 \acrodef{MANET}{Mobile Ad Hoc Network}
 \acrodef{VANET}{Vehicular Ad Hoc Network}
 \acrodef{OSG}{OpenSceneGraph}
+\acrodef{MAC}{Medium access control}
 %\acrodef{ROI}{Region of Interest}{short-indefinite={an}, long-plural-form={Regions of Interest}}
 %\acrodef{ADAC}{German Automobile Association}{foreign={Allgemeiner Deutscher Automobilclub}}
 %\acrodef{CANhashing}[CAN]{Content Addressable Network}{extra={when referring to the distributed hash table}}
@@ -174,6 +175,8 @@ Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize
 
 \section{Simulated Hardware}
 \TODO{Simulated Hardware}
+
+For my scenario the exact implementation of physical layer and \ac{MAC}-layer is not important. Therefore I am relying on networking, already implemented in Veins and OMNeT++. The physical layer is implemented by Veins and simulates Wi-Fi transmitter, mounted on the vehicle's roof (1.895 meters above the road). In my scenario, I use a monopole antenna, also already implemented by Veins. Since the transport-layer protocol is also not important, I am using Wave Short Message protocol, implemented in Veins. For the drones I use the same networking layers as for the vehicles.
 
 \chapter{Implementation}
 
