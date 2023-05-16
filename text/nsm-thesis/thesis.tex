@@ -27,7 +27,9 @@
 
 % Define abbreviations used in the thesis here.
 %\acrodef{WSN}{Wireless Sensor Network}
+\acrodef{MANET}{Mobile Ad Hoc Network}
 \acrodef{VANET}{Vehicular Ad Hoc Network}
+\acrodef{OSG}{OpenSceneGraph}
 %\acrodef{ROI}{Region of Interest}{short-indefinite={an}, long-plural-form={Regions of Interest}}
 %\acrodef{ADAC}{German Automobile Association}{foreign={Allgemeiner Deutscher Automobilclub}}
 %\acrodef{CANhashing}[CAN]{Content Addressable Network}{extra={when referring to the distributed hash table}}
@@ -108,11 +110,11 @@ Before the beginning of the work, I will explain the basic terms, technologies a
 
 A good definition of ad hoc networks was given by Ram Ramanathan and Jason Redi in IEEE communications Magazine \cite{ramanathan2002brief}: An ad hoc network is a (possibly mobile) collection of communications devices (nodes) that wish to communicate, but have no fixed infrastructure available, and have no pre-determined organization of available links. The authors further make a good point, stating that individual nodes are responsible for dynamically discovering which other nodes they can directly communicate with and the nodes are required to relay packets on behalf of other nodes in order to deliver data across the network.
 
-According to Toor et al \cite{toor2008}, Vehicular ad hoc network (VANET) is a special case of a mobile ad hoc network, where communication links are formed between the vehicles.
+According to Toor et al \cite{toor2008}, Vehicular ad hoc network (\ac{VANET}) is a special case of a mobile ad hoc network, where communication links are formed between the vehicles.
 
 \section{Broadcast Storm}
 
-A common challenge in implementing mobile ad hoc networks (including VANETs), according to \textcite{wisitrophan2007} is the broadcast storm. Authors define the broadcast storm as a frequent contention and collisions in transmission among neighboring nodes, when the nodes unconditionally broadcast packets. Authors further argue, that multiple solutions exist to alleviate this problem in usual MANET environment, but only few are suitable to resolve the broadcast storm issue in VANET context.
+A common challenge in implementing mobile ad hoc networks (including \acp{VANET}), according to \textcite{wisitrophan2007} is the broadcast storm. Authors define the broadcast storm as a frequent contention and collisions in transmission among neighboring nodes, when the nodes unconditionally broadcast packets. Authors further argue, that multiple solutions exist to alleviate this problem in usual \ac{MANET} environment, but only few are suitable to resolve the broadcast storm issue in \ac{VANET} context.
 
 In my work the broadcast storm is also an issue that needs to be addressed. In my scenario the broadcast storm would be observed between vehicles and between drones if no suppression technique is present. At first, I will list some of the techniques, explored by \textcite{wisitrophan2007} for vehicular ad hoc networks and choose the one that is suitable for my scenario.
 
@@ -131,7 +133,7 @@ In my work the broadcast storm is also an issue that needs to be addressed. In m
 In my work I will use the Slotted 1-Persistence Broadcasting for both vehicles and drones, because it is the simplest to implement and it shows sufficient performance in my scenario. In fact, since my scenario consists of high-density urban grid of roads, the communication between vehicles is highly obstructed, hence the collisions and contention in vehicle-to-vehicle is minimal.
 
 \section {Related Work}
-\TODO{Related Work: merging VANETs and DroneNETs}
+\TODO{Related Work: merging \acp{VANET} and DroneNETs}
 
 \section {Simulation Software}
 
@@ -154,11 +156,24 @@ According to \textcite[Page~2]{Varga2010}, OMNeT++ is a discrete-event simulator
 In order to simulate a hybrid network of drones and vehicles a network simulator is not enough. A combined solution is needed to create a realistic scenario consisting of vehicles, buildings and drones. The software must implement a combination of a network simulator and a traffic simulator. My solution is based on Veins by \textcite{Sommer2019}.
 
 \begin{figure}
-  	\caption{High-level architecture of Veins. Veins bridges OMNeT++ with SUMO traffic simulator to enable simulation of VANETs \cite{Sommer2019}}
+  	\caption{High-level architecture of Veins. Veins bridges OMNeT++ with SUMO traffic simulator to enable simulation of \acp{VANET} \cite{Sommer2019}}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/High-level Veins.png}
 	\label{fig:veinshighlevel}
 \end{figure}
+
+\section{SUMO}
+As shown on \ref{fig:veinshighlevel}, Veins uses SUMO by \textcite{sumo2018} as a traffic simulator. According to the SUMO developers, SUMO is a microscopic traffic simulator, which means that each vehicle and its dynamics are modeled individually.
+This a suitable solution for my scenario, because I indeed need each vehicle to be an independent object with its own known position.
+
+\section{Other software}
+
+In addition to the Veins and SUMO I would like to emphasize the usage of OpenSceneGraph \cite{osg} as a 3D-rendering tool.  OMNeT++ natively supports OpenSceneGraph \cite{omnetpposg}, therefore \ac{OSG} is the most convenient and easy way to implement a 3D scene in OMNeT++. In this work, I will use 3D visualization for debugging purposes.
+
+Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize this class along with my own vehicle-, drone- and building- visualizers.
+
+\section{Simulated Hardware}
+\TODO{Simulated Hardware}
 
 \chapter{Implementation}
 
