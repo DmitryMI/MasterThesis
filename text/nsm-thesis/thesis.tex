@@ -174,48 +174,20 @@ In addition to the Veins and SUMO I would like to emphasize the usage of OpenSce
 Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize this class along with my own vehicle-, drone- and building- visualizers.
 
 \section{Simulated Hardware}
-\TODO{Simulated Hardware}
 
 For my scenario the exact implementation of physical layer and \ac{MAC}-layer is not important. Therefore I am relying on networking, already implemented in Veins and OMNeT++. The physical layer is implemented by Veins and simulates Wi-Fi transmitter, mounted on the vehicle's roof (1.895 meters above the road). In my scenario, I use a monopole antenna, also already implemented by Veins. Since the transport-layer protocol is also not important, I am using Wave Short Message protocol, implemented in Veins. For the drones I use the same networking layers as for the vehicles.
 
 \chapter{Implementation}
 
+\section{Drones}
 
-\begin{itemize}
-\item describe everything you yourself did (as opposed to the fundamentals chapter, which explains what you built on)
-\item start with a theoretical approach
-\item describe the developed system/algorithm/method from a high-level point of view
-\item go ahead in presenting your developments in more detail
-\item make sure to instill in your readers a high degree of confidence that your system/algorithm/method is correct -- this will likely mean conducting (and reporting on) a validation/verification step
-\item recommended length: approximately one third of the thesis.
-\end{itemize}
+The first issue with implementing my scenario is that Veins does not support drones. Therefore, implementing drones was the first step in my work. The easiest way to implement drones would be to reuse the existing Veins' code, that was used for vehicles. Therefore, drones will in fact only differ in their mobility, but in other things they can share the code with vehicles.
 
 
 
 \chapter{Evaluation}
 
-
-\begin{itemize}
-\item measurement setup / results / evaluation / discussion
-\item whatever you have done, you must comment it, compare it to other systems, evaluate it
-\item usually, adequate graphs help to show the benefits of your approach
-\item each result/graph must not only be described, but also discussed (What's the reason for this peak? Why have you observed this effect? What does this tell about your architecture/system/implementation?)
-\item recommended length: approximately one third of the thesis.
-\end{itemize}
-
-
-
 \chapter{Conclusion}
-
-
-\begin{itemize}
-\item summarize again what your paper did, but now emphasize more the results, and comparisons
-\item write conclusions that can be drawn from the results found and the discussion presented in the paper
-\item future work (be very brief, explain what, but not much how, do not speculate about results or impact)
-\item recommended length: one page.
-\end{itemize}
-
-
 
 \cleardoublepage
 
