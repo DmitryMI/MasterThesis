@@ -153,7 +153,12 @@ According to \textcite[Page~2]{Varga2010}, OMNeT++ is a discrete-event simulator
 
 In order to simulate a hybrid network of drones and vehicles a network simulator is not enough. A combined solution is needed to create a realistic scenario consisting of vehicles, buildings and drones. The software must implement a combination of a network simulator and a traffic simulator. My solution is based on Veins by \textcite{Sommer2019}.
 
-\TODO{Veins high-level scheme}
+\begin{figure}
+  	\caption{High-level architecture of Veins. Veins bridges OMNeT++ with SUMO traffic simulator to enable simulation of VANETs \cite{Sommer2019}}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/High-level Veins.png}
+	\label{fig:veinshighlevel}
+\end{figure}
 
 \chapter{Implementation}
 
