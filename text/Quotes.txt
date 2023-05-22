@@ -1,0 +1,7 @@
+An ad hoc network is a (possibly mobile) collection of communications devices (nodes) that wish to communicate, but have no fixed infrastructure available, and have no pre-determined organization of available links. Individual nodes are responsible for dynamically discovering which other nodes they can directly communicate with. A key assumption is that not all nodes can directly communicate with each other, so nodes are required t o relay packets on behalf of other nodes in order to deliver data across the network. A significant feature of ad hoc networks is that rapid changes in connectivity and link characteristics are introduced due to node mobility and power control practices. Ad hoc networks can be built around any wireless technology, including infrared and radio frequency (RF).
+[
+A BRIEF OVERVIEW OF AD Hoc NETWORKS: CHALLENGES AND DIRECTIONS
+RAM RAMANATHAN AND JASON REDI BBNTECHNOLOGIES
+
+https://d1wqtxts1xzle7.cloudfront.net/32055977/commmag-manets-libre.pdf?1392456222=&response-content-disposition=inline%3B+filename%3DA_brief_overview_of_ad_hoc_networks_chal.pdf&Expires=1684096132&Signature=UjJBzlB7xOB3SqtErFzWDr-ggPBnLn89r2OVBX8Kr6sF5gRB~-AvBSsVWarDbPX0xrb7kshIbI2EE8hq1-fOQHpKayCz~e~83c-2r5AURy-Vncg8J~Gn3vd1Qm52u7aaeg~WtgYN1q7rAyi0WWrUQCbhzB0FdAGOSbcc1PAqnUpgn2pZxwKLy8-sEy1546kHsWSkzCc0btrJqKNEFEtN5yK3WhSjxNkkKzL-GNhiCgTJkDUnjfd8zkPD9zPm30EPBgdJl27O9rG68xmN4C~jkatXgBqPhulQuYkjExEtrIWRfBujGMmpVF-ZqTPTn7NIW3VDbwuhPXLNTOcxvQOflA__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA
+]

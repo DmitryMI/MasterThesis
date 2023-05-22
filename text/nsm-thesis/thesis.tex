@@ -1,0 +1,205 @@
+\documentclass[]{nsm-thesis}
+% options:
+% [germanthesis] - Thesis is written in German
+% [plainunnumbered] - Don't print numbers on plain pages
+% [earlydraft] - Settings for quick draft printouts
+% [watermark] - Print current time/date at bottom of each page
+% [phdthesis] - switch to PhD thesis style
+% [twoside] - double sided
+% [cutmargins] - text body fills complete page
+
+% Author name. Separate multiple authors with commas.
+\author{Dmitriy Monakhov}
+\birthday{28. April 1999}
+\birthplace{Moscow}
+
+% Title of your thesis.
+\title{Improving Urban Traffic Flow with Drone Supported Vehicular Networks}
+
+\thesistype{Master's Thesis in Distributed Systems Engineering}\thesiscite{Master's Thesis~(Masterarbeit)}
+
+\advisors{Mario Franke}
+% List of advisors (without academic titles), separated by commas.
+
+% List of referees (without academic titles), separated by commas.
+\referees{Christoph Sommer, Burkhard Hensel}
+
+
+% Define abbreviations used in the thesis here.
+%\acrodef{WSN}{Wireless Sensor Network}
+\acrodef{MANET}{Mobile Ad Hoc Network}
+\acrodef{VANET}{Vehicular Ad Hoc Network}
+\acrodef{OSG}{OpenSceneGraph}
+\acrodef{MAC}{Medium access control}
+%\acrodef{ROI}{Region of Interest}{short-indefinite={an}, long-plural-form={Regions of Interest}}
+%\acrodef{ADAC}{German Automobile Association}{foreign={Allgemeiner Deutscher Automobilclub}}
+%\acrodef{CANhashing}[CAN]{Content Addressable Network}{extra={when referring to the distributed hash table}}
+%\acrodef{CANproto}[CAN]{Controller Area Network}{extra={when referring to the bus protocol}}
+
+\begin{document}
+
+\pagenumbering{roman}
+
+\maketitle
+
+\cleardoublepage
+
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\begin{otherlanguage*}{american}
+
+\TODO{Write abstract}
+
+about 1/2 page:
+\begin{enumerate}
+    \item Motivation (Why do we care?)
+    \item Problem statement (What problem are we trying to solve?)
+    \item Approach (How did we go about it)
+    \item Results (What's the answer?)
+    \item Conclusion (What are the implications of the answer?)
+\end{enumerate}
+
+The abstract is a miniature version of the thesis.
+It should be treated as an entirely separate document.
+Do not assume that a reader who has access to an abstract will also have access to the thesis.
+Do not assume that a reader who reads the thesis has read the abstract.
+
+\end{otherlanguage*}
+
+
+\chapter*{Kurzfassung}
+\addcontentsline{toc}{chapter}{Kurzfassung}
+\begin{otherlanguage*}{ngerman}
+
+\TODO{Write short version of the Abstract in German?}
+Gleicher Text (sinngemäß, nicht wörtlich) in Deutsch
+
+\end{otherlanguage*}
+\acresetall
+
+\cleardoublepage
+\tableofcontents
+\TODO{The table of contents should fit on one page. When in doubt, adjust the \texttt{tocdepth} counter.}
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+
+
+\chapter{Introduction}
+%\chapter{Einleitung}
+\label{sec:introduction}
+
+Current technology already enables us to create semi-autonomous vehicles. For now fully-autonomous vehicles are rarely allowed to 
+populate the roads, in future it will probably be possible. One perspective option for autonomous driving are cooperative autonomous vehicles: such machines
+that can drive on their own and maintain situation-awareness via communicating with other vehicles on the roads.
+
+Since our world is rapidly urbanizing, it will be desirable to enable autonomous vehicles to drive in large cities. And there is a problem here: communication between cars will be difficult in urban areas. In cities, buildings stand close to each other. Buildings are usually built of radio-transparent materials. At the same time, the buildings are quite massive. Thus, it turns out that the propagation of radio signals between low-power car transmitters becomes very difficult if the cars are not on the same street. This leads to communication outages in vehicle-to-vehicles networks operating inside urban areas.
+
+One possible solution to this problem could be drones. Cities of the future will probably be populated by autonomous drones flying in the air above the roofs of buildings. This gives drones the advantage of making it much easier for them to maintain a line of sight between each other and with vehicles on the ground. Consequently, their radio transmissions are less likely to be blocked by buildings. In this way, drones can help vehicles spread signals bypassing buildings standing between the vehicles.
+
+In this paper, I explore whether there is an advantage in connecting a network of drones to a network of cars in terms of assisting with urban vehicular traffic.
+Since a real-life experiment will be too expensive and difficult to conduct, I will use software simulation.
+
+\chapter{Fundamentals}
+\label{sec:fundamentals}
+
+Before the beginning of the work, I will explain the basic terms, technologies and methods that will be used later. I see the Ad-hoc networks as a good starting point.
+
+\section{Ad hoc networks}
+
+A good definition of ad hoc networks was given by Ram Ramanathan and Jason Redi in IEEE communications Magazine \cite{ramanathan2002brief}: An ad hoc network is a (possibly mobile) collection of communications devices (nodes) that wish to communicate, but have no fixed infrastructure available, and have no pre-determined organization of available links. The authors further make a good point, stating that individual nodes are responsible for dynamically discovering which other nodes they can directly communicate with and the nodes are required to relay packets on behalf of other nodes in order to deliver data across the network.
+
+According to Toor et al \cite{toor2008}, Vehicular ad hoc network (\ac{VANET}) is a special case of a mobile ad hoc network, where communication links are formed between the vehicles.
+
+\section{Broadcast Storm}
+
+A common challenge in implementing mobile ad hoc networks (including \acp{VANET}), according to \textcite{wisitrophan2007} is the broadcast storm. Authors define the broadcast storm as a frequent contention and collisions in transmission among neighboring nodes, when the nodes unconditionally broadcast packets. Authors further argue, that multiple solutions exist to alleviate this problem in usual \ac{MANET} environment, but only few are suitable to resolve the broadcast storm issue in \ac{VANET} context.
+
+In my work the broadcast storm is also an issue that needs to be addressed. In my scenario the broadcast storm would be observed between vehicles and between drones if no suppression technique is present. At first, I will list some of the techniques, explored by \textcite{wisitrophan2007} for vehicular ad hoc networks and choose the one that is suitable for my scenario.
+
+\begin{itemize}
+
+\item \textbf{Weighted p-Persistence Broadcasting} - upon receiving a packet from node \emph{i}, node \emph{j} checks the packet ID and rebroadcasts with probability $\rho_{ij}$ if it receives the packet for the first time; otherwise, it discards the packet. \cite[Page~88]{wisitrophan2007}.
+
+\item \textbf{Slotted 1-Persistence Broadcasting} - upon receiving a packet, a node checks the packet ID and rebroadcasts with probability 1 at the assigned time slot, if it receives the packet for the first time and has not received any duplicates before the assigned time slot; otherwise, it discards the packet \cite[Page~88]{wisitrophan2007}.
+
+\item \textbf{Slotted p-Persistence Broadcasting} - Upon receiving a packet, a node checks the packet ID and rebroadcasts with the pre-determined probability $\rho$ at the assigned time slot, if it receives the packet for the first time and has not received any duplicates before its assigned time slot; otherwise, it discards the packet \cite[Page~89]{wisitrophan2007}.
+
+\end{itemize}
+
+\textcite{wisitrophan2007} also discuss Received-Signal-Strength-Based broadcast suppression schemes, but since in my work it is assumed that the vehicles always know their exact location, these techniques are not relevant.
+
+In my work I will use the Slotted 1-Persistence Broadcasting for both vehicles and drones, because it is the simplest to implement and it shows sufficient performance in my scenario. In fact, since my scenario consists of high-density urban grid of roads, the communication between vehicles is highly obstructed, hence the collisions and contention in vehicle-to-vehicle is minimal.
+
+\section {Related Work}
+\TODO{Related Work: merging \acp{VANET} and DroneNETs}
+
+\section {Simulation Software}
+
+As is was mentioned earlier, conducting a full-scale real-life experiment will be very expensive. Therefore a good idea is to use software to simulate the scenario and evaluate the results. 
+
+There are multiple network simulators available on the market. A survey, conducted by \textcite{pan2008survey} contains a list of most popular tools:
+\begin{itemize}
+\item OPNET \cite[Page~5]{pan2008survey}
+\item Network Simulator 2 \cite[Page~7]{pan2008survey}
+\item Network Simulator 3 \cite[Page~8]{pan2008survey}
+\item OMNeT++ \cite[Page~10]{pan2008survey}
+\end{itemize}
+
+The one most suitable for my purposes is the OMNeT++. It is free for academical usage, but the main reason why I chose it is the fact that Veins \cite{Sommer2019} is based on OMNeT++. Veins will be discussed in the next section.
+
+According to \textcite[Page~2]{Varga2010}, OMNeT++ is a discrete-event simulator. According to the author, discrete-event simulator simulates a system whose state, defined by the state of all entities of the system, changes only at discrete points in time and the change of state is triggers by the occurrence of an event.
+
+\section {Veins}
+
+In order to simulate a hybrid network of drones and vehicles a network simulator is not enough. A combined solution is needed to create a realistic scenario consisting of vehicles, buildings and drones. The software must implement a combination of a network simulator and a traffic simulator. My solution is based on Veins by \textcite{Sommer2019}.
+
+\begin{figure}
+  	\caption{High-level architecture of Veins. Veins bridges OMNeT++ with SUMO traffic simulator to enable simulation of \acp{VANET} \cite{Sommer2019}}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/High-level Veins.png}
+	\label{fig:veinshighlevel}
+\end{figure}
+
+\section{SUMO}
+As shown on \ref{fig:veinshighlevel}, Veins uses SUMO by \textcite{sumo2018} as a traffic simulator. According to the SUMO developers, SUMO is a microscopic traffic simulator, which means that each vehicle and its dynamics are modeled individually.
+This a suitable solution for my scenario, because I indeed need each vehicle to be an independent object with its own known position.
+
+\section{Other software}
+
+In addition to the Veins and SUMO I would like to emphasize the usage of OpenSceneGraph \cite{osg} as a 3D-rendering tool.  OMNeT++ natively supports OpenSceneGraph \cite{omnetpposg}, therefore \ac{OSG} is the most convenient and easy way to implement a 3D scene in OMNeT++. In this work, I will use 3D visualization for debugging purposes.
+
+Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize this class along with my own vehicle-, drone- and building- visualizers.
+
+\section{Simulated Hardware}
+
+For my scenario the exact implementation of physical layer and \ac{MAC}-layer is not important. Therefore I am relying on networking, already implemented in Veins and OMNeT++. The physical layer is implemented by Veins and simulates Wi-Fi transmitter, mounted on the vehicle's roof (1.895 meters above the road). In my scenario, I use a monopole antenna, also already implemented by Veins. Since the transport-layer protocol is also not important, I am using Wave Short Message protocol, implemented in Veins. For the drones I use the same networking layers as for the vehicles.
+
+\chapter{Implementation}
+
+\section{Drones}
+
+The first issue with implementing my scenario is that Veins does not support drones. Therefore, implementing drones was the first step in my work. The easiest way to implement drones would be to reuse the existing Veins' code, that was used for vehicles. Therefore, drones will in fact only differ in their mobility, but in other things they can share the code with vehicles.
+
+
+
+\chapter{Evaluation}
+
+\chapter{Conclusion}
+
+\cleardoublepage
+
+\listofabbreviations
+\clearpage
+
+\listoffigures
+\clearpage
+
+\listoftables
+\clearpage
+
+\printbibliography
+
+\end{document}
