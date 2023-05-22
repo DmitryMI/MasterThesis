@@ -15,6 +15,8 @@
 
 #include "CarApplicationLayer.h"
 #include "../VehicleCounter.h"
+#include "../pathfinding/Pathfinder.h"
+#include "veins/base/utils/FindModule.h"
 
 Define_Module(drones_veins_project::CarApplicationLayer);
 
@@ -29,7 +31,7 @@ CarApplicationLayer::CarApplicationLayer()
 
 CarApplicationLayer::~CarApplicationLayer()
 {
-
+	// clearCanvasRouteFigures();
 }
 
 void CarApplicationLayer::initialize(int stage)
@@ -38,12 +40,13 @@ void CarApplicationLayer::initialize(int stage)
 	BaseApplicationLayer::initialize(stage);
 
 	WATCH(totalTimeInJam);
+	WATCH(currentRouteId);
 
 	if (stage == 0)
 	{
-	    VehicleCounter* counter = VehicleCounter::getInstance();
-	    ASSERT(counter);
-	    counter->incrementVehiclesSpawned();
+		VehicleCounter *counter = VehicleCounter::getInstance();
+		ASSERT(counter);
+		counter->incrementVehiclesSpawned();
 	}
 }
 
@@ -51,17 +54,20 @@ void CarApplicationLayer::finish()
 {
 	BaseApplicationLayer::finish();
 
-	VehicleCounter* counter = VehicleCounter::getInstance();
+	this->clearCanvasRouteFigures();
+
+	VehicleCounter *counter = VehicleCounter::getInstance();
 	ASSERT(counter);
 	counter->incrementVehiclesDestroyed();
 
-	if(jammingDetector.isJammedNow())
+	if (jammingDetector.isJammedNow())
 	{
 		totalTimeInJam += (simTime() - jammingDetector.getJamStartTimestamp()).dbl();
 	}
 
 	recordScalar("totalTimeInJam", totalTimeInJam);
 	recordScalar("receivedJammingAnnouncementsNum", receivedJammingAnnouncements.size());
+	// recordScalar("actualRoute", actualRoute.str());
 }
 
 std::string CarApplicationLayer::getCarDescriptor()
@@ -81,9 +87,9 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 	if (jammed)
 	{
 		EV << "Car " << getCarDescriptor() << " jammed!";
-		setIconColor("red");
+		setIconColorStr("red");
 
-		if(par("jammingAnnouncementEnabled").boolValue())
+		if (par("jammingAnnouncementEnabled").boolValue())
 		{
 			CarJammingAnnouncement *msg = new CarJammingAnnouncement();
 			populateWSM(msg);
@@ -102,7 +108,7 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 	{
 		totalTimeInJam += (simTime() - jammingDetector.getJamStartTimestamp()).dbl();
 
-		setIconColor("white");
+		setIconColor(calculateNodeColor());
 		EV << "Car " << getCarDescriptor() << " is no longer jammed!";
 	}
 }
@@ -127,7 +133,7 @@ void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *m
 	BaseApplicationLayer::handleCarJammingAnnouncement(msg);
 
 	veins::LAddress::L2Type sender = msg->getSenderAddress();
-	if(sender == getAddress())
+	if (sender == getAddress())
 	{
 		// Ignore own messages
 		return;
@@ -136,15 +142,21 @@ void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *m
 	if (mobility->getRoadId()[0] != ':')
 	{
 		std::string roadId = msg->getCarRoadId();
-		traciVehicle->changeRoute(roadId, 9999);
+		if (disallowedEdges.count(roadId) == 0)
+		{
+			disallowedEdges.insert(roadId);
+		}
+
+		// traciVehicle->changeRoute(roadId, 9999);
+		changeRoute();
 	}
 
 	if (simTime() >= getSimulation()->getWarmupPeriod())
 	{
-        if (receivedJammingAnnouncements.count(sender) == 0)
-        {
-            receivedJammingAnnouncements.insert(sender);
-        }
+		if (receivedJammingAnnouncements.count(sender) == 0)
+		{
+			receivedJammingAnnouncements.insert(sender);
+		}
 	}
 
 }
@@ -156,10 +168,134 @@ void CarApplicationLayer::handleSelfMsg(cMessage *msg)
 
 void CarApplicationLayer::handlePositionUpdate(cObject *obj)
 {
-	setIconColor("white");
+	// setIconColorStr("white");
+	setIconColor(calculateNodeColor());
 
 	DemoBaseApplLayer::handlePositionUpdate(obj);
 
 	updateJammingDetector();
+
+	if (par("drawVehicleRoute").boolValue())
+	{
+		std::string routeId = traciVehicle->getRouteId();
+		currentRouteId = routeId;
+	}
+}
+
+void CarApplicationLayer::changeRoute()
+{
+	Pathfinder* pathfinder = veins::FindModule<Pathfinder*>::findGlobalModule();
+	ASSERT(pathfinder);
+
+	double minRouteDistance = par("minRouteDistance").doubleValue();
+	std::list<std::string> route = pathfinder->generateRandomRouteStr(traciVehicle->getRoadId(), disallowedEdges, minRouteDistance);
+	traciVehicle->changeVehicleRoute(route);
+
+	lastShownRouteId = "";
+}
+
+void CarApplicationLayer::clearCanvasRouteFigures() const
+{
+	cCanvas *canvas = getSimulation()->getSystemModule()->getCanvas();
+	std::string groupName = std::string(getName()) + " route";
+	int groupFigureIndex = canvas->findFigure(groupName.c_str());
+	if (groupFigureIndex != -1)
+	{
+		cFigure *group = canvas->getFigure(groupFigureIndex);
+		canvas->removeFigure(groupFigureIndex);
+		delete group;
+	}
+}
+
+void CarApplicationLayer::refreshDisplay() const
+{
+	BaseApplicationLayer::refreshDisplay();
+
+	if (hasGUI())
+	{
+		if (par("drawVehicleRoute").boolValue())
+		{
+			drawVehicleRoute();
+		}
+		else
+		{
+			clearCanvasRouteFigures();
+		}
+	}
+}
+
+void CarApplicationLayer::drawVehicleRoute() const
+{
+	if (currentRouteId == lastShownRouteId)
+	{
+		return;
+	}
+
+	lastShownRouteId = currentRouteId;
+
+	if (currentRouteId.empty())
+	{
+		clearCanvasRouteFigures();
+		lastShownRouteId = currentRouteId;
+		return;
+	}
+
+	std::string groupName = std::string(getName()) + " route";
+	cGroupFigure *group = nullptr;
+	cCanvas *canvas = getSimulation()->getSystemModule()->getCanvas();
+	int groupFigureIndex = canvas->findFigure(groupName.c_str());
+	if (groupFigureIndex == -1)
+	{
+		group = new cGroupFigure(groupName.c_str());
+		group->setZIndex(par("routeZIndex").doubleValue() + getIndex());
+		canvas->addFigure(group);
+	}
+	else
+	{
+		group = dynamic_cast<cGroupFigure*>(canvas->getRootFigure()->getFigure(groupFigureIndex));
+	}
+
+	ASSERT(traciVehicle);
+	veins::TraCICommandInterface::Route route = veins::TraCICommandInterface::Route(traci, currentRouteId);
+	std::list<std::string> routeEdges = route.getRoadIds();
+	int figureCounter = 0;
+	for (std::string edgeId : routeEdges)
+	{
+		veins::TraCICommandInterface::Road edge = veins::TraCICommandInterface::Road(traci, edgeId);
+		auto laneIds = edge.getRoadLaneIds();
+		for (auto laneId : laneIds)
+		{
+			veins::TraCICommandInterface::Lane lane(traci, laneId);
+			auto coords = lane.getShape();
+			cPolylineFigure *edgeFigure = nullptr;
+			if (group->getNumFigures() >= figureCounter)
+			{
+				edgeFigure = new cPolylineFigure(std::to_string(figureCounter).c_str());
+				group->addFigure(edgeFigure);
+				omnetpp::cFigure::Color lineColor = calculateNodeColor();
+				edgeFigure->setLineColor(lineColor);
+				edgeFigure->setLineWidth(3);
+			}
+			else
+			{
+				edgeFigure = dynamic_cast<cPolylineFigure*>(group->getFigure(figureCounter));
+			}
+
+			std::vector<cFigure::Point> points;
+			for (auto coord : coords)
+			{
+				points.push_back(cFigure::Point(coord.x, coord.y));
+			}
+			edgeFigure->setPoints(points);
+			figureCounter++;
+		}
+	}
+
+	for (int i = figureCounter; i < group->getNumFigures(); i++)
+	{
+		cFigure *figure = group->getFigure(figureCounter);
+		group->removeFigure(figureCounter);
+		delete figure;
+	}
 }
 

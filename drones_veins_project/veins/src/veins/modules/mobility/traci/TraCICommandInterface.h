@@ -301,8 +301,10 @@ public:
         }
 
         std::string getName();
+        int getNumberOfLanes() const;
         double getCurrentTravelTime();
         double getMeanSpeed();
+        std::list<std::string> getRoadLaneIds() const;
 
     protected:
         TraCICommandInterface* traci;

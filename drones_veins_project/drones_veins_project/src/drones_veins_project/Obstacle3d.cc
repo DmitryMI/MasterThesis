@@ -141,14 +141,7 @@ void Obstacle3d::getWallIntersections(const veins::Coord &lineStart, const veins
 		// EV << "Intersection found with wall (" << i << ", " << i + 1 << ") at (" << intersectionPoint.x << ", "
 		//		<< intersectionPoint.y << ", " << intersectionPoint.z << ")\n";
 
-		if (std::find(outIntersections.begin(), outIntersections.end(), intersectionPoint) != outIntersections.end())
-		{
-			EV << "Found duplicate intersection, probably the line goes exactly through a corner. Dropped.\n";
-		}
-		else
-		{
-			outIntersections.push_back(intersectionPoint);
-		}
+		outIntersections.push_back(intersectionPoint);
 
 	}
 	// EV << "Found " << outIntersections.size() << " intersections with walls\n";
@@ -228,38 +221,40 @@ void Obstacle3d::getIntersectionPoints(const veins::Coord &lineStart, const vein
 	if (getHorizontalIntersection(lineStart, lineEnd, 0, floorIntersection))
 	{
 		// EV << "Found floor intersection" << "\n";
-		if (std::find(outIntersections.begin(), outIntersections.end(), floorIntersection) != outIntersections.end())
-		{
-			EV << "Found duplicate intersection, probably the line goes exactly through a corner. Dropped.\n";
-		}
-		else
-		{
-			outIntersections.push_back(floorIntersection);
-		}
+		outIntersections.push_back(floorIntersection);
 	}
 	if (getHorizontalIntersection(lineStart, lineEnd, height, ceilingIntersection))
 	{
 		// EV << "Found ceiling intersection" << "\n";
-		if (std::find(outIntersections.begin(), outIntersections.end(), ceilingIntersection) != outIntersections.end())
-		{
-			EV << "Found duplicate intersection, probably the line goes exactly through a corner. Dropped.\n";
-		}
-		else
-		{
-			outIntersections.push_back(ceilingIntersection);
-		}
+		outIntersections.push_back(ceilingIntersection);
 	}
-
-	ASSERT(outIntersections.size() % 2 == 0);
 }
 
 std::vector<double> Obstacle3d::getIntersections(const Coord &senderPos, const Coord &receiverPos) const
 {
 	//return Obstacle::getIntersections(senderPos, receiverPos);
 
-	std::vector < veins::Coord > intersectionPoints;
+	std::vector<veins::Coord> intersectionPoints;
 
 	getIntersectionPoints(senderPos, receiverPos, intersectionPoints);
+
+	if (intersectionPoints.size() % 2 != 0)
+	{
+		for (ssize_t i = 0; i < intersectionPoints.size(); i++)
+		{
+			for (ssize_t j = i + 1; j < intersectionPoints.size(); j++)
+			{
+				if(intersectionPoints[i] == intersectionPoints[j])
+				{
+					intersectionPoints.erase(intersectionPoints.begin() + j);
+					i--;
+					break;
+				}
+			}
+		}
+	}
+
+	ASSERT(intersectionPoints.size() % 2 == 0);
 
 	std::vector<double> intersectionFactors;
 	for (const veins::Coord &intersectionPoint : intersectionPoints)

@@ -5,7 +5,7 @@ import os
 
 
 KEY = "GRUB_CMDLINE_LINUX_DEFAULT"
-FIX = "iommu=soft"
+FIX = "intel_iommu=off iommu=soft"
 
 def get_kv(line):
 	key = ""

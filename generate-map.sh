@@ -13,5 +13,5 @@ cd $wd
 echo "Moving Manhatten Grid files to veins project..."
 	
 simulation_env_path=./$PROJ_NAME_AS_FILE_NAME/$PROJ_NAME_AS_FILE_NAME/simulation/$PROJ_NAME_AS_FILE_NAME/
-mv ./grid-generator/generated/* $simulation_env_path
+cp ./grid-generator/generated/* $simulation_env_path
 

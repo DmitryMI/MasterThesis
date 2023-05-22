@@ -23,4 +23,7 @@ module CarApplicationLayer extends BaseApplicationLayer
         @display("i=block/app2");      
         
         bool jammingAnnouncementEnabled = default(true);
+        bool drawVehicleRoute = default(true);
+        double routeZIndex = default(100);  // z-index of all lines
+        double minRouteDistance = 10000;
 }

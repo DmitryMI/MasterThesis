@@ -128,6 +128,8 @@ void TraCIMobility::initialize(int stage)
 				scheduleAt(simTime() + accidentStart, startAccidentMsg);
 			}
 		}
+
+		WATCH(external_id);
 	}
 	else if (stage == 1)
 	{

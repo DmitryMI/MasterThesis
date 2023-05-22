@@ -67,9 +67,14 @@ def check_limit(counter, limit):
         return True
     return counter < limit
 
-def monitor(period, limit):
+def monitor(period, period_waiting, limit):
     if period is None or period == 0:
         return
+    
+    if limit is not None and limit > 0:
+        print(f"Monitor will only run for {limit} cycles.")
+    else:
+        print("Monitor will run until all jobs are finished.")
     
     counter = 0
     
@@ -80,8 +85,8 @@ def monitor(period, limit):
     finished = finished_previous
     
     if inactive == total_initial:
-        print("HPC not started yet. Waiting...")
-        with alive_bar(1) as bar:
+        print(f"HPC not started yet. Checking every {period_waiting} seconds...")
+        with alive_bar(title="Waiting", unknown="wait") as bar:
             while(check_limit(counter, limit) and inactive == total_initial):
                 total, inactive, _, done, failed, error, _ = get_runinfo(runfile_lines)
                 if total != total_initial:
@@ -92,9 +97,15 @@ def monitor(period, limit):
                     bar(finished_new)
                 
                 counter += 1
-                time.sleep(period)
+                time.sleep(period_waiting)
     
-    with alive_bar(total_initial) as bar:
+    if total_initial != inactive:
+        print(f"Monitoring progress, checking every {period} seconds...")
+    else:
+        print("Monitor have reached refresh limit. HPC did not start.")
+        return
+    
+    with alive_bar(total_initial, title="Job progress") as bar:
         if finished > 0:
             bar(finished)
         
@@ -158,11 +169,17 @@ def main():
         prog="Get Run Info",
     )
     
+    parser.add_argument("-w", "--waiting_period", required=False, default=None, type=int)
     parser.add_argument("-m", "--monitor_period", required=False, default=None, type=int)
     parser.add_argument("-n", "--monitor_number", required=False, default=None, type=int)
 
     args = parser.parse_args()
     monitor_period = args.monitor_period
+    waiting_period = args.waiting_period
+    
+    if waiting_period is None:
+        waiting_period = monitor_period
+    
     monitor_number = args.monitor_number
 
     runfile_lines = get_runfile()
@@ -173,7 +190,7 @@ def main():
         print("runfile contains no commands!")
         quit(0)
             
-    monitor(monitor_period, monitor_number)
+    monitor(monitor_period, waiting_period, monitor_number)
     print()
     
     print_runinfo(t, i, r, d, f, e, u)
