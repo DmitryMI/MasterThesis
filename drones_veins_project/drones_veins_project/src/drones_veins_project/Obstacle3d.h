@@ -49,6 +49,16 @@ namespace drones_veins_project
 				int wallEndIndex, veins::Coord &intersectionPoint) const;
 		void getWallIntersections(const veins::Coord &lineStart, const veins::Coord &lineEnd,
 				std::vector<veins::Coord> &outIntersections) const;
+
+		template<typename T>
+		static bool areAlmostEqual(const T& a, const T& b, double tolerance = 0.001)
+		{
+			double dx = a.x - b.x;
+			double dy = a.y - b.y;
+			double dz = a.z - b.z;
+			return abs(dx) < tolerance && abs(dy) < tolerance && abs(dz) < tolerance;
+		}
+
 #ifdef WITH_OSG
 	private:
 		osg::ref_ptr<osg::Group> osgNode;

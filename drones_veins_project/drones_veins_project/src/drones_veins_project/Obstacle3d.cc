@@ -111,7 +111,8 @@ bool Obstacle3d::getWallIntersection(const veins::Coord &lineStart, const veins:
 
 	float intersectionZ = lineStart.z + k * (lineEnd.z - lineStart.z);
 
-	if (0 <= intersectionZ && intersectionZ <= height)
+	// Strict comparison. If EQ 0 or EQ height, then this point will be added by getHorizontalIntersection()
+	if (0 < intersectionZ && intersectionZ < height)
 	{
 		intersectionPoint.x = xyIntersection.x;
 		intersectionPoint.y = xyIntersection.y;
@@ -141,10 +142,22 @@ void Obstacle3d::getWallIntersections(const veins::Coord &lineStart, const veins
 		// EV << "Intersection found with wall (" << i << ", " << i + 1 << ") at (" << intersectionPoint.x << ", "
 		//		<< intersectionPoint.y << ", " << intersectionPoint.z << ")\n";
 
-		outIntersections.push_back(intersectionPoint);
+		bool is_unique = true;
+		for (int i = 0; i < outIntersections.size(); i++)
+		{
+			if (areAlmostEqual(outIntersections[i], intersectionPoint))
+			{
+				is_unique = false;
+				break;
+			}
+		}
 
+		if (is_unique)
+		{
+			outIntersections.push_back(intersectionPoint);
+		}
 	}
-	// EV << "Found " << outIntersections.size() << " intersections with walls\n";
+	EV << "Found " << outIntersections.size() << " intersections with walls\n";
 }
 
 bool Obstacle3d::getHorizonToLineIntersection(const veins::Coord &lineStart, const veins::Coord &lineEnd,
@@ -218,15 +231,40 @@ void Obstacle3d::getIntersectionPoints(const veins::Coord &lineStart, const vein
 
 	veins::Coord floorIntersection;
 	veins::Coord ceilingIntersection;
+	std::vector<veins::Coord> horizontalIntersections;
 	if (getHorizontalIntersection(lineStart, lineEnd, 0, floorIntersection))
 	{
 		// EV << "Found floor intersection" << "\n";
-		outIntersections.push_back(floorIntersection);
+		horizontalIntersections.push_back(floorIntersection);
 	}
 	if (getHorizontalIntersection(lineStart, lineEnd, height, ceilingIntersection))
 	{
 		// EV << "Found ceiling intersection" << "\n";
-		outIntersections.push_back(ceilingIntersection);
+		horizontalIntersections.push_back(ceilingIntersection);
+	}
+
+	for (veins::Coord intersection : horizontalIntersections)
+	{
+		bool is_unique = true;
+		for (int i = 0; i < outIntersections.size(); i++)
+		{
+			if (areAlmostEqual(outIntersections[i], intersection))
+			{
+				is_unique = false;
+				break;
+			}
+		}
+
+		if (is_unique)
+		{
+			outIntersections.push_back(intersection);
+		}
+	}
+
+	if(outIntersections.size() == 1)
+	{
+		// Intersection is very small, we can ignore it entirely
+		outIntersections.clear();
 	}
 }
 
@@ -237,22 +275,6 @@ std::vector<double> Obstacle3d::getIntersections(const Coord &senderPos, const C
 	std::vector<veins::Coord> intersectionPoints;
 
 	getIntersectionPoints(senderPos, receiverPos, intersectionPoints);
-
-	if (intersectionPoints.size() % 2 != 0)
-	{
-		for (ssize_t i = 0; i < intersectionPoints.size(); i++)
-		{
-			for (ssize_t j = i + 1; j < intersectionPoints.size(); j++)
-			{
-				if(intersectionPoints[i] == intersectionPoints[j])
-				{
-					intersectionPoints.erase(intersectionPoints.begin() + j);
-					i--;
-					break;
-				}
-			}
-		}
-	}
 
 	ASSERT(intersectionPoints.size() % 2 == 0);
 

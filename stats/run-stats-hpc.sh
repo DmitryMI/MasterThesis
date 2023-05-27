@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CPUS_PER_TASK=24
-NTASKS_MAX=20
+NTASKS_MAX=10
 
 if [ -z "$RUNSIM_SETVARS_GUARD" ]
 then
@@ -158,5 +158,8 @@ echo "Eval Job scheduled!"
 
 ./read_runfile.sh
 cd $WORKING_DIR
+
+cd ../hpc
+./get-run-info.py -w 300 -m 10
 
 
