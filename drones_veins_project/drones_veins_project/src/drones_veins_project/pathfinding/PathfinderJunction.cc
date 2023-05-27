@@ -11,9 +11,10 @@
 
 using namespace drones_veins_project;
 
-PathfinderJunction::PathfinderJunction(std::string id, std::vector<std::string> incomingLaneIds, bool isInternal)
+PathfinderJunction::PathfinderJunction(std::string id, const std::vector<PathfinderLane*>& incomingLanes, const std::vector<PathfinderLane*>& internalLanes, bool isInternal)
 {
 	this->id = id;
-	this->incomingLaneIds = incomingLaneIds;
+	this->incomingLanes = incomingLanes;
+	this->internalLanes = internalLanes;
 	this->isInternal = isInternal;
 }

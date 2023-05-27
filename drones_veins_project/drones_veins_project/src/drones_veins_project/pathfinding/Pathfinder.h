@@ -32,9 +32,11 @@ namespace drones_veins_project
 	{
 	private:
 		std::map<std::string, PathfinderEdge*> edges;
+		std::map<std::string, PathfinderLane*> lanes;
 		std::map<std::string, PathfinderJunction*> junctions;
 
 		static std::vector<std::string> parseEdgeList(const std::string& incLanes);
+		static std::vector<std::string> parseLaneList(const std::string& lanes);
 
 		static veins::TraCICoord parseCoord(const std::vector<std::string>& tokens);
 		static std::vector<veins::TraCICoord> parseShape(const std::string& shapeStr);

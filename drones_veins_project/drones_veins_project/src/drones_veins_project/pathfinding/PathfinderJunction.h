@@ -14,17 +14,19 @@
 
 namespace drones_veins_project
 {
-	class PathfinderEdge;
+	class PathfinderLane;
 
 	class PathfinderJunction
 	{
 	private:
 		std::string id;
-		std::vector<std::string> incomingLaneIds;
 		bool isInternal;
 
+		std::vector<PathfinderLane*> incomingLanes;
+		std::vector<PathfinderLane*> internalLanes;
+
 	public:
-		PathfinderJunction(std::string id, std::vector<std::string> incomingLaneIds, bool isInternal);
+		PathfinderJunction(std::string id, const std::vector<PathfinderLane*>& incomingLanes, const std::vector<PathfinderLane*>& internalLanes, bool isInternal);
 
 		friend class Pathfinder;
 	};

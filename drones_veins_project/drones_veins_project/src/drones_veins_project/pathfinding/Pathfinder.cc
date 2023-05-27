@@ -32,6 +32,10 @@ Pathfinder::Pathfinder()
 
 Pathfinder::~Pathfinder()
 {
+	for (auto lanePair : lanes)
+	{
+		delete lanePair.second;
+	}
 	for (auto edgePair : edges)
 	{
 		delete edgePair.second;
@@ -40,6 +44,7 @@ Pathfinder::~Pathfinder()
 	{
 		delete junctionPair.second;
 	}
+
 }
 
 std::vector<std::string> Pathfinder::parseEdgeList(const std::string &incLanes)
@@ -69,6 +74,35 @@ std::vector<std::string> Pathfinder::parseEdgeList(const std::string &incLanes)
 		else
 		{
 			token += incLanes[i];
+		}
+	}
+
+	if (!token.empty())
+	{
+		res.push_back(token);
+	}
+
+	return res;
+}
+
+std::vector<std::string> Pathfinder::parseLaneList(const std::string &lanes)
+{
+	std::vector<std::string> res;
+
+	std::string token = "";
+	for (uint64_t i = 0; i < lanes.size(); i++)
+	{
+		if (lanes[i] == ' ')
+		{
+			if (!token.empty())
+			{
+				res.push_back(token);
+				token = "";
+			}
+		}
+		else
+		{
+			token += lanes[i];
 		}
 	}
 
@@ -148,13 +182,6 @@ void Pathfinder::initialize(int stage)
 		return;
 	}
 
-	/*
-	 veins::TraCIScenarioManager *scenarioManager = veins::FindModule<veins::TraCIScenarioManager*>::findGlobalModule();
-	 ASSERT(scenarioManager);
-	 veins::TraCIConnection *traciConnection = scenarioManager->getConnection();
-	 ASSERT(traciConnection);
-	 */
-
 	cXMLElement *xml = par("sumoNetworkXml").xmlValue();
 
 	std::string rootTag = xml->getTagName();
@@ -197,14 +224,34 @@ void Pathfinder::initialize(int stage)
 				toId = toIdChar;
 			}
 
-			std::vector<veins::TraCICoord> shape = { veins::TraCICoord(), veins::TraCICoord() };
-			cXMLElement *lane = child->getFirstChildWithTag("lane");
-			if (lane && !isInternal)
+			PathfinderEdge *edge = new PathfinderEdge(edgeId, fromId, toId, isInternal);
+
+			cXMLElementList edgeChildren = child->getChildren();
+			for (cXMLElement *edgeChild : edgeChildren)
 			{
-				std::string shapeStr = lane->getAttribute("shape");
-				shape = parseShape(shapeStr);
+				std::string edgeChildTag = edgeChild->getTagName();
+				if (edgeChildTag != "lane")
+				{
+					continue;
+				}
+				std::string id = edgeChild->getAttribute("id");
+				int index = std::atoi(edgeChild->getAttribute("index"));
+				double length = std::atof(edgeChild->getAttribute("length"));
+
+				std::vector<veins::TraCICoord> shape = { veins::TraCICoord(), veins::TraCICoord() };
+				const char *shapeAttrChar = edgeChild->getAttribute("shape");
+				if (shapeAttrChar != nullptr)
+				{
+					std::string shapeStr = edgeChild->getAttribute("shape");
+					shape = parseShape(shapeStr);
+				}
+				PathfinderLane *lane = new PathfinderLane(id, index, length, shape);
+				lane->owningEdge = edge;
+				lanes.emplace(id, lane);
+
+				edge->lanes.push_back(lane);
 			}
-			PathfinderEdge *edge = new PathfinderEdge(edgeId, fromId, toId, shape[0], shape[1], isInternal);
+
 			edges.emplace(edgeId, edge);
 		}
 		else if (tagName == "junction")
@@ -221,23 +268,68 @@ void Pathfinder::initialize(int stage)
 			}
 
 			std::string junctionId = child->getAttribute("id");
-			std::string incLanes = child->getAttribute("incLanes");
-			std::vector<std::string> incomingEdgeIds = parseEdgeList(incLanes);
+			std::string incLaneIdsStr = child->getAttribute("incLanes");
+			std::string intLaneIdsStr = child->getAttribute("intLanes");
+			std::vector<std::string> incomingLaneIds = parseLaneList(incLaneIdsStr);
+			std::vector<std::string> internalLaneIds = parseLaneList(intLaneIdsStr);
 
-			PathfinderJunction *junction = new PathfinderJunction(junctionId, incomingEdgeIds, isInternal);
+			std::vector<PathfinderLane*> incomingLanes;
+			for (const std::string &incomingLaneId : incomingLaneIds)
+			{
+				PathfinderLane *incomingLane = lanes.at(incomingLaneId);
+				incomingLanes.push_back(incomingLane);
+			}
+
+			std::vector<PathfinderLane*> internalLanes;
+			for (const std::string &laneId : internalLaneIds)
+			{
+				PathfinderLane *internalLane = lanes.at(laneId);
+				internalLanes.push_back(internalLane);
+			}
+
+			// Interconnect internal lanes
+			for (uint64_t laneIndexI = 0; laneIndexI < internalLanes.size(); laneIndexI++)
+			{
+				PathfinderLane *laneI = internalLanes[laneIndexI];
+				PathfinderEdge *edgeI = laneI->owningEdge;
+				for (uint64_t laneIndexJ = laneIndexI + 1; laneIndexJ < internalLanes.size(); laneIndexJ++)
+				{
+					PathfinderLane *laneJ = internalLanes[laneIndexJ];
+					PathfinderEdge *edgeJ = laneJ->owningEdge;
+					edgeI->connectedEdges.push_back(edgeJ);
+					edgeJ->connectedEdges.push_back(edgeI);
+				}
+			}
+
+			// Connect incoming edges to internal lanes (edges)
+			for(PathfinderLane* incomingLane : incomingLanes)
+			{
+				PathfinderEdge* incomingEdge = incomingLane->owningEdge;
+				for(PathfinderLane* internalLane : internalLanes)
+				{
+					PathfinderEdge* internalEdge = internalLane->owningEdge;
+					incomingEdge->connectedEdges.push_back(internalEdge);
+				}
+			}
+
+			PathfinderJunction *junction = new PathfinderJunction(junctionId, incomingLanes, internalLanes, isInternal);
 			junctions.emplace(junctionId, junction);
 		}
 		else if (tagName == "connection")
 		{
 			const char *fromIdChar = child->getAttribute("from");
 			const char *toIdChar = child->getAttribute("to");
-			if (!fromIdChar || !toIdChar)
-			{
-				continue;
-			}
 
-			std::string fromId = std::string(fromIdChar);
-			std::string toId = std::string(toIdChar);
+			std::string fromId = "";
+			std::string toId = "";
+			if (fromIdChar != nullptr)
+			{
+				fromId = std::string(fromIdChar);
+			}
+			if (toIdChar != nullptr)
+			{
+				toId = std::string(toIdChar);
+			}
 
 			ASSERT(edges.count(fromId) != 0 && edges.count(toId) != 0);
 
@@ -267,7 +359,7 @@ void Pathfinder::initialize(int stage)
 		edgePair.second->fromJunction = from;
 		edgePair.second->toJunction = to;
 	}
-
+	EV << "Parhfinder initialized!\n";
 }
 void Pathfinder::finish()
 {

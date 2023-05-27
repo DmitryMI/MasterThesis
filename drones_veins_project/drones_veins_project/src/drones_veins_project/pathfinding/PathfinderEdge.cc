@@ -9,20 +9,28 @@
 
 using namespace drones_veins_project;
 
-PathfinderEdge::PathfinderEdge(const std::string& id, const std::string&  fromId, const std::string&  toId, const veins::TraCICoord& startCoord,
-		const veins::TraCICoord& endCoord, bool isInternal)
+PathfinderLane::PathfinderLane(const std::string& id, int index, double length, const std::vector<veins::TraCICoord>& shape)
+{
+	this->id = id;
+	this->index = index;
+	this->length = length;
+	this->shape = shape;
+}
+
+PathfinderEdge::PathfinderEdge(const std::string& id, const std::string&  fromId, const std::string& toId, bool isInternal)
 {
 	this->id = id;
 	this->fromJunctionId = fromId;
 	this->toJunctionId = toId;
-	this->startCoord = startCoord;
-	this->endCoord = endCoord;
 	this->isInternal = isInternal;
 }
 
 double PathfinderEdge::getLengthTraci() const
 {
-	double dx = endCoord.x - startCoord.x;
-	double dy = endCoord.y - startCoord.y;
-	return std::sqrt(dx * dx + dy * dy);
+	if(lanes.size() > 0)
+	{
+		PathfinderLane* lane = lanes[0];
+		return lane->length;
+	}
+	return 0;
 }

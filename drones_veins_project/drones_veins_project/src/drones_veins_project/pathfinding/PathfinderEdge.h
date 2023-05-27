@@ -19,6 +19,23 @@
 namespace drones_veins_project
 {
 	class PathfinderJunction;
+	class PathfinderEdge;
+
+	class PathfinderLane
+	{
+		std::string id;
+		int index;
+		double length;
+		std::vector<veins::TraCICoord> shape;
+
+		PathfinderEdge* owningEdge = nullptr;
+
+	public:
+		PathfinderLane(const std::string& id, int index, double length, const std::vector<veins::TraCICoord>& shape);
+
+		friend class Pathfinder;
+		friend class PathfinderEdge;
+	};
 
 	class PathfinderEdge
 	{
@@ -26,16 +43,14 @@ namespace drones_veins_project
 		std::string id;
 		std::string fromJunctionId;
 		std::string toJunctionId;
-		veins::TraCICoord startCoord;
-		veins::TraCICoord endCoord;
 
 		std::vector<PathfinderEdge*> connectedEdges;
-		PathfinderJunction *fromJunction;
-		PathfinderJunction *toJunction;
+		std::vector<PathfinderLane*> lanes;
+		PathfinderJunction *fromJunction = nullptr;
+		PathfinderJunction *toJunction = nullptr;
 		bool isInternal;
 	public:
-		PathfinderEdge(const std::string& id, const std::string&  fromId, const std::string&  toId, const veins::TraCICoord& startCoord,
-				const veins::TraCICoord& endCoord, bool isInternal);
+		PathfinderEdge(const std::string& id, const std::string&  fromId, const std::string&  toId, bool isInternal);
 		double getLengthTraci() const;
 
 		friend class Pathfinder;
