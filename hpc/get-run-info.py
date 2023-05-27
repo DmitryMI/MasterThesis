@@ -22,7 +22,7 @@ def get_runfile():
         lines = runfile.readlines()
     return lines
 
-def get_runinfo(runfile_lines):
+def get_runinfo(runfile_lines, do_print=False):
     total_commands = 0
     total_inactive = 0
     total_running = 0
@@ -46,19 +46,22 @@ def get_runinfo(runfile_lines):
         elif line[0] == "!":
             total_fail += 1
             total_commands += 1
-            print(f"Line {line}: fail!")
+            if do_print:
+                print(f"Line {line}: fail!")
             
         elif line[0] == "e":
             total_error += 1
             total_commands += 1
-            print(f"Line {line}: error!")
+            if do_print:
+                print(f"Line {line}: error!")
             
         elif line[0] == "r":
             total_running += 1
             total_commands += 1
         else:
             total_unrecognized += 1
-            print(f"Unknown status in line {line}")
+            if do_print:
+                print(f"Unknown status in line {line}")
             
     return total_commands, total_inactive, total_running, total_done, total_fail, total_error, total_unrecognized
 
@@ -88,6 +91,7 @@ def monitor(period, period_waiting, limit):
         print(f"HPC not started yet. Checking every {period_waiting} seconds...")
         with alive_bar(title="Waiting", unknown="wait") as bar:
             while(check_limit(counter, limit) and inactive == total_initial):
+                runfile_lines = get_runfile()
                 total, inactive, _, done, failed, error, _ = get_runinfo(runfile_lines)
                 if total != total_initial:
                     print("Runfile changed!")
@@ -107,9 +111,10 @@ def monitor(period, period_waiting, limit):
     
     with alive_bar(total_initial, title="Job progress") as bar:
         if finished > 0:
-            bar(finished)
+            bar(finished, skipped=True)
         
         while(check_limit(counter, limit) and finished < total_initial):
+            runfile_lines = get_runfile()
             total, _, _, done, failed, error, _ = get_runinfo(runfile_lines)
             if total != total_initial:
                 print("Runfile changed!")
@@ -181,18 +186,12 @@ def main():
         waiting_period = monitor_period
     
     monitor_number = args.monitor_number
-
-    runfile_lines = get_runfile()
-
-    t, i, r, d, f, e, u = get_runinfo(runfile_lines)
-
-    if t == 0:
-        print("runfile contains no commands!")
-        quit(0)
-            
+   
     monitor(monitor_period, waiting_period, monitor_number)
     print()
     
+    runfile_lines = get_runfile()
+    t, i, r, d, f, e, u = get_runinfo(runfile_lines, True)
     print_runinfo(t, i, r, d, f, e, u)
     
 if __name__ == "__main__":
