@@ -170,6 +170,7 @@ const uint8_t JAM_LENGTH_VEHICLE = 0x18;
 const uint8_t LANE_ALLOWED = 0x34;
 const uint8_t LANE_DISALLOWED = 0x35;
 const uint8_t LANE_EDGE_ID = 0x31;
+const uint8_t LANE_NUMBER = 0x52;
 const uint8_t LANE_LINKS = 0x33;
 const uint8_t LANE_LINK_NUMBER = 0x30;
 const uint8_t LAST_STEP_LENGTH = 0x15;

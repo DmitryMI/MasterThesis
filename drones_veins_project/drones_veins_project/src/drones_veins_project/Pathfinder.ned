@@ -11,19 +11,16 @@
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+//
 
-package org.car2x.veins.subprojects.drones_veins_project.cars;
-import org.car2x.veins.subprojects.drones_veins_project.BaseApplicationLayer;
+package org.car2x.veins.subprojects.drones_veins_project;
 
-module CarApplicationLayer extends BaseApplicationLayer
+//
+// ObstacleControl models obstacles that block radio transmissions
+//
+simple Pathfinder
 {
     parameters:
-        @class(drones_veins_project::CarApplicationLayer);
-        @display("i=block/app2");      
-        
-        bool jammingAnnouncementEnabled = default(true);
-        bool drawVehicleRoute = default(true);
-        double routeZIndex = default(100);  // z-index of all lines
-        double minRouteDistance = 10000;
+        @class(drones_veins_project::Pathfinder);
+        xml sumoNetworkXml = default(xml("<net/>"));
 }

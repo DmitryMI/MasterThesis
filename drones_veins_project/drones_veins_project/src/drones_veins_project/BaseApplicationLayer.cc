@@ -17,6 +17,7 @@
 #include "veins/base/utils/FindModule.h"
 #include "PeriodicSafetyMessage_m.h"
 #include <cassert>
+#include <iomanip>
 
 using namespace drones_veins_project;
 
@@ -36,6 +37,26 @@ BaseApplicationLayer::BaseApplicationLayer()
 BaseApplicationLayer::~BaseApplicationLayer()
 {
 	// TODO Auto-generated destructor stub
+}
+
+omnetpp::cFigure::Color BaseApplicationLayer::calculateNodeColor() const
+{
+	int nodeIndex = this->getParentModule()->getIndex();
+
+	uint64_t a = 1103515245;
+	uint64_t c = 12345;
+	uint64_t m = 2UL << 31;
+	uint64_t seed = 12345 + nodeIndex;
+	std::array<int, 3> values;
+
+	seed = (a * seed + c) % m;
+	for(uint64_t i = 0; i < values.size(); i++)
+	{
+		values[i] = (uint8_t)(seed >> i);
+	}
+
+	omnetpp::cFigure::Color color = omnetpp::cFigure::Color(values[0], values[1], values[2]);
+	return color;
 }
 
 void BaseApplicationLayer::handleMessage(cMessage *msg)
@@ -160,11 +181,22 @@ void BaseApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *
 	setIconColor("green");
 }
 
-void BaseApplicationLayer::setIconColor(std::string color)
+void BaseApplicationLayer::setIconColorStr(std::string color)
 {
 	cModule *hostModule = findHost();
 	assert(hostModule);
 	hostModule->getDisplayString().setTagArg("i", 1, color.c_str());
+}
+
+void BaseApplicationLayer::setIconColor(omnetpp::cFigure::Color color)
+{
+	std::stringstream stream;
+	stream << "#" << std::setfill ('0') <<
+			std::setw(2) << std::hex << (int)color.red <<
+			std::setw(2) << std::hex << (int)color.green <<
+			std::setw(2) << std::hex << (int)color.blue;
+	std::string colorStr = stream.str();
+	setIconColorStr(colorStr);
 }
 
 std::string BaseApplicationLayer::getIconColor()

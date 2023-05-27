@@ -36,17 +36,25 @@ netgenerate --grid --grid.number $GRID_SIZE --grid.length $STREET_LENGTH --defau
 # ../grid-generator-vs/grid_generator_vs.py $PROJ_NAME --grid.x-number $GRID_SIZE --grid.y-number $GRID_SIZE --grid.length $STREET_LENGTH --block_size $GRID_SUBD --ini_path $OMNETPP_INI_PATH
 ../grid-generator-vs/grid_generator_vs.py $PROJ_NAME --grid.x-number $GRID_SIZE --grid.y-number $GRID_SIZE --grid.length $STREET_LENGTH --block_size $GRID_SUBD
 
+if [ -z "$TRIPS_MIN_DISTANCE" ]
+then
+    echo "TRIPS_MIN_DISTANCE not defined. Stripping CLI arguments"
+    TRIPS_MIN_DISTANCE_ARG=""
+else
+    TRIPS_MIN_DISTANCE_ARG="--min-distance $TRIPS_MIN_DISTANCE"
+fi
+
 # Generating random trips
 TRIPS_MIN_DISTANCE=$(expr $GRID_SIZE \* $STREET_LENGTH)
 # echo "RandomTrips will use min distance of $TRIPS_MIN_DISTANCE"
-python3 $SUMO_TOOLS_PATH/randomTrips.py -n $PROJ_NAME.net.xml -b $TRIPS_START_TIME -e $TRIPS_END_TIME -p $TRIPS_PERIOD --random -i $TRIPS_INTERMEDIATES -o $PROJ_NAME.trips.xml --min-distance 1000000
+python3 $SUMO_TOOLS_PATH/randomTrips.py -n $PROJ_NAME.net.xml -b $TRIPS_START_TIME -e $TRIPS_END_TIME -p $TRIPS_PERIOD --random -i $TRIPS_INTERMEDIATES -o $PROJ_NAME.trips.xml $TRIPS_MIN_DISTANCE_ARG
 
 # Applying duarouter-randomTrips bugfix
 str_to_replace=' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd"'
 sed -i -e "s/<routes.*>/<routes>/g" $PROJ_NAME.trips.xml
 
 # Generating actual vehicle routes based on trips
-duarouter -n $PROJ_NAME.net.xml --route-files $PROJ_NAME.trips.xml -o $PROJ_NAME.rou.xml
+duarouter -n $PROJ_NAME.net.xml --route-files $PROJ_NAME.trips.xml -o $PROJ_NAME.rou.xml --remove-loops
 
 if [ $? != 0 ]
 then

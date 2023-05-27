@@ -5,6 +5,11 @@ import xml.etree.ElementTree as et
 import os.path
 from pathlib import Path
 
+def validate_route(route_tag):
+    route_edges = route_tag.get("edges")
+    route_id = route_tag.get("id")
+    print(f"Route {route_id} has {len(route_edges)} edges")
+
 def main():
     parser = argparse.ArgumentParser(
         prog="Route Extractor",
@@ -37,6 +42,7 @@ def main():
         else:
             route_id = route.get("id")
 
+        validate_route(route)
         route_tags.append(route)
         print(f"Route with ID {route_id} extracted")
 

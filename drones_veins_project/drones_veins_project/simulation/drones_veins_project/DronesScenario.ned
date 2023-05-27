@@ -55,20 +55,20 @@ network DronesScenario
         
         droneManager : DroneManager{
              parameters:
-                @display("p=570,128");
+                @display("p=290,0");
         }
         
         obstacles: ObstacleControl3d {
-            @display("p=240,50");
+            @display("p=300,0");
         }
         
         annotations: AnnotationManager {
-            @display("p=260,50");
+            @display("p=310,0");
         }
         
         connectionManager: ConnectionManager {
             parameters:
-                @display("p=150,0;i=abstract/multicast");
+                @display("p=320,0;i=abstract/multicast");
         }
         
         world: BaseWorldUtility {
@@ -76,13 +76,13 @@ network DronesScenario
                 playgroundSizeX = veins_eval_by_version(veins_omnetpp_buildnum(), "playgroundSizeX", 1525, "parent.playgroundSizeX");
                 playgroundSizeY = veins_eval_by_version(veins_omnetpp_buildnum(), "playgroundSizeY", 1525, "parent.playgroundSizeY");
                 playgroundSizeZ = veins_eval_by_version(veins_omnetpp_buildnum(), "playgroundSizeZ", 1525, "parent.playgroundSizeZ");
-                @display("p=30,0;i=misc/globe");
+                @display("p=330,0;i=misc/globe");
         }
         
        	
         manager: <traciScenarioManagerType> like ITraciScenarioManager{
             parameters:
-                @display("p=512,128");
+                @display("p=340,0");
                 moduleType = carType;
         }
         
@@ -90,18 +90,24 @@ network DronesScenario
             
         }
         
-        vehicleCounter: VehicleCounter;
+        vehicleCounter: VehicleCounter {
+            @display("p=350,0");
+        }
+        
+        pathfinder: Pathfinder {
+            @display("p=360,0");
+        }
  
         roadsCanvasVisualizer: RoadsCanvasVisualizer {
-            @display("p=300,0");
+            @display("p=370,0");
         }
         
         roadsOsgVisualizer: RoadsOsgVisualizer2 {
-            @display("p=350,0");
+            @display("p=380,0");
         }
         
         osgManager: OsgManager {
-            @display("p=350,0");
+            @display("p=390,0");
         }
         
         obstacleShadowingVisualizer: ObstacleShadowingVisualizer {

@@ -32,7 +32,10 @@ namespace drones_veins_project
 		long messageSerialCounter = 0;
 		std::set<veins::LAddress::L2Type> receivedJammingAnnouncements;
 		double totalTimeInJam = 0.0;
+		std::set<std::string> disallowedEdges;
 
+		mutable std::string lastShownRouteId = "";
+		std::string currentRouteId = "";
 
 		void onCarJammingStateChanged(bool jammed);
 		void updateJammingDetector();
@@ -40,6 +43,7 @@ namespace drones_veins_project
 		std::string getCarDescriptor();
 		virtual void handleCarJammingAnnouncement(CarJammingAnnouncement* msg) override;
 
+		void changeRoute();
 	public:
 		CarApplicationLayer();
 		virtual ~CarApplicationLayer();
@@ -53,6 +57,11 @@ namespace drones_veins_project
 
 		virtual void handleSelfMsg(cMessage *msg) override;
 		virtual void handlePositionUpdate(cObject *obj) override;
+
+		virtual void drawVehicleRoute() const;
+		virtual void clearCanvasRouteFigures() const;
+		virtual void refreshDisplay() const;
+
 
 	};
 }

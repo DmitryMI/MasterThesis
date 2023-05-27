@@ -40,7 +40,8 @@ namespace drones_veins_project
 		virtual void onBSM(veins::DemoSafetyMessage* bsm) override;
 		virtual void handleCarJammingAnnouncement(CarJammingAnnouncement* msg);
 		virtual void handleSelfMsg(cMessage* msg) override;
-		void setIconColor(std::string color);
+		void setIconColorStr(std::string color);
+		void setIconColor(omnetpp::cFigure::Color color);
 		std::string getIconColor();
 
 	public:
@@ -55,6 +56,8 @@ namespace drones_veins_project
 		int getRebroadcastDeciderInGate();
 
 		veins::LAddress::L2Type getAddress();
+
+		virtual omnetpp::cFigure::Color calculateNodeColor() const;
 	};
 
 }
