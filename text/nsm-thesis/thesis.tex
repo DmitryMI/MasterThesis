@@ -177,6 +177,10 @@ Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize
 
 For my scenario the exact implementation of physical layer and \ac{MAC}-layer is not important. Therefore I am relying on networking, already implemented in Veins and OMNeT++. The physical layer is implemented by Veins and simulates Wi-Fi transmitter, mounted on the vehicle's roof (1.895 meters above the road). In my scenario, I use a monopole antenna, also already implemented by Veins. Since the transport-layer protocol is also not important, I am using Wave Short Message protocol, implemented in Veins. For the drones I use the same networking layers as for the vehicles.
 
+\section {Scenario and Car}
+
+To further understand my implementation of drones in Veins, it is necessary to consider two files included in Veins: the file Scenario.ned \cite{scenarioned} and the file Car.ned \cite{carned}. Scenario.ned defines the overall structure of the network, contains an array of all nodes and a list of auxiliary modules that control the vehicles or participate in the visualization when working with the GUI. The Car.ned file defines the structure of one of the most important modules - Car module, which is the internal representation of a vehicle. It contains, in particular, information about the network controller simulator and information about the user code of the application. Also, the Car module has a sub-module, which is responsible for synchronizing the movement with SUMO. 
+
 \chapter{Implementation}
 
 \section{Drones}
