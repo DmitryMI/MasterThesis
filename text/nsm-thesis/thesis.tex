@@ -181,6 +181,13 @@ For my scenario the exact implementation of physical layer and \ac{MAC}-layer is
 
 To further understand my implementation of drones in Veins, it is necessary to consider two files included in Veins: the file Scenario.ned \cite{scenarioned} and the file Car.ned \cite{carned}. Scenario.ned defines the overall structure of the network, contains an array of all nodes and a list of auxiliary modules that control the vehicles or participate in the visualization when working with the GUI. The Car.ned file defines the structure of one of the most important modules - Car module, which is the internal representation of a vehicle. It contains, in particular, information about the network controller simulator and information about the user code of the application. Also, the Car module has a sub-module, which is responsible for synchronizing the movement with SUMO. 
 
+\begin{figure}
+  	\caption{Simplified diagram of Scenario \cite{scenarioned} network. Not all modules and connections are shown.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Scenario.pdf}
+	\label{fig:veinshighlevel}
+\end{figure}
+
 \chapter{Implementation}
 
 \section{Drones}
