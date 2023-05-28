@@ -178,22 +178,62 @@ Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize
 For my scenario the exact implementation of physical layer and \ac{MAC}-layer is not important. Therefore I am relying on networking, already implemented in Veins and OMNeT++. The physical layer is implemented by Veins and simulates Wi-Fi transmitter, mounted on the vehicle's roof (1.895 meters above the road). In my scenario, I use a monopole antenna, also already implemented by Veins. Since the transport-layer protocol is also not important, I am using Wave Short Message protocol, implemented in Veins. For the drones I use the same networking layers as for the vehicles.
 
 \section {Scenario and Car}
+\label{sec:scenarioned}
 
-To further understand my implementation of drones in Veins, it is necessary to consider two files included in Veins: the file Scenario.ned \cite{scenarioned} and the file Car.ned \cite{carned}. Scenario.ned defines the overall structure of the network, contains an array of all nodes and a list of auxiliary modules that control the vehicles or participate in the visualization when working with the GUI. The Car.ned file defines the structure of one of the most important modules - Car module, which is the internal representation of a vehicle. It contains, in particular, information about the network controller simulator and information about the user code of the application. Also, the Car module has a sub-module, which is responsible for synchronizing the movement with SUMO. 
+To further understand my implementation of drones in Veins, it is necessary to consider two files included in Veins: the file Scenario.ned \cite{scenarioned} and the file Car.ned \cite{carned}. Scenario.ned defines the overall structure of the network, contains an array of all nodes and a list of auxiliary modules that control the vehicles or participate in the visualization when working with the GUI. The Car.ned file defines the structure of one of the most important modules - Car module, which is the internal representation of a vehicle. It contains, in particular, information about the network controller simulator and information about the user code of the application. Also, the Car module has a sub-module, which is responsible for synchronizing the movement with SUMO. Based on these two files in the future I will implement my version of the scenario, which will include drones in addition to vehicles, as well as support three-dimensional visualization of the scene. 
 
 \begin{figure}
-  	\caption{Simplified diagram of Scenario \cite{scenarioned} network. Not all modules and connections are shown.}
+  	\caption{Simplified diagram of Scenario \cite{scenarioned} network. Not all modules, parameters and connections are shown.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Scenario.pdf}
-	\label{fig:veinshighlevel}
+	\label{fig:scenarioned}
 \end{figure}
+
+\cref{fig:scenarioned} shows a simplified diagram of the network in Veins. It is not a diagram of classes in the usual sense, it shows the relationship of OMNeT++-modules and OMNeT++-networks , as well as some parameters that will be of interest in the rest of the work. 
 
 \chapter{Implementation}
 
+Now it is time to develop a network model for a scenario in which vehicles and drones will interact within the same virtual space. My implementation is largely based on the model used in Veins, which was discussed in \cref{sec:scenarioned}. My model basically repeats the structure of the model from Veins, as the basic modules remain the same. However, I have integrated into my model drones, support for the third dimension when calculating sight lines, and special modules for using OSG to render a three-dimensional scene.
+
+\begin{figure}
+  	\caption{Simplified diagram of DroneScenario network. Not all modules, parameters and connections are shown.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/DroneScenario.pdf}
+	\label{fig:dronescenarioned}
+\end{figure}
+
+\cref{fig:dronescenarioned} shows a simplified diagram of the network in my model, the scheme is analogues to \cref{fig:scenarioned} and is meant to show similarities and differences between my model in Veins' model.
+
+In the following sections I will describe the differences in detail, explain how I have integrated in particular, drones, 3D-visualization and 3D-obstacle shadowing.
+
 \section{Drones}
 
-The first issue with implementing my scenario is that Veins does not support drones. Therefore, implementing drones was the first step in my work. The easiest way to implement drones would be to reuse the existing Veins' code, that was used for vehicles. Therefore, drones will in fact only differ in their mobility, but in other things they can share the code with vehicles.
+The first issue with implementing my scenario is that Veins does not support drones. Therefore, implementing drones was on of the first steps in my work. The easiest way to implement drones would be to reuse the existing Veins' code, that was used for vehicles. Therefore, drones will in fact only differ in their mobility, but in other things they will mostly share the code with Veins' vehicles.
 
+\cref{fig:dronened} shows a simplified structure of the Drone.ned module. Like the Car.ned from Veins, Drone.ned uses a special submodule for moving in space. To improve simulation efficiency (i.e., to reduce the number of events), all drone movements are performed once every 1 second as part of the single event processing. The DroneManager.ned module is responsible for managing this event (scheduling and execution), as well as for creating and removing drones. Simply put, the DroneManager module creates a specified number of drones, and then sends a position update signal to each drone at a period of 1 second (configurable). 
+
+DroneMobility module is based on Veins' LinearMobility with some minor changes. The biggest one: DroneMobility does not update itself. Instead, the DroneManager calls a special method that makes DroneMobility to update its position.
+
+\begin{figure}
+  	\caption{Simplified diagram of Drone module. Not all parameters connections are shown.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Drone.pdf}
+	\label{fig:dronened}
+\end{figure}
+
+
+\section{BaseApplicationLayer}
+
+To integrate the drones more easily, I decided to create an additional level of abstraction: BaseApplicationLayer (\cref{fig:baseapplicationlayer}), which will be common for drones and cars. This class is responsible for automatically assigning network addresses, for keeping track of statistics common to drones and cars, and, importantly, for decisions about relaying incoming messages. BaseApplicationLayer inherits from DemoBaseApplLayer, that is implemented in Veins.
+
+\begin{figure}
+  	\caption{Simplified diagram of BaseApplicationLayer. Not all parameters are shown. DemoBaseApplLayer is implemented in Veins \cite{demobaseappllayer}}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/BaseApplicationLayer.pdf}
+	\label{fig:baseapplicationlayer}
+\end{figure}
+
+The main reason for creating the BaseApplicationLayer is to unify the way how decision about rebroadcasting is made. BaseApplicationLayer holds a reference to a special object of class RebroadcastDecider, which in fact is a virtual class. This object decides whether to rebroadcast the message or not. How exactly it makes this decision for the vehicle or for the drone is irrelevant. The drone or vehicle only receives a decision from this object. So it is relatively easy to change the algorithm that decides whether to retransmit a message. Also it is easy to enable a specific algorithm for both drones and vehicles in the same manner.
 
 
 \chapter{Evaluation}
