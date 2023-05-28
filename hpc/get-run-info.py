@@ -10,7 +10,8 @@ import time
 RUNFILE_NAME = "./runfile.remote.txt"
 
 def get_runfile():
-    os.remove(RUNFILE_NAME)
+    if os.path.exists(RUNFILE_NAME):
+        os.remove(RUNFILE_NAME)
     process = subprocess.Popen("./get_runfile.sh", stdout=subprocess.PIPE)
     process.wait()
         
@@ -169,6 +170,27 @@ def print_runinfo(t, i, r, d, f, e, u):
 
     print(f"Overall success rate: \t{success_rate:.2f}%")
 
+def filter_runfile(filt_status):
+    res = []
+    runfile_lines = get_runfile()
+    for line in runfile_lines:
+        if line.strip() == "":
+            continue
+        
+        status = line[0]
+        
+        if type(filt_status) is str:
+            if status == filt_status:
+                res.append(line)
+        elif type(filt_status) is list:
+            if status in filt_status:
+                res.append(line) 
+        else:
+            if filt_status(status):
+                res.append(line)
+    return res
+     
+
 def main():
     parser = argparse.ArgumentParser(
         prog="Get Run Info",
@@ -177,8 +199,11 @@ def main():
     parser.add_argument("-w", "--waiting_period", required=False, default=None, type=int)
     parser.add_argument("-m", "--monitor_period", required=False, default=None, type=int)
     parser.add_argument("-n", "--monitor_number", required=False, default=None, type=int)
+    parser.add_argument("--list", required=False, default=None, action="append")
 
     args = parser.parse_args()
+    
+    
     monitor_period = args.monitor_period
     waiting_period = args.waiting_period
     
@@ -191,6 +216,13 @@ def main():
     print()
     
     runfile_lines = get_runfile()
+    if args.list:
+        runfile_lines = filter_runfile(args.list)
+        for line in runfile_lines:
+            print(line)
+        return
+    
+    
     t, i, r, d, f, e, u = get_runinfo(runfile_lines, True)
     print_runinfo(t, i, r, d, f, e, u)
     

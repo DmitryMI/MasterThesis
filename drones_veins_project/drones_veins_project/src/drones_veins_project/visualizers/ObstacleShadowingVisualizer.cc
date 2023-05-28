@@ -74,6 +74,8 @@ void ObstacleShadowingVisualizer::handleMessage(omnetpp::cMessage *msg)
 				break;
 			}
 		}
+
+		delete msg;
 	}
 #endif
 }

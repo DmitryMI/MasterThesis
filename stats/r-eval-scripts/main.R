@@ -154,6 +154,11 @@ pdf(file.path(output_dir, pdf_name))
 plot_default(jam_time_table, TotalTimeInJam, param1_values, param2_values)
 dev.off()
 
+pdf_name <- paste(opp_config_name, "-JammedNumber-", time, ".pdf", sep="")
+pdf(file.path(output_dir, pdf_name))
+plot_default(jammed_by_itervars_avg_table, JammedNumber, param1_values, param2_values)
+dev.off()
+
 pdf_name <- paste(opp_config_name, "-VehicleSpeed-", time, ".pdf", sep="")
 pdf(file.path(output_dir, pdf_name))
 plot_default(speed_table, Speed, param1_values, param2_values)

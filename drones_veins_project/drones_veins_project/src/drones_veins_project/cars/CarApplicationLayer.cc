@@ -139,16 +139,26 @@ void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *m
 		return;
 	}
 
-	if (mobility->getRoadId()[0] != ':')
+	std::string jammedRoadId = msg->getCarRoadId();
+	if (disallowedEdges.count(jammedRoadId) == 0)
 	{
-		std::string roadId = msg->getCarRoadId();
-		if (disallowedEdges.count(roadId) == 0)
+		disallowedEdges.insert(jammedRoadId);
+
+		auto currentRouteEdges = traciVehicle->getPlannedRoadIds();
+		bool plannedDisallowedEdge = false;
+		for (auto edge : currentRouteEdges)
 		{
-			disallowedEdges.insert(roadId);
+			if (edge == jammedRoadId)
+			{
+				plannedDisallowedEdge = true;
+				break;
+			}
 		}
 
-		// traciVehicle->changeRoute(roadId, 9999);
-		changeRoute();
+		if (plannedDisallowedEdge)
+		{
+			changeRoute();
+		}
 	}
 
 	if (simTime() >= getSimulation()->getWarmupPeriod())
@@ -184,12 +194,18 @@ void CarApplicationLayer::handlePositionUpdate(cObject *obj)
 
 void CarApplicationLayer::changeRoute()
 {
-	Pathfinder* pathfinder = veins::FindModule<Pathfinder*>::findGlobalModule();
+	int index = getParentModule()->getIndex();
+	EV << "Vehicle [" << index << "] changes route!\n";
+
+	Pathfinder *pathfinder = veins::FindModule<Pathfinder*>::findGlobalModule();
 	ASSERT(pathfinder);
 
 	double minRouteDistance = par("minRouteDistance").doubleValue();
-	std::list<std::string> route = pathfinder->generateRandomRouteStr(traciVehicle->getRoadId(), disallowedEdges, minRouteDistance);
-	traciVehicle->changeVehicleRoute(route);
+	std::string startEdge = traciVehicle->getRoadId();
+	std::list<std::string> route = pathfinder->generateRandomRouteStr(startEdge, disallowedEdges, minRouteDistance);
+
+	bool routeChanged = traciVehicle->changeVehicleRoute(route);
+	ASSERT(routeChanged);
 
 	lastShownRouteId = "";
 }
@@ -197,7 +213,7 @@ void CarApplicationLayer::changeRoute()
 void CarApplicationLayer::clearCanvasRouteFigures() const
 {
 	cCanvas *canvas = getSimulation()->getSystemModule()->getCanvas();
-	std::string groupName = std::string(getName()) + " route";
+	std::string groupName = "Vehicle " + std::to_string(this->getParentModule()->getIndex()) + " route";
 	int groupFigureIndex = canvas->findFigure(groupName.c_str());
 	if (groupFigureIndex != -1)
 	{
@@ -240,7 +256,7 @@ void CarApplicationLayer::drawVehicleRoute() const
 		return;
 	}
 
-	std::string groupName = std::string(getName()) + " route";
+	std::string groupName = "Vehicle " + std::to_string(this->getParentModule()->getIndex()) + " route";
 	cGroupFigure *group = nullptr;
 	cCanvas *canvas = getSimulation()->getSystemModule()->getCanvas();
 	int groupFigureIndex = canvas->findFigure(groupName.c_str());
@@ -256,8 +272,9 @@ void CarApplicationLayer::drawVehicleRoute() const
 	}
 
 	ASSERT(traciVehicle);
-	veins::TraCICommandInterface::Route route = veins::TraCICommandInterface::Route(traci, currentRouteId);
-	std::list<std::string> routeEdges = route.getRoadIds();
+	// veins::TraCICommandInterface::Route route = veins::TraCICommandInterface::Route(traci, currentRouteId);
+	// std::list<std::string> routeEdges = route.getRoadIds();
+	std::list<std::string> routeEdges = traciVehicle->getPlannedRoadIds();
 	int figureCounter = 0;
 	for (std::string edgeId : routeEdges)
 	{

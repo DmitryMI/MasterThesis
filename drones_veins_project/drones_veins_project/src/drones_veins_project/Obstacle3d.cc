@@ -157,7 +157,7 @@ void Obstacle3d::getWallIntersections(const veins::Coord &lineStart, const veins
 			outIntersections.push_back(intersectionPoint);
 		}
 	}
-	EV << "Found " << outIntersections.size() << " intersections with walls\n";
+	// EV << "Found " << outIntersections.size() << " intersections with walls\n";
 }
 
 bool Obstacle3d::getHorizonToLineIntersection(const veins::Coord &lineStart, const veins::Coord &lineEnd,

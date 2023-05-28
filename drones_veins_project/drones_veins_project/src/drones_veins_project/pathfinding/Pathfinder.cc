@@ -465,6 +465,7 @@ std::list<PathfinderEdge*> Pathfinder::generateRandomRoute(const std::string &st
 	double totalDistance = 0;
 
 	PathfinderEdge *currentEdge = startEdge;
+	res.push_back(currentEdge);
 
 	while (totalDistance < minDistance && res.size() < maxEdges)
 	{
