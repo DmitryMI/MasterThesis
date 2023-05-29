@@ -15,6 +15,7 @@
 
 #include "RebroadcastDecider.h"
 #include "../CarJammingAnnouncement_m.h"
+#include "../BaseApplicationLayer.h"
 
 using namespace drones_veins_project;
 
@@ -30,12 +31,40 @@ RebroadcastDecider::~RebroadcastDecider()
 	// TODO Auto-generated destructor stub
 }
 
+veins::Coord RebroadcastDecider::getCurrentPosition() const
+{
+	BaseApplicationLayer *parent = dynamic_cast<BaseApplicationLayer*>(getParentModule());
+	ASSERT(parent);
+	veins::Coord receiverPos = parent->getCurrentPosition();
+	return receiverPos;
+}
+
+double RebroadcastDecider::getDistance(cMessage *msg)
+{
+	CarJammingAnnouncement *jamMsg = dynamic_cast<CarJammingAnnouncement*>(msg);
+	ASSERT(jamMsg);
+	veins::Coord senderPos = jamMsg->getLastRebroadcasterPosition();
+
+	veins::Coord receiverPos = getCurrentPosition();
+
+	double distance = senderPos.distance(receiverPos);
+	return distance;
+}
+
 void RebroadcastDecider::initialize(int stage)
 {
 	cSimpleModule::initialize(stage);
 
 	parentInGate = findGate("parentInGate");
-	probability = par("rebroadcastProbability").doubleValue();
+
+	if (hasPar("rebroadcastProbability"))
+	{
+		probability = par("rebroadcastProbability").doubleValue();
+	}
+	else
+	{
+		probability = 0;
+	}
 }
 
 int RebroadcastDecider::getParentInGate()
@@ -59,27 +88,54 @@ void RebroadcastDecider::registerMessage(cMessage *msg)
 
 void RebroadcastDecider::handleMessage(omnetpp::cMessage *msg)
 {
-	registerMessage(msg);
+	if (shouldRebroadcast(msg))
+	{
+		rebroadcast(msg);
+	}
+}
 
-	cancelAndDelete(msg);
+bool RebroadcastDecider::isUnique(cMessage *msg)
+{
+	if (CarJammingAnnouncement *jamMsg = dynamic_cast<CarJammingAnnouncement*>(msg))
+	{
+		veins::LAddress::L2Type senderAddress = jamMsg->getSenderAddress();
+		long serial = jamMsg->getSerial();
+		return receivedMessagesTable.count(senderAddress) == 0 || receivedMessagesTable[senderAddress] < serial;
+	}
+	return false;
 }
 
 bool RebroadcastDecider::shouldRebroadcast(cMessage *msg)
 {
 	if (CarJammingAnnouncement *jamMsg = dynamic_cast<CarJammingAnnouncement*>(msg))
 	{
-		veins::LAddress::L2Type senderAddress = jamMsg->getSenderAddress();
-		long serial = jamMsg->getSerial();
 
-		if (receivedMessagesTable.count(senderAddress) > 0 && receivedMessagesTable[senderAddress] >= serial)
+		if (!isUnique(jamMsg))
 		{
 			// This is a duplicated or an outdated message
 			return false;
 		}
+
+		registerMessage(jamMsg);
 
 		double rnd = uniform(0.0, 1.0, 0);
 
 		return probability > rnd;
 	}
 	return false;
+}
+
+void RebroadcastDecider::rebroadcast(cMessage *msg)
+{
+	BaseApplicationLayer *bLayer = dynamic_cast<BaseApplicationLayer*>(getParentModule());
+	ASSERT(bLayer);
+	int gate = bLayer->findGate("rebroadcastDeciderInGate");
+	ASSERT(gate != -1);
+
+	if (CarJammingAnnouncement *jamMsg = dynamic_cast<CarJammingAnnouncement*>(msg))
+	{
+		jamMsg->setLastRebroadcasterPosition(getCurrentPosition());
+	}
+
+	sendDirect(msg, bLayer, gate);
 }

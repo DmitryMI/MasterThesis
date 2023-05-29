@@ -24,7 +24,7 @@ module BaseApplicationLayer extends DemoBaseApplLayer
         @display("i=block/app2");  
        
        	string rebroadcastDeciderTypePrefix = default("org.car2x.veins.subprojects.drones_veins_project.rebroadcasting");
-        string rebroadcastDeciderClassName = default("RebroadcastDecider");
+        string rebroadcastDeciderClassName = default("WeightedPPersistenceDecider");
         
     gates:
         input rebroadcastDeciderInGate @directIn;

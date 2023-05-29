@@ -39,6 +39,11 @@ BaseApplicationLayer::~BaseApplicationLayer()
 	// TODO Auto-generated destructor stub
 }
 
+veins::Coord BaseApplicationLayer::getCurrentPosition() const
+{
+	return curPosition;
+}
+
 omnetpp::cFigure::Color BaseApplicationLayer::calculateNodeColor() const
 {
 	int nodeIndex = this->getParentModule()->getIndex();
@@ -50,9 +55,9 @@ omnetpp::cFigure::Color BaseApplicationLayer::calculateNodeColor() const
 	std::array<int, 3> values;
 
 	seed = (a * seed + c) % m;
-	for(uint64_t i = 0; i < values.size(); i++)
+	for (uint64_t i = 0; i < values.size(); i++)
 	{
-		values[i] = (uint8_t)(seed >> i);
+		values[i] = (uint8_t) (seed >> i);
 	}
 
 	omnetpp::cFigure::Color color = omnetpp::cFigure::Color(values[0], values[1], values[2]);
@@ -115,14 +120,14 @@ void BaseApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
 	{
 		// handleCarJammingAnnouncement is responsible for forwarding the message to RD
 		handleCarJammingAnnouncement(jamAnnouncement);
-	}
 
-	RebroadcastDecider *rd = getRebroadcastDecider();
-	if (rd)
-	{
-		sendDirect(wsm->dup(), rd, rd->getParentInGate());
-	}
+		RebroadcastDecider *rd = getRebroadcastDecider();
+		if (rd)
+		{
+			sendDirect(wsm->dup(), rd, rd->getParentInGate());
+		}
 
+	}
 }
 
 void BaseApplicationLayer::onBSM(veins::DemoSafetyMessage *bsm)
@@ -158,24 +163,12 @@ void BaseApplicationLayer::handleSelfMsg(cMessage *msg)
 
 void BaseApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *msg)
 {
-    if (simTime() >= getSimulation()->getWarmupPeriod())
-    {
-        double time = simTime().dbl();
-        double latency = time - msg->getSenderTimestamp().dbl();
-        ASSERT(latency > 0);
-        latencies.push_back(latency);
-    }
-
-	RebroadcastDecider *rebroadcastDecider = getRebroadcastDecider();
-
-	if (rebroadcastDecider->shouldRebroadcast(msg))
+	if (simTime() >= getSimulation()->getWarmupPeriod())
 	{
-		scheduleAt(simTime() + 2 + uniform(0.01, 0.2), msg->dup());
-	}
-	else
-	{
-		// Do not delete the WSM message! DemoBaseApplLayer does it automatically.
-		// delete msg;
+		double time = simTime().dbl();
+		double latency = time - msg->getSenderTimestamp().dbl();
+		ASSERT(latency > 0);
+		latencies.push_back(latency);
 	}
 
 	setIconColor("green");
@@ -191,10 +184,8 @@ void BaseApplicationLayer::setIconColorStr(std::string color)
 void BaseApplicationLayer::setIconColor(omnetpp::cFigure::Color color)
 {
 	std::stringstream stream;
-	stream << "#" << std::setfill ('0') <<
-			std::setw(2) << std::hex << (int)color.red <<
-			std::setw(2) << std::hex << (int)color.green <<
-			std::setw(2) << std::hex << (int)color.blue;
+	stream << "#" << std::setfill('0') << std::setw(2) << std::hex << (int) color.red << std::setw(2) << std::hex
+			<< (int) color.green << std::setw(2) << std::hex << (int) color.blue;
 	std::string colorStr = stream.str();
 	setIconColorStr(colorStr);
 }
@@ -209,7 +200,7 @@ std::string BaseApplicationLayer::getIconColor()
 
 RebroadcastDecider* BaseApplicationLayer::getRebroadcastDecider()
 {
-	return veins::FindModule<RebroadcastDecider*>::findSubModule(this);;
+	return veins::FindModule<RebroadcastDecider*>::findSubModule(this);
 }
 
 int BaseApplicationLayer::getRebroadcastDeciderInGate()

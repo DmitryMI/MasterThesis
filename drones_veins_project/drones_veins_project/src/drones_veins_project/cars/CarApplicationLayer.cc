@@ -95,6 +95,7 @@ void CarApplicationLayer::onCarJammingStateChanged(bool jammed)
 			populateWSM(msg);
 
 			msg->setCarPosition(curPosition);
+			msg->setLastRebroadcasterPosition(curPosition);
 			msg->setCarRoadId(mobility->getRoadId().c_str());
 			msg->setSenderAddress(getAddress());
 			msg->setSerial(messageSerialCounter);

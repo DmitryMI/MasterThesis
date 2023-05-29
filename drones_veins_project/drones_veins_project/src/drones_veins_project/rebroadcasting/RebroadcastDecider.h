@@ -18,6 +18,7 @@
 
 #include <map>
 #include "veins/base/utils/SimpleAddress.h"
+#include "veins/base/utils/Coord.h"
 #include "../drones_veins_project.h"
 
 namespace drones_veins_project
@@ -29,19 +30,25 @@ namespace drones_veins_project
 		int parentInGate;
 		double probability;
 
-		void registerMessage(cMessage* msg);
 
 	protected:
 		std::map<veins::LAddress::L2Type, int> receivedMessagesTable;
 
-	public:
+		virtual bool isUnique(cMessage* msg);
+		virtual bool shouldRebroadcast(cMessage* msg);
+		virtual void rebroadcast(cMessage* msg);
+		virtual void registerMessage(cMessage* msg);
 
+		veins::Coord getCurrentPosition() const;
+		double getDistance(cMessage *msg);
+	public:
 		RebroadcastDecider();
 		virtual ~RebroadcastDecider();
 
 		virtual void initialize(int stage) override;
-		virtual bool shouldRebroadcast(cMessage* msg);
+
 		virtual void handleMessage(omnetpp::cMessage* msg) override;
+
 		int getParentInGate();
 	};
 

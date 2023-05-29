@@ -32,4 +32,6 @@ packet CarJammingAnnouncement extends BaseFrame1609_4 {
     string carRoadId;
     veins::Coord carPosition;
     simtime_t senderTimestamp;
+    
+    veins::Coord lastRebroadcasterPosition;
 }

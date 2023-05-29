@@ -58,6 +58,8 @@ namespace drones_veins_project
 		veins::LAddress::L2Type getAddress();
 
 		virtual omnetpp::cFigure::Color calculateNodeColor() const;
+
+		veins::Coord getCurrentPosition() const;
 	};
 
 }
