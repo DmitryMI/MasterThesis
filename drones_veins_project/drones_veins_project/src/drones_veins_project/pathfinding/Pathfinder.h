@@ -66,9 +66,9 @@ namespace drones_veins_project
 		virtual void finish() override;
 		virtual int numInitStages() const override;
 
-		std::list<PathfinderEdge*> generateRandomRoute(const std::string& startEdgeId, const std::vector<std::string>& disallowedEdges, double minDistance, uint64_t maxEdges = 1000) const;
-		std::list<std::string> generateRandomRouteStr(const std::string& startEdgeId, const std::vector<std::string>& disallowedEdges, double minDistance, uint64_t maxEdges = 1000) const;
-		std::list<std::string> generateRandomRouteStr(const std::string& startEdgeId, const std::set<std::string>& disallowedEdges, double minDistance, uint64_t maxEdges = 1000) const;
+		bool generateRandomRoute(const std::string& startEdgeId, std::list<PathfinderEdge*>& res, const std::vector<std::string>& disallowedEdges, double minDistance, uint64_t maxEdges = 1000) const;
+		bool generateRandomRouteStr(const std::string& startEdgeId, std::list<std::string> & res,  const std::vector<std::string>& disallowedEdges, double minDistance, uint64_t maxEdges = 1000) const;
+		bool generateRandomRouteStr(const std::string& startEdgeId, std::list<std::string>& res, const std::set<std::string>& disallowedEdges, double minDistance, uint64_t maxEdges = 1000) const;
 	};
 }
 

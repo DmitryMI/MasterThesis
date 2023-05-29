@@ -173,7 +173,15 @@ void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *m
 
 void CarApplicationLayer::handleSelfMsg(cMessage *msg)
 {
-	BaseApplicationLayer::handleSelfMsg(msg);
+	std::string msgName = msg->getName();
+	if (msgName == "changeRoute")
+	{
+		changeRoute(msg);
+	}
+	else
+	{
+		BaseApplicationLayer::handleSelfMsg(msg);
+	}
 }
 
 void CarApplicationLayer::handlePositionUpdate(cObject *obj)
@@ -192,7 +200,7 @@ void CarApplicationLayer::handlePositionUpdate(cObject *obj)
 	}
 }
 
-void CarApplicationLayer::changeRoute()
+void CarApplicationLayer::changeRoute(cMessage *changeRouteMessage)
 {
 	int index = getParentModule()->getIndex();
 	EV << "Vehicle [" << index << "] changes route!\n";
@@ -201,13 +209,62 @@ void CarApplicationLayer::changeRoute()
 	ASSERT(pathfinder);
 
 	double minRouteDistance = par("minRouteDistance").doubleValue();
-	std::string startEdge = traciVehicle->getRoadId();
-	std::list<std::string> route = pathfinder->generateRandomRouteStr(startEdge, disallowedEdges, minRouteDistance);
 
-	bool routeChanged = traciVehicle->changeVehicleRoute(route);
-	ASSERT(routeChanged);
+	bool routeChanged = false;
+	try
+	{
+		if (traciVehicle->getRoadId().find(':') != std::string::npos)
+		{
+			EV << "Vehicle [" << index << "] must leave the junction before changing route!\n";
+		}
+		else
+		{
+			std::string startEdge = traciVehicle->getRoadId();
+			std::list<std::string> route;
+			bool routeGenerated = pathfinder->generateRandomRouteStr(startEdge, route, disallowedEdges,
+					minRouteDistance);
+			if(routeGenerated)
+			{
+				routeChanged = traciVehicle->changeVehicleRoute(route);
+			}
+		}
 
-	lastShownRouteId = "";
+	}
+	catch (const cRuntimeError &ex)
+	{
+		routeChanged = false;
+		// EV << ex.getMessage() << "\n";
+	}
+
+	double delay;
+	if (!routeChanged)
+	{
+
+		if (changeRouteMessage == nullptr)
+		{
+			changeRouteMessage = new cMessage("changeRoute");
+			cMsgPar &delayPar = changeRouteMessage->addPar("delay");
+			delayPar.setDoubleValue(2);
+			delay = 2;
+		}
+		else
+		{
+			cMsgPar delayPar = changeRouteMessage->par("delay");
+			delayPar.setDoubleValue(delayPar.doubleValue() * 2);
+			delay = delayPar.doubleValue();
+		}
+		ASSERT(delay > 0);
+		EV << "Vehicle [" << index << "] failed to change route! Retrying in " << delay << "seconds";
+		scheduleAt(simTime() + delay, changeRouteMessage);
+	}
+	else
+	{
+		lastShownRouteId = "";
+		if (changeRouteMessage)
+		{
+			delete changeRouteMessage;
+		}
+	}
 }
 
 void CarApplicationLayer::clearCanvasRouteFigures() const

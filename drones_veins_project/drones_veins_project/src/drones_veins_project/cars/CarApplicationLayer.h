@@ -43,7 +43,7 @@ namespace drones_veins_project
 		std::string getCarDescriptor();
 		virtual void handleCarJammingAnnouncement(CarJammingAnnouncement* msg) override;
 
-		void changeRoute();
+		void changeRoute(cMessage* changeRouteMessage = nullptr);
 	public:
 		CarApplicationLayer();
 		virtual ~CarApplicationLayer();

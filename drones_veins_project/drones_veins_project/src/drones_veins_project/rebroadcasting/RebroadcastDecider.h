@@ -27,6 +27,7 @@ namespace drones_veins_project
 	{
 	private:
 		int parentInGate;
+		double probability;
 
 		void registerMessage(cMessage* msg);
 

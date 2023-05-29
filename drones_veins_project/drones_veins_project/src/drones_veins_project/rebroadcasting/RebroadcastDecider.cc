@@ -35,6 +35,7 @@ void RebroadcastDecider::initialize(int stage)
 	cSimpleModule::initialize(stage);
 
 	parentInGate = findGate("parentInGate");
+	probability = par("rebroadcastProbability").doubleValue();
 }
 
 int RebroadcastDecider::getParentInGate()
@@ -76,7 +77,6 @@ bool RebroadcastDecider::shouldRebroadcast(cMessage *msg)
 			return false;
 		}
 
-		double probability = par("rebroadcastProbability").doubleValue();
 		double rnd = uniform(0.0, 1.0, 0);
 
 		return probability > rnd;

@@ -287,6 +287,7 @@ void Pathfinder::initialize(int stage)
 				internalLanes.push_back(internalLane);
 			}
 
+			/*
 			// Interconnect internal lanes
 			for (uint64_t laneIndexI = 0; laneIndexI < internalLanes.size(); laneIndexI++)
 			{
@@ -300,7 +301,8 @@ void Pathfinder::initialize(int stage)
 					edgeJ->connectedEdges.push_back(edgeI);
 				}
 			}
-
+			*/
+			/*
 			// Connect incoming edges to internal lanes (edges)
 			for(PathfinderLane* incomingLane : incomingLanes)
 			{
@@ -311,6 +313,7 @@ void Pathfinder::initialize(int stage)
 					incomingEdge->connectedEdges.push_back(internalEdge);
 				}
 			}
+			 */
 
 			PathfinderJunction *junction = new PathfinderJunction(junctionId, incomingLanes, internalLanes, isInternal);
 			junctions.emplace(junctionId, junction);
@@ -371,7 +374,7 @@ int Pathfinder::numInitStages() const
 	return 1;
 }
 
-std::list<std::string> Pathfinder::generateRandomRouteStr(const std::string &startEdgeId,
+bool Pathfinder::generateRandomRouteStr(const std::string &startEdgeId, std::list<std::string>& res,
 		const std::set<std::string> &disallowedEdges, double minDistance, uint64_t maxEdges) const
 {
 
@@ -381,22 +384,27 @@ std::list<std::string> Pathfinder::generateRandomRouteStr(const std::string &sta
 		disallowedEdgesVec.push_back(edgeId);
 	}
 
-	return generateRandomRouteStr(startEdgeId, disallowedEdgesVec, minDistance, maxEdges);
+	return generateRandomRouteStr(startEdgeId, res, disallowedEdgesVec, minDistance, maxEdges);
 }
 
-std::list<std::string> Pathfinder::generateRandomRouteStr(const std::string &startEdgeId,
+bool Pathfinder::generateRandomRouteStr(const std::string &startEdgeId, std::list<std::string>& res,
 		const std::vector<std::string> &disallowedEdges, double minDistance, uint64_t maxEdges) const
 {
 
 	std::list<std::string> route;
-	std::list<PathfinderEdge*> randomEdges = generateRandomRoute(startEdgeId, disallowedEdges, minDistance, maxEdges);
+	std::list<PathfinderEdge*> randomEdges;
+	bool ok = generateRandomRoute(startEdgeId, randomEdges, disallowedEdges, minDistance, maxEdges);
+	if(!ok)
+	{
+		return false;
+	}
 
 	for (PathfinderEdge *edge : randomEdges)
 	{
-		route.push_back(edge->id);
+		res.push_back(edge->id);
 	}
 
-	return route;
+	return true;
 }
 
 PathfinderEdge* Pathfinder::getNextRandomEdge(PathfinderEdge *currentEdge,
@@ -457,10 +465,9 @@ PathfinderEdge* Pathfinder::getNextRandomEdge(PathfinderEdge *currentEdge,
 
 }
 
-std::list<PathfinderEdge*> Pathfinder::generateRandomRoute(const std::string &startEdgeId,
+bool Pathfinder::generateRandomRoute(const std::string &startEdgeId, std::list<PathfinderEdge*>& res,
 		const std::vector<std::string> &disallowedEdges, double minDistance, uint64_t maxEdges) const
 {
-	std::list<PathfinderEdge*> res;
 	PathfinderEdge *startEdge = edges.at(startEdgeId);
 	double totalDistance = 0;
 
@@ -470,12 +477,16 @@ std::list<PathfinderEdge*> Pathfinder::generateRandomRoute(const std::string &st
 	while (totalDistance < minDistance && res.size() < maxEdges)
 	{
 		PathfinderEdge *nextEdge = getNextRandomEdge(currentEdge, disallowedEdges);
-		ASSERT(nextEdge);
+		if(!nextEdge)
+		{
+			return false;
+		}
+
 		totalDistance += nextEdge->getLengthTraci();
 		res.push_back(nextEdge);
 		currentEdge = nextEdge;
 	}
 
-	return res;
+	return true;
 }
 
