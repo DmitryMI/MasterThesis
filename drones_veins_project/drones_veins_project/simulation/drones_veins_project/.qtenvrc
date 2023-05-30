@@ -1,6 +1,6 @@
 [General]
-last-configname=Evaluation-NumberOfVehicles
-last-runnumber=926
+last-configname=Evaluation-AccidentProbability
+last-runnumber=67
 
 [RunModeProfiles]
 fast-max-animation-speed=nan

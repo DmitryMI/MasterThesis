@@ -96,7 +96,6 @@ def monitor(period, period_waiting, limit):
                 total, inactive, _, done, failed, error, _ = get_runinfo(runfile_lines)
                 if total != total_initial:
                     print("Runfile changed!")
-                    return
                 
                 if inactive != total_initial:
                     bar(1)
@@ -119,7 +118,7 @@ def monitor(period, period_waiting, limit):
             total, _, _, done, failed, error, _ = get_runinfo(runfile_lines)
             if total != total_initial:
                 print("Runfile changed!")
-                return
+                
             
             finished = done + failed + error
             finished_new = finished - finished_previous
