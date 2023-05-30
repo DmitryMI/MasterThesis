@@ -23,6 +23,7 @@
 		+ Veins' native road visualizer
 		+ Veins Scenario
 		+ Veins Car structure (UML)
+		> Veins 2D simple shadowing
 	+ Simulated hardware:
 		+ PHY: Wi-Fi, brief description
 		+ MAC: implemented by Veins
