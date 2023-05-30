@@ -19,6 +19,8 @@ moduleinterface IRebroadcastDecider
 {
     parameters:
         double rebroadcastProbability;
+        bool showBubbles;
+        double averageTransmissionRange @unit(m);
     gates:
         input parentInGate;
 }

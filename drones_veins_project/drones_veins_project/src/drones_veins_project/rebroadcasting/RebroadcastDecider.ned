@@ -22,7 +22,9 @@ simple RebroadcastDecider like IRebroadcastDecider
         @display("i=block/app2");  
         
         double rebroadcastProbability = default(0.1);
+        bool showBubbles = default(true);
         
+        double averageTransmissionRange @unit(m) = default(500m);
     gates:
     	input parentInGate @directIn;
 }

@@ -145,9 +145,9 @@ void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *m
 	{
 		disallowedEdges.insert(jammedRoadId);
 
-		auto currentRouteEdges = traciVehicle->getPlannedRoadIds();
+		std::list<std::string> currentRouteEdges = traciVehicle->getPlannedRoadIds();
 		bool plannedDisallowedEdge = false;
-		for (auto edge : currentRouteEdges)
+		for (std::string edge : currentRouteEdges)
 		{
 			if (edge == jammedRoadId)
 			{
