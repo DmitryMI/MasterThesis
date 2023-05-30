@@ -99,7 +99,7 @@ def monitor(period, period_waiting, limit):
                     return
                 
                 if inactive != total_initial:
-                    bar(finished_new)
+                    bar(1)
                 
                 counter += 1
                 time.sleep(period_waiting)

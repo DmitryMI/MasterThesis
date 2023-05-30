@@ -300,6 +300,11 @@ void CarApplicationLayer::refreshDisplay() const
 
 void CarApplicationLayer::drawVehicleRoute() const
 {
+	if (!hasGUI())
+	{
+		return;
+	}
+
 	if (currentRouteId == lastShownRouteId)
 	{
 		return;

@@ -20,6 +20,4 @@ simple SlottedPPersistenceDecider extends RebroadcastDecider
     parameters:
         @class(drones_veins_project::SlottedPPersistenceDecider);
         @display("i=block/app2");  
-        
-        double averageTransmissionRange @unit(m) = default(500m);
 }
