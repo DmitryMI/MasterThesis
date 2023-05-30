@@ -13,7 +13,7 @@
 		> Examples of network configurations
 	+ Challenge: broadcast storm
 	+ Broadcast-storm suppression techiques in literature
-	+ Why I will use 1-persistence (because it is enough in my setup)
+	+ Why I will use weighted-p-persistence (because it is enough in my setup)
 	+ Simulation software:
 		+ What is a discrete-event simulator
 		+ Brief list of software solutions: ns-3, OMNeT++
@@ -30,10 +30,10 @@
 		
 > Implementation
 	+ DroneScenario scheme
-	> Veins does not support drones. Implementing drones for Veins
-		> Drones are implemented as a OMNeT++ module.
-		> Scheme of drone-module (layers, app, rebroadcaster, etc.)
-		> Drone Manager and Drone Mobility
+	~ Veins does not support drones. Implementing drones for Veins
+		~ Drones are implemented as a OMNeT++ module.
+		~ Scheme of drone-module (layers, app, rebroadcaster, etc.)
+		~ Drone Manager and Drone Mobility
 	> Car module: enhancements
 		> Scheme of Car3d (derived from Veins, however, there are differences)
 	> BaseApplicationLayer: base class for CarAppl and DroneAppl

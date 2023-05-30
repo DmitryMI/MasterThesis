@@ -121,17 +121,31 @@ In my work the broadcast storm is also an issue that needs to be addressed. In m
 
 \begin{itemize}
 
-\item \textbf{Weighted p-Persistence Broadcasting} - upon receiving a packet from node \emph{i}, node \emph{j} checks the packet ID and rebroadcasts with probability $\rho_{ij}$ if it receives the packet for the first time; otherwise, it discards the packet. \cite[Page~88]{wisitrophan2007}.
+\item \textbf{Weighted p-Persistence Broadcasting} - Each node rebroadcasts a packet with a probability that is directly proportional to the distance to the sending node. Duplicate packets are discarded. \cite[Page~88]{wisitrophan2007}.
 
-\item \textbf{Slotted 1-Persistence Broadcasting} - upon receiving a packet, a node checks the packet ID and rebroadcasts with probability 1 at the assigned time slot, if it receives the packet for the first time and has not received any duplicates before the assigned time slot; otherwise, it discards the packet \cite[Page~88]{wisitrophan2007}.
+\item \textbf{Slotted 1-Persistence Broadcasting} - The delay before a packet is rebroadcast depends on the distance to the sending node. Unique packets are always rebroadcast, duplicate packets are discarded. \cite[Page~88]{wisitrophan2007}.
 
-\item \textbf{Slotted p-Persistence Broadcasting} - Upon receiving a packet, a node checks the packet ID and rebroadcasts with the pre-determined probability $\rho$ at the assigned time slot, if it receives the packet for the first time and has not received any duplicates before its assigned time slot; otherwise, it discards the packet \cite[Page~89]{wisitrophan2007}.
+\item \textbf{Slotted p-Persistence Broadcasting} - The delay before a packet is rebroadcast depends on the distance to the sending node. Unique packets are rebroadcast with a predetermined probability, duplicate packets are discarded. \cite[Page~89]{wisitrophan2007}.
 
 \end{itemize}
 
 \textcite{wisitrophan2007} also discuss Received-Signal-Strength-Based broadcast suppression schemes, but since in my work it is assumed that the vehicles always know their exact location, these techniques are not relevant.
 
-In my work I will use the Slotted 1-Persistence Broadcasting for both vehicles and drones, because it is the simplest to implement and it shows sufficient performance in my scenario. In fact, since my scenario consists of high-density urban grid of roads, the communication between vehicles is highly obstructed, hence the collisions and contention in vehicle-to-vehicle is minimal.
+\section{Weighted p-Persistence Broadcasting}
+
+In my work I will use the Weighted p-Persistence for both vehicles and drones, because it is the simplest to implement and it shows sufficient performance in my scenario. In this section I will describe Weighted p-Persistence Broadcasting in more detail and explain the choice of some parameters.
+
+According to \textcite{wisitrophan2007}, the rule of Weighted p-Persistence can be described like this: Upon receiving a packet from node \emph{i}, node \emph{j} checks the packet ID and rebroadcasts with probability $p_{ij}$ if it receives the packet for the first time; otherwise, it discards the packet.
+
+The formula for calculating $p_{ij}$ looks like this:
+
+\begin{equation}\label{eq:bs-p}
+p_{ij} = \frac{D_{ij}}{R}
+\end{equation}
+
+where \emph{R} is the average transmission range and $D_{ij}$ is relative distance between nodes \emph{i} and \emph{j}. Authors further add, that if a node receives duplicate packets from multiple sources within the waiting period \emph{WAIT\textunderscore TIME} before rebroadcasting, this node selects the smallest $p_{ij}$ value as rebroadcasting probability. Authors clarify, that this means that nodes use the relative distance to the nearest broadcaster in order to ensure that nodes who are farther away rebroadcast with higher probability. Additionally, authors propose a method to prevent the messages from dying out: if a node decides not to rebroadcast, it keeps the message for time WAIT\textunderscore TIME + $\delta$, where $\delta$ is is the one-hop transmission and propagation delay. If a node does not receive a packet from somebody else, it rebroadcasts it with probability 1 after WAIT\textunderscore TIME + $\delta$.
+
+In my scenario, I will use different \emph{R} values for vehicles and drones. On one hand, since drones maintain the line-of-sight with each other, the R can be relatively large for them, slightly less than there maximum transmission range. On the other hand, vehicles can only communicate withing the length of the street they are standing on. Therefore, the \emph{R} for vehicles will be roughly equal to the length of a city block (distance between two crossroads in a grid, which is much smaller than maximum possible transmission range of a vehicle). This way vehicles, that are standing near two crossroads will rebroadcast with probability around 1. This will ensure that messages can "turn around" the buildings with higher probability.
 
 \section {Related Work}
 \TODO{Related Work: merging \acp{VANET} and DroneNETs}
