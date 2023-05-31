@@ -159,7 +159,7 @@ echo "Eval Job scheduled!"
 ./read_runfile.sh
 cd $WORKING_DIR
 
-cd ../hpc
-./get-run-info.py -w 30 -m 10
+# cd ../hpc
+# ./get-run-info.py -w 30 -m 10
 
 
