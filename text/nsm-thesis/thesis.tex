@@ -207,7 +207,7 @@ Next in my work I will describe the algorithm that calculates the fading of the 
 	\label{fig:SimpleObstacleShadowing}
 \end{figure}
 
-\section{Other software}
+\subsection{OpenSceneGraph}
 
 I would like to emphasize the usage of OpenSceneGraph \cite{osg} as a 3D-rendering tool.  OMNeT++ natively supports OpenSceneGraph \cite{omnetpposg}, therefore \ac{OSG} is the most convenient and easy way to implement a 3D scene in OMNeT++. In this work, I will use 3D visualization for debugging purposes.
 
@@ -294,11 +294,58 @@ The next problem was that Veins does not support three-dimensional obstacles, an
 In my work I assume that buildings can be approximated as right prisms, example shown in \cref{fig:rightprism}. 
 
 \begin{figure}
-  	\caption{Example of a right prism. The bases are two equal arbitrary polygons, but the walls are rectangles with equal height. The right prism can be easily imagined via "extruding" a random polygon straight upwards.}
+  	\caption{Example of a right prism. The bases are two equal arbitrary polygons, and the walls are rectangles with equal height perpendicular to the bases. The right prism can be easily imagined via "extruding" a random polygon straight upwards.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/RightPrism.pdf}
 	\label{fig:rightprism}
 \end{figure}
+
+This way a 3D shadowing algorithm can be extended from Veins' Simple Obstacle Shadowing. Instead of looking for intersections of 2D rays with 2D polygons, I will look for intersections of 3D rays with right prisms. The classes, used to augment the Veins' code are shown on \cref{fig:obstacle3d-classes}.  Basically, my class ObstacleControl3d reuses Veins' ObstacleControl and only overrides some methods in order to spawn Obstacle3d objects instead of Veins' Obstacle objects. Also ObstacleControl3d reads obstacles' height from the same xml file, that Veins uses, but additionally reads the \emph{height} attribute to set Obstacle3d's height. If this attribute is not found, ObstacleControl3d uses its configuration parameter to set the default height for obstacles. The search for intersections is done inside Obstacle3d. This class inherits Vein's Obstacle class, but adds new methods that calculate line-right-prism intersection. The simplified flow chart of Obstacle3d's algorithm can be seen on \cref{fig:obstacle3d-flow}. 
+
+\begin{figure}
+  	\caption{Simplified diagram of classes for 3D obstacles system.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Obstacle3d-classes.pdf}
+	\label{fig:obstacle3d-classes}
+\end{figure}
+
+\begin{figure}
+  	\caption{Flowchart of line-right-prism intersection algorithm. Flow for only single Obstacle3d is shown. The ObstacleControl3d iterates over all Obstacle3d objects, calls their getIntersections() methods and combines results.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Obstacle3d-flow.pdf}
+	\label{fig:obstacle3d-flow}
+\end{figure}
+
+\subsection{3D visualization}
+
+Developing with algorithms that work with 3D objects becomes very complicated without a possibility of visual debugging. In order to easily debug the simulation I have decided to implement 3D visualization of the virtual environment, including vehicles, drones, and buildings. OMNeT++ supports OpenSceneGraph as a 3D rendering library, and my solution also uses it. 
+
+The central modules that are responsible for 3D visualization in my project are: 
+
+\begin{itemize}
+
+\item \textbf{NodeOsgVisualizer} - provided with a file path to a 3D model, draws this model on the \ac{OSG} canvas using the parent's position. Also utilizes Vehicle's heading angle. 
+
+\item \textbf{Obstacle3d} - in addition to methods for finding intersections with a prism, also draws a prism on the \ac{OSG} canvas.
+
+\item \textbf{ObstacleShadowingVisualizer} - draws radio transmission as 3D lines on the \ac{OSG} canvas. Also shows intersections with 3D obstacles. 
+
+\begin{figure}%
+    \centering
+    \subfloat[Vehicle]{\label{fig:vehicle-model}\includegraphics[width=0.5\textwidth]{figures/car3d-model.png}}%
+    \subfloat[Drone]{\label{fig:drone-model}\includegraphics[width=0.5\textwidth]{figures/drone-model.png}}
+    \caption{3D models created for the project. 3D visualizations of buildings are generated at runtime.}%
+    \label{fig:3dmodels}%
+\end{figure}
+
+\begin{figure}
+  	\caption{ObstacleShadowingVisualizer work example. Radio signals are emitted from the vehicle and are shown as blue lines. Red spheres depict intersections with buildings. Note that the drone and the vehicle are not in scale, they are intentionally made visually bigger in order to make them visible. Model scale can be adjusted in configuration file.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/ObstacleShadowingVisualizer.png}
+	\label{fig:ObstacleShadowingVisualizer}
+\end{figure}
+
+\end{itemize}
 
 \chapter{Evaluation}
 
