@@ -31,6 +31,7 @@
 \acrodef{VANET}{Vehicular Ad Hoc Network}
 \acrodef{OSG}{OpenSceneGraph}
 \acrodef{MAC}{Medium access control}
+\acrodef{NIC}{Network interface controller}
 %\acrodef{ROI}{Region of Interest}{short-indefinite={an}, long-plural-form={Regions of Interest}}
 %\acrodef{ADAC}{German Automobile Association}{foreign={Allgemeiner Deutscher Automobilclub}}
 %\acrodef{CANhashing}[CAN]{Content Addressable Network}{extra={when referring to the distributed hash table}}
@@ -226,13 +227,24 @@ The first issue with implementing my scenario is that Veins does not support dro
 
 \cref{fig:dronened} shows a simplified structure of the Drone.ned module. Like the Car.ned from Veins, Drone.ned uses a special submodule for moving in space. To improve simulation efficiency (i.e., to reduce the number of events), all drone movements are performed once every 1 second as part of the single event processing. The DroneManager.ned module is responsible for managing this event (scheduling and execution), as well as for creating and removing drones. Simply put, the DroneManager module creates a specified number of drones, and then sends a position update signal to each drone at a period of 1 second (configurable). 
 
-DroneMobility module is based on Veins' LinearMobility with some minor changes. The biggest one: DroneMobility does not update itself. Instead, the DroneManager calls a special method that makes DroneMobility to update its position.
-
 \begin{figure}
   	\caption{Simplified diagram of Drone module. Not all parameters connections are shown.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Drone.pdf}
 	\label{fig:dronened}
+\end{figure}
+
+\subsection{Drone Mobility}
+
+DroneMobility submodule is based on Veins' LinearMobility with some minor changes. The biggest one: DroneMobility does not update itself. Instead, the DroneManager calls a special method that makes DroneMobility to update its position.
+
+The \cref{fig:dronemanagerflow} shows a simplified algorithm for updating the drone's position. The drones themselves use the methods implemented in Veins to update their position. The Z-coordinate of each drone can be set through a configuration file.
+
+\begin{figure}
+  	\caption{Simplified flowchart of DroneManager updating DroneMobility submodules of each Drone.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/DroneManager.pdf}
+	\label{fig:dronemanagerflow}
 \end{figure}
 
 
@@ -249,9 +261,24 @@ To integrate the drones more easily, I decided to create an additional level of 
 
 The main reason for creating the BaseApplicationLayer is to unify the way how decision about rebroadcasting is made. BaseApplicationLayer holds a reference to a special object of class RebroadcastDecider, which in fact is a virtual class. This object decides whether to rebroadcast the message or not. How exactly it makes this decision for the vehicle or for the drone is irrelevant. The drone or vehicle only receives a decision from this object. So it is relatively easy to change the algorithm that decides whether to retransmit a message. Also it is easy to enable a specific algorithm for both drones and vehicles in the same manner.
 
-\section{Adding the third dimension}
+\subsection {Rebroadcast Decider}
 
-\subsection{subsection}
+As you can see in \cref{fig:baseapplicationlayer}, BaseApplicationLayer is associated with an object of the RebroadcastDecider class, which is also an OMNeT++ module. Objects of this class are responsible for rebroadcasting packets. The point of providing a separate object is that both drones and cars can use different interchangeable broadcast storm suppression algorithms. 
+
+The \cref{fig:rebroadcastdeciderseq} shows the sequence of message exchange between the broadcast medium and network nodes (drone or vehicle). In some places, the activation time of the actor is not shown. This is done to indicate that at these points in the sequence the packet processing time is zero in terms of simulation time. Packets reach the RebroadcastDecider instantaneously as soon as they have been received and decoded. It should also be noted that in case the RebroadcastDecider decides to rebroadcast a packet, this can happen at any point in time and any number of times (depending on the particular implementation of the RebroadcastDecider).
+
+\begin{figure}
+  	\caption{UML Sequence for RebroadcastDecider. Note that other messages, unrelated to RebroadcastDecider are not shown.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/RebroadcastDecider.png}
+	\label{fig:rebroadcastdeciderseq}
+\end{figure}
+
+\section{3D buildings and shadowing}
+
+\subsection{Shadowing}
+
+The next problem was that Veins does not support three-dimensional obstacles, and therefore does not take Z coordinate into account when calculating radio signal decay. In my scenario, this is a significant drawback, since drones tend to fly above buildings, and hence their radio transmissions are not affected by buildings. In that case, one could make the radio transmissions between drones simply ignore the buildings. However, such a strategy would ignore radio signals between drones and cars. Drone-vehicle communication cannot be described by simple rules from 2D space with at least acceptable accuracy. Because of this, I decided to implement three-dimensional buildings and, accordingly, a three-dimensional algorithm for signal shadowing.
 
 \chapter{Evaluation}
 
