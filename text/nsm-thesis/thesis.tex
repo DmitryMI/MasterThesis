@@ -178,21 +178,11 @@ In order to simulate a hybrid network of drones and vehicles a network simulator
 	\label{fig:veinshighlevel}
 \end{figure}
 
-\section{SUMO}
+\subsection{SUMO}
 As shown on \ref{fig:veinshighlevel}, Veins uses SUMO by \textcite{sumo2018} as a traffic simulator. According to the SUMO developers, SUMO is a microscopic traffic simulator, which means that each vehicle and its dynamics are modeled individually.
 This a suitable solution for my scenario, because I indeed need each vehicle to be an independent object with its own known position.
 
-\section{Other software}
-
-In addition to the Veins and SUMO I would like to emphasize the usage of OpenSceneGraph \cite{osg} as a 3D-rendering tool.  OMNeT++ natively supports OpenSceneGraph \cite{omnetpposg}, therefore \ac{OSG} is the most convenient and easy way to implement a 3D scene in OMNeT++. In this work, I will use 3D visualization for debugging purposes.
-
-Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize this class along with my own vehicle-, drone- and building- visualizers.
-
-\section{Simulated Hardware}
-
-For my scenario the exact implementation of physical layer and \ac{MAC}-layer is not important. Therefore I am relying on networking, already implemented in Veins and OMNeT++. The physical layer is implemented by Veins and simulates Wi-Fi transmitter, mounted on the vehicle's roof (1.895 meters above the road). In my scenario, I use a monopole antenna, also already implemented by Veins. Since the transport-layer protocol is also not important, I am using Wave Short Message protocol, implemented in Veins. For the drones I use the same networking layers as for the vehicles.
-
-\section {Scenario and Car}
+\subsection {Scenario and Car}
 \label{sec:scenarioned}
 
 To further understand my implementation of drones in Veins, it is necessary to consider two files included in Veins: the file Scenario.ned \cite{scenarioned} and the file Car.ned \cite{carned}. Scenario.ned defines the overall structure of the network, contains an array of all nodes and a list of auxiliary modules that control the vehicles or participate in the visualization when working with the GUI. The Car.ned file defines the structure of one of the most important modules - Car module, which is the internal representation of a vehicle. It contains, in particular, information about the network controller simulator and information about the user code of the application. Also, the Car module has a sub-module, which is responsible for synchronizing the movement with SUMO. Based on these two files in the future I will implement my version of the scenario, which will include drones in addition to vehicles, as well as support three-dimensional visualization of the scene. 
@@ -205,6 +195,27 @@ To further understand my implementation of drones in Veins, it is necessary to c
 \end{figure}
 
 \cref{fig:scenarioned} shows a simplified diagram of the network in Veins. It is not a diagram of classes in the usual sense, it shows the relationship of OMNeT++-modules and OMNeT++-networks , as well as some parameters that will be of interest in the rest of the work. 
+
+\subsection{2D Simple Shadowing}
+
+Next in my work I will describe the algorithm that calculates the fading of the radio signal, which takes into account three-dimensional objects. My algorithm is based on the Simple Obstacle Shadowing algorithm \cite{SimpleObstacleShadowing} that is implemented in Veins, and therefore I will briefly describe it here. In Veins' Simple Obstacle Shadowing algorithm each building is defined as a 2D-polygon with arbitrary number of vertices. The radio transmission is modeled as a ray starting from sender's antenna and ending in receiver's antenna. The algorithm determines, how much of the total distance the radio signal traveled through a building. Based on this information the algorithm than calculates the power with which the radio signal reaches the receiver. The signal can penetrate an arbitrary number of buildings. The algorithm also allows the user to set values that determine, how much buildings block the signal via their walls and via their interior. A graphical representation of this model can be seen on \cref{fig:SimpleObstacleShadowing}
+
+\begin{figure}
+  	\caption{Visualization of the Simple Obstacle Shadowing algorithm implemented in Veins. The gray rectangles depict buildings (or any other obstacles), white circles are the points of intersection between radio signal and obstacles' walls.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/SimpleObstacleShadowing.pdf}
+	\label{fig:SimpleObstacleShadowing}
+\end{figure}
+
+\section{Other software}
+
+I would like to emphasize the usage of OpenSceneGraph \cite{osg} as a 3D-rendering tool.  OMNeT++ natively supports OpenSceneGraph \cite{omnetpposg}, therefore \ac{OSG} is the most convenient and easy way to implement a 3D scene in OMNeT++. In this work, I will use 3D visualization for debugging purposes.
+
+Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize this class along with my own vehicle-, drone- and building- visualizers.
+
+\section{Simulated Hardware}
+
+For my scenario the exact implementation of physical layer and \ac{MAC}-layer is not important. Therefore I am relying on networking, already implemented in Veins and OMNeT++. The physical layer is implemented by Veins and simulates Wi-Fi transmitter, mounted on the vehicle's roof (1.895 meters above the road). In my scenario, I use a monopole antenna, also already implemented by Veins. Since the transport-layer protocol is also not important, I am using Wave Short Message protocol, implemented in Veins. For the drones I use the same networking layers as for the vehicles.
 
 \chapter{Implementation}
 
@@ -274,11 +285,20 @@ The \cref{fig:rebroadcastdeciderseq} shows the sequence of message exchange betw
 	\label{fig:rebroadcastdeciderseq}
 \end{figure}
 
-\section{3D buildings and shadowing}
-
-\subsection{Shadowing}
+\section{Adding the third dimension}
 
 The next problem was that Veins does not support three-dimensional obstacles, and therefore does not take Z coordinate into account when calculating radio signal decay. In my scenario, this is a significant drawback, since drones tend to fly above buildings, and hence their radio transmissions are not affected by buildings. In that case, one could make the radio transmissions between drones simply ignore the buildings. However, such a strategy would ignore radio signals between drones and cars. Drone-vehicle communication cannot be described by simple rules from 2D space with at least acceptable accuracy. Because of this, I decided to implement three-dimensional buildings and, accordingly, a three-dimensional algorithm for signal shadowing.
+
+\subsection{3D buildings and signal shadowing}
+
+In my work I assume that buildings can be approximated as right prisms, example shown in \cref{fig:rightprism}. 
+
+\begin{figure}
+  	\caption{Example of a right prism. The bases are two equal arbitrary polygons, but the walls are rectangles with equal height. The right prism can be easily imagined via "extruding" a random polygon straight upwards.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/RightPrism.pdf}
+	\label{fig:rightprism}
+\end{figure}
 
 \chapter{Evaluation}
 
