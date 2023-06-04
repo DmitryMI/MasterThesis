@@ -23,13 +23,13 @@
 		+ Veins' native road visualizer
 		+ Veins Scenario
 		+ Veins Car structure (UML)
-		> Veins 2D simple shadowing
-	+ Simulated hardware:
-		+ PHY: Wi-Fi, brief description
-		+ MAC: implemented by Veins
-		+ Wave short message protocol: implemented by Veins
+		+ Veins 2D simple shadowing
+	~ Simulated hardware:
+		~ PHY: Wi-Fi, brief description
+		~ MAC: implemented by Veins
+		~ Wave short message protocol: implemented by Veins
 		
-> Implementation
+~ Implementation
 	+ DroneScenario scheme
 	+ Veins does not support drones. Implementing drones for Veins
 		+ Drones are implemented as a OMNeT++ module.
@@ -38,22 +38,19 @@
 	+ Car module: enhancements
 		> Scheme of Car3d (derived from Veins, however, there are differences)
 	+ BaseApplicationLayer: base class for CarAppl and DroneAppl
-	> Veins does not support 3D building and shadowing
-		> All buildings can be approximated as right prisms
-		> Implementing 3D obstacles		
-		> Implementing line-prism intersection algorithm
-		> Extending Veins' simple shadowing to support 3D obstacles
-		> Debugging: debug lines and intersection points
-	> Implementing 3D visualization for debugging
-		> OpenSceneGraph brief description (Fundamentals?)
-		> Compile-time configuration
-		> Veins' native road visualizer (Fundamentals?)
-		> 
+	~ Broadcasting and suppressing Broadcast-storm
+		+ RebroadcastDecider - OMNeT++ layer for abstact rebroadcast decision making
+		~ Weighed p-persistence
+	~ Veins does not support 3D building and shadowing
+		+ All buildings can be approximated as right prisms
+		+ Implementing 3D obstacles		
+		+ Implementing line-prism intersection algorithm
+		+ Extending Veins' simple shadowing to support 3D obstacles
+		+ Debugging: debug lines and intersection points
+	+ Implementing 3D visualization for debugging
 	> Protocol
 		> WSM-based CarJammingAnnouncement
-	> Broadcasting and suppressing Broadcast-storm
-		> RebroadcastDecider - OMNeT++ layer for abstact rebroadcast decision making
-		> Simple implementation: 1-persistence
+	
 
 > Evaluation
 	> Manhatten Grid

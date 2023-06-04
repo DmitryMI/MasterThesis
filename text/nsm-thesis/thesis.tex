@@ -32,6 +32,10 @@
 \acrodef{OSG}{OpenSceneGraph}
 \acrodef{MAC}{Medium access control}
 \acrodef{NIC}{Network interface controller}
+\acrodef{DSRC}{Dedicated Short-Range Communications}
+\acrodef{V2V}{Vehicle-to-vehicle}
+\acrodef{V2D}{Vehicle-to-drone}
+\acrodef{D2D}{Drone-to-drone}
 %\acrodef{ROI}{Region of Interest}{short-indefinite={an}, long-plural-form={Regions of Interest}}
 %\acrodef{ADAC}{German Automobile Association}{foreign={Allgemeiner Deutscher Automobilclub}}
 %\acrodef{CANhashing}[CAN]{Content Addressable Network}{extra={when referring to the distributed hash table}}
@@ -213,13 +217,25 @@ I would like to emphasize the usage of OpenSceneGraph \cite{osg} as a 3D-renderi
 
 Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize this class along with my own vehicle-, drone- and building- visualizers.
 
-\section{Simulated Hardware}
+\subsection{IEEE 802.11p}
+Veins includes a simple simulation model of IEEE 802.11p for vehicle-to-vehicle communication \cite[Page~216]{Sommer2019}. The following brief description of IEEE 802.11p is based on \textcite{IEEE80211p}.
 
-For my scenario the exact implementation of physical layer and \ac{MAC}-layer is not important. Therefore I am relying on networking, already implemented in Veins and OMNeT++. The physical layer is implemented by Veins and simulates Wi-Fi transmitter, mounted on the vehicle's roof (1.895 meters above the road). In my scenario, I use a monopole antenna, also already implemented by Veins. Since the transport-layer protocol is also not important, I am using Wave Short Message protocol, implemented in Veins. For the drones I use the same networking layers as for the vehicles.
+IEEE 802.11p is a set of standards dedicated exclusively to vehicle-to-vehicle and infrastructure-to-vehicle communication. It uses 75 MHz of \ac{DSRC} spectrum at 5.9 GHz. The primary goal is to enable public safety applications that can help with road safety and improve traffic flow. Private services are permitted to use these frequencies. The \ac{DSRC} band is free, but licensed spectrum, therefore it is more restricted in terms of usages and technologies in comparison to unlicensed spectrums like Wi-Fi. \ac{DSRC} can be used only for vehicular networks, nobody is allowed to develop another technology, that uses the same radio spectrum. The key feature of IEEE 802.11p is the WAVE mode, that allows a vehicles to communicate immediately upon encounter, without the overhead of scanning for channels and executing handshakes. 
+
+In my work I will use Veins-provided IEEE 802.11p simulation model for both vehicles and drones, working in WAVE mode.
 
 \chapter{Implementation}
 
-Now it is time to develop a network model for a scenario in which vehicles and drones will interact within the same virtual space. My implementation is largely based on the model used in Veins, which was discussed in \cref{sec:scenarioned}. My model basically repeats the structure of the model from Veins, as the basic modules remain the same. However, I have integrated into my model drones, support for the third dimension when calculating sight lines, and special modules for using OSG to render a three-dimensional scene.
+Now it is time to develop a network model for a scenario in which vehicles and drones will interact within the same virtual space. My implementation is largely based on the model used in Veins, which was discussed in \cref{sec:scenarioned}. My model basically repeats the structure of the model from Veins, as the basic modules remain the same. However, I have integrated into my model drones, support for the third dimension when calculating sight lines, and special modules for using OSG to render a three-dimensional scene. A schematic view on the communication between drones and vehicles can be seen on \cref{fig:vanetscheme}.
+
+\begin{figure}
+  	\caption{Schematic view on the network. My scenario does not include any infrastructure, the \ac{V2V}, \ac{V2D} and \ac{D2D} communication is implemented using the same IEEE 802.11p model, provided by Veins. The only difference is the antenna's Z coordinate.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/VANET scheme.png}
+	\label{fig:vanetscheme}
+\end{figure}
+
+\cref{fig:dronescenarioned} shows a simplified diagram of the network in my model, the scheme is analogues to \cref{fig:scenarioned} and is meant to show similarities and differences between my model in Veins' model.
 
 \begin{figure}
   	\caption{Simplified diagram of DroneScenario network. Not all modules, parameters and connections are shown.}
@@ -228,7 +244,6 @@ Now it is time to develop a network model for a scenario in which vehicles and d
 	\label{fig:dronescenarioned}
 \end{figure}
 
-\cref{fig:dronescenarioned} shows a simplified diagram of the network in my model, the scheme is analogues to \cref{fig:scenarioned} and is meant to show similarities and differences between my model in Veins' model.
 
 In the following sections I will describe the differences in detail, explain how I have integrated in particular, drones, 3D-visualization and 3D-obstacle shadowing.
 
