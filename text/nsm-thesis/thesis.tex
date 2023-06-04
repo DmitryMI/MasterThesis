@@ -239,6 +239,8 @@ In my work I will use Veins-provided IEEE 802.11p simulation model for both vehi
 
 Now it is time to develop a network model for a scenario in which vehicles and drones will interact within the same virtual space. My implementation is largely based on the model used in Veins, which was discussed in \cref{sec:scenarioned}. My model basically repeats the structure of the model from Veins, as the basic modules remain the same. However, I have integrated into my model drones, support for the third dimension when calculating sight lines, and special modules for using OSG to render a three-dimensional scene. A schematic view on the communication between drones and vehicles can be seen on \cref{fig:vanetscheme}. \cref{fig:dronescenarioned} shows a simplified UML diagram of classes for the OMNeT++ network in my model, the scheme is analogues to \cref{fig:scenarioned} and is meant to show similarities and differences between my model and Veins' model.
 
+\FIXME{VANET scheme.png - Drone image is not mine!}
+
 \begin{figure}
   	\caption{Schematic view on the network. My scenario does not include any infrastructure, the \ac{V2V}, \ac{V2D} and \ac{D2D} communication is implemented using the same IEEE 802.11p model, provided by Veins.}
 	\centering
@@ -391,7 +393,16 @@ In my project, a single broadcast message is defined, which the cars send to the
 
 \end{itemize}
 
+\FIXME{\cref{fig:protocol} does not fit!}
 
+\begin{figure}%
+	\centering
+	\subfloat[Step 1]{\label{fig:protocol1}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol1.png}}
+	\subfloat[Step 2]{\label{fig:protocol2}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol2.png}}
+	\subfloat[Step 3]{\label{fig:protocol3}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol3.png}}
+	\caption{Jamming announcement protocol. On step 1 (\cref{fig:protocol1}) the vehicle detects that its speed is zero and broadcasts CarJammingAnnouncement message. The vehicles, who receive the broadcast (\cref{fig:protocol2}), read the road id from the message and adjust their routes in order not to get into the jam. Finally  (\cref{fig:protocol3}), the vehicles rebroadcast the initial message and the receivers perform the same steps. This way the jam announcement propagates through the network. The drones also receive and rebroadcast the announcements in the same manner.}%
+	\label{fig:protocol}%
+\end{figure}
 
 \chapter{Evaluation}
 
