@@ -351,6 +351,8 @@ The central modules that are responsible for 3D visualization in my project are:
 
 \item \textbf{ObstacleShadowingVisualizer} - draws radio transmission as 3D lines on the \ac{OSG} canvas. Also shows intersections with 3D obstacles. 
 
+\end{itemize}
+
 \begin{figure}%
     \centering
     \subfloat[Vehicle]{\label{fig:vehicle-model}\includegraphics[width=0.5\textwidth]{figures/car3d-model.png}}%
@@ -366,7 +368,30 @@ The central modules that are responsible for 3D visualization in my project are:
 	\label{fig:ObstacleShadowingVisualizer}
 \end{figure}
 
+
+\section{Protocol}
+
+Finally, I will explain the protocol that is used in communication between vehicles and drones. The protocol is based on IEEE 802.11p, a simulation of which is implemented in Veins. 
+
+In my project, a single broadcast message is defined, which the cars send to the air in case of an unforeseen stop. This message is called CarJammingAnnouncement and it contains the following information:
+
+\begin{itemize}
+
+\item \textbf{Sender Address} - integer field, representing a unique address of a network node. The jammed vehicle sets this field to its address upon initial broadcast.
+
+\item \textbf{Serial} - integer field, monotonically increasing counter locally handled by each vehicle. Together with Sender Address makes sure, that each CarJammingAnnouncement is unique.
+
+\item \textbf{Car Road Id} - SUMO id of a road, on which the vehicle is jammed. Its real-life equivalent can be name of a street.
+
+\item \textbf{Car Position} - OMNeT++ coordinates on which the vehicle is jammed. This field's real-life equivalent can be GPS coordinates.
+
+\item \textbf{Sender Timestamp} - time of broadcast. Used to calculate latency.
+
+\item \textbf{Last Rebroadcaster Position} - OMNeT++ coordinate of last node (drone or vehicle) that rebroadcast this message. While the Car Position is always the position of a jammed vehicle, that originally sent the message, the Last Rebroadcaster Position depends on the context of the rebroadcast.
+
 \end{itemize}
+
+
 
 \chapter{Evaluation}
 
