@@ -36,6 +36,8 @@
 \acrodef{V2V}{Vehicle-to-vehicle}
 \acrodef{V2D}{Vehicle-to-drone}
 \acrodef{D2D}{Drone-to-drone}
+\acrodef{GUI}{Graphical User Interface}
+\acrodef{TraCI}{Traffic Control Interface}
 %\acrodef{ROI}{Region of Interest}{short-indefinite={an}, long-plural-form={Regions of Interest}}
 %\acrodef{ADAC}{German Automobile Association}{foreign={Allgemeiner Deutscher Automobilclub}}
 %\acrodef{CANhashing}[CAN]{Content Addressable Network}{extra={when referring to the distributed hash table}}
@@ -182,9 +184,18 @@ In order to simulate a hybrid network of drones and vehicles a network simulator
 	\label{fig:veinshighlevel}
 \end{figure}
 
-\subsection{SUMO}
-As shown on \ref{fig:veinshighlevel}, Veins uses SUMO by \textcite{sumo2018} as a traffic simulator. According to the SUMO developers, SUMO is a microscopic traffic simulator, which means that each vehicle and its dynamics are modeled individually.
-This a suitable solution for my scenario, because I indeed need each vehicle to be an independent object with its own known position.
+\subsection{SUMO and TraCI}
+As shown on \ref{fig:veinshighlevel}, Veins uses SUMO by \textcite[Page~218]{sumo2018} as a traffic simulator. According to the SUMO developers, SUMO is a microscopic traffic simulator, which means that each vehicle and its dynamics are modeled individually.
+This a suitable solution for my scenario, because I indeed need each vehicle to be an independent object with its own known position. \cref{fig:sumogui} shows a screenshot of SUMO \ac{GUI}.
+
+According to \textcite{traci}, \ac{TraCI} is a protocol, used to interlink road traffic and network simulators. The authors explain, that this protocol permits to control the behavior of vehicles during simulation time, therefore the network simulator can influence the driver's behavior. SUMO exposes \ac{TraCI} endpoints \cite{sumotraci} and Veins connects to them, allowing OMNeT++ user code to simulate \acp{VANET} \cite[Pages~217-218]{Sommer2019}. According to \textcite{Sommer2019}, Veins receives positions of vehicles from SUMO, these positions are later used as positions for network nodes, modeling vehicles in OMNeT++ simulation environment.
+
+\begin{figure}
+  	\caption{SUMO \ac{GUI} screenshot, gray rectangles depict obstacles (buildings), the black wide lines are the roads, the yellow triangle is a vehicle.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/SUMO-GUI.png}
+	\label{fig:sumogui}
+\end{figure}
 
 \subsection {Scenario and Car}
 \label{sec:scenarioned}
