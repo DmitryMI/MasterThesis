@@ -226,26 +226,21 @@ In my work I will use Veins-provided IEEE 802.11p simulation model for both vehi
 
 \chapter{Implementation}
 
-Now it is time to develop a network model for a scenario in which vehicles and drones will interact within the same virtual space. My implementation is largely based on the model used in Veins, which was discussed in \cref{sec:scenarioned}. My model basically repeats the structure of the model from Veins, as the basic modules remain the same. However, I have integrated into my model drones, support for the third dimension when calculating sight lines, and special modules for using OSG to render a three-dimensional scene. A schematic view on the communication between drones and vehicles can be seen on \cref{fig:vanetscheme}.
+Now it is time to develop a network model for a scenario in which vehicles and drones will interact within the same virtual space. My implementation is largely based on the model used in Veins, which was discussed in \cref{sec:scenarioned}. My model basically repeats the structure of the model from Veins, as the basic modules remain the same. However, I have integrated into my model drones, support for the third dimension when calculating sight lines, and special modules for using OSG to render a three-dimensional scene. A schematic view on the communication between drones and vehicles can be seen on \cref{fig:vanetscheme}. \cref{fig:dronescenarioned} shows a simplified UML diagram of classes for the OMNeT++ network in my model, the scheme is analogues to \cref{fig:scenarioned} and is meant to show similarities and differences between my model and Veins' model.
 
 \begin{figure}
-  	\caption{Schematic view on the network. My scenario does not include any infrastructure, the \ac{V2V}, \ac{V2D} and \ac{D2D} communication is implemented using the same IEEE 802.11p model, provided by Veins. The only difference is the antenna's Z coordinate.}
+  	\caption{Schematic view on the network. My scenario does not include any infrastructure, the \ac{V2V}, \ac{V2D} and \ac{D2D} communication is implemented using the same IEEE 802.11p model, provided by Veins.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/VANET scheme.png}
 	\label{fig:vanetscheme}
 \end{figure}
 
-\cref{fig:dronescenarioned} shows a simplified diagram of the network in my model, the scheme is analogues to \cref{fig:scenarioned} and is meant to show similarities and differences between my model in Veins' model.
-
 \begin{figure}
-  	\caption{Simplified diagram of DroneScenario network. Not all modules, parameters and connections are shown.}
+  	\caption{Simplified diagram of DroneScenario network. In contrast to Veins, the following modules were added to the network: ObstacleShadowingVisualizer, Pathfinder, DroneManager and array of Drones. Some modules replace analogues Veins modules to add new functionality: RoadsOsgVisualizer2, ObstacleControl3d, array of Car3d}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/DroneScenario.pdf}
 	\label{fig:dronescenarioned}
 \end{figure}
-
-
-In the following sections I will describe the differences in detail, explain how I have integrated in particular, drones, 3D-visualization and 3D-obstacle shadowing.
 
 \section{Drones}
 
@@ -254,7 +249,7 @@ The first issue with implementing my scenario is that Veins does not support dro
 \cref{fig:dronened} shows a simplified structure of the Drone.ned module. Like the Car.ned from Veins, Drone.ned uses a special submodule for moving in space. To improve simulation efficiency (i.e., to reduce the number of events), all drone movements are performed once every 1 second as part of the single event processing. The DroneManager.ned module is responsible for managing this event (scheduling and execution), as well as for creating and removing drones. Simply put, the DroneManager module creates a specified number of drones, and then sends a position update signal to each drone at a period of 1 second (configurable). 
 
 \begin{figure}
-  	\caption{Simplified diagram of Drone module. Not all parameters connections are shown.}
+  	\caption{Simplified diagram of Drone module.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Drone.pdf}
 	\label{fig:dronened}
