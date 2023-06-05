@@ -46,8 +46,9 @@
 		+ Extending Veins' simple shadowing to support 3D obstacles
 		+ Debugging: debug lines and intersection points
 	+ Implementing 3D visualization for debugging
-	> Protocol
-		> WSM-based CarJammingAnnouncement
+	+ Protocol
+		+ WSM-based CarJammingAnnouncement
+	+ Pathfinder
 	
 
 > Evaluation

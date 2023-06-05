@@ -393,6 +393,8 @@ In my project, a single broadcast message is defined, which the cars send to the
 
 \end{itemize}
 
+\cref{fig:protocol} shows how the CarJammingAnnouncement is propagated through the network. The protocol is based on the distribution of broadcast messages about the occurrence of a traffic jam. When a message is received, the vehicle checks if its route goes through the road whose identifier is contained in the message. If it does, the vehicle remembers this identifier (makes a list of all roads where a traffic jam occurred) and recreates the route so that it does not get into the traffic jam. After receiving the message, the vehicle sends the message back on the air according to the rules for avoiding broadcast storms. Drones act in the same way, except that they ignore the information about the traffic jam in the message. They only rebroadcast a copy of the message.
+
 \FIXME{\cref{fig:protocol} does not fit!}
 
 \begin{figure}%
@@ -404,7 +406,19 @@ In my project, a single broadcast message is defined, which the cars send to the
 	\label{fig:protocol}%
 \end{figure}
 
+\section{Pathfinder}
+
+While working on the project, I encountered the need to generate random routes for cars. The Vehicle code in Veins when receiving a message can send a TraCI message to SUMO, which will force the vehicle to re-route, avoiding roads with traffic jams. However, the problem is that in this case, SUMO will re-align the route by the shortest path from the current position of the car to the point to which it was originally going. This led to the fact that the path, which was originally tens of kilometers long, was drastically shortened to hundreds of meters. This caused artifacts in the simulation results. The solution to the problem was the Pathfinder module, which builds random routes for cars, taking into account congestion and a given minimum route length.
+
+There is only one Pathfinder module in the simulation. It stores information about the road structure, taken from the same file that SUMO takes it from. The Pathfinder has methods for constructing random routes. Any vehicle can call these methods if needed and then send the resulting random route to SUMO via TraCI, which will cause the vehicle to follow it.
+
 \chapter{Evaluation}
+
+Now it is time to describe the setup of the experiment, the input and output parameters, and to describe and discuss the results.
+
+\section{Manhatten Grid}
+
+
 
 \chapter{Conclusion}
 
