@@ -416,9 +416,41 @@ There is only one Pathfinder module in the simulation. It stores information abo
 
 Now it is time to describe the setup of the experiment, the input and output parameters, and to describe and discuss the results.
 
-\section{Manhatten Grid}
+\section{Manhattan Grid}
 
+For simulating a high-density urban environment the Manhattan Grid was selected. The global schematic view on the simulation environment can be seen on \cref{fig:manhattangrid}. \cref{fig:manhattangridblock} explains some parameters. The grid's parameters are based on the real Manhattan, the \cref{tab:manhattangrid} shows the exact values used in my simulation.
 
+\begin{figure}
+  	\caption{Global schematic view on the road network and buildings. Each block is 150 meters long, there are 14 blocks in total (15 junctions), which results in a map being square with \SI{2100}{\meter} long sides.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/ManhattanGrid.png}
+	\label{fig:manhattangrid}
+\end{figure}
+
+\begin{figure}
+  	\caption{Building-block parameters. Street length - is a distance between two junctions and also the size of a block. Margin is the distance between buildings and the road. Padding is the distance between buildings in one block.}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/ManhattanGridBlock-commented.png}
+	\label{fig:manhattangridblock}
+\end{figure}
+
+\begin{table}
+    \centering
+    \begin{tabular}{rlcl}
+        \toprule
+        Parameter & Min & Const & Max \\
+        \midrule
+        	Grid size & - & 15 & - \\
+        	Street Length & - & \SI{150}{\meter} & - \\
+		Grid Subdivisions & - & 3 & - \\
+		Margin & - & \SI{15}{\meter} & - \\
+		Padding & - & \SI{5}{\meter} & - \\
+		Building Height & \SI{10}{\meter} & - & \SI{50}{\meter} \\
+        \bottomrule
+    \end{tabular}
+    \caption{Manhattan Grid Parameters. Const column means that this value is constant (non-random). Min-Max columns show that this value varies and is uniformly distributed between Minimum and Maximum. Grid size is the number of junctions in the side of road network grid. Grid subdivisions is the number of buildings in the side of a city block. Street length - is a distance between two junctions and also the size of a block. Margin is the distance between buildings and the road. Padding is the distance between buildings in one block. Building height is the distribution of heights of buildings. }
+    \label{tab:manhattangrid}
+\end{table}
 
 \chapter{Conclusion}
 
