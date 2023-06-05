@@ -473,14 +473,13 @@ For parametric studies the following input parameters were selected:
 
 \begin{itemize}
 
-\item \textbf{Number of vehicles} - the number of vehicles that spawn at the beginning of the simulation. Each vehicle spawns at a random position with random predefined route. See \cref{tab:simulationparams} for exact values of vehicle speed.
+	\item \textbf{Number of vehicles} - the number of vehicles that spawn at the beginning of the simulation. Each vehicle spawns at a random position with random predefined route. See \cref{tab:simulationparams} for exact values of vehicle speed.
+	
+	\item \textbf{Number of drones} - the number of drones that spawn at the beginning of the simulation. Each drone spawns at a random position with random predefined angle and speed. See \cref{tab:simulationparams} for exact values of drone height and speed.
+	
+	\item \textbf{Vehicle breakdown probability} - probability with which each vehicle breaks down.
 
-\item \textbf{Number of drones} - the number of drones that spawn at the beginning of the simulation. Each drone spawns at a random position with random predefined angle and speed. See \cref{tab:simulationparams} for exact values of drone height and speed.
-
-\item \textbf{Vehicle breakdown probability} - probability with which each vehicle breaks down.
-
-\cref{tab:simulationparams} shows values of simulation and mobility parameters.  Note that Vehicle Speed is actually defined by the road grid speed limits and traffic conditions. The value shown here is the intended speed on a regular road.
-
+	\item \textbf{Channel busy time ratio} - Average value of each vehicle's and each drone's busy time ratios.
 \end{itemize}
 
 \begin{table}
@@ -505,9 +504,154 @@ For parametric studies the following input parameters were selected:
 		
         \bottomrule
     \end{tabular}
-    \caption{Static simulation parameters. Const column means that this value is constant (non-random). Min-Max columns show that this value varies between Minimum and Maximum.}
+    \caption{Static simulation parameters (shared between simulations). Const column means that this value is constant (non-random). Min-Max columns show that this value varies between Minimum and Maximum.}
     \label{tab:simulationparams}
 \end{table}
+
+\section{Output values}
+
+The following data was selected as the output to be analyzed:
+
+\begin{itemize}
+
+	\item \textbf{Average vehicle speed} - average speed of traffic. Each vehicle's average speed is calculate as traveled distance divided by simulation time. The average of these speeds is the output parameter.
+	
+	\item \textbf{Time of a vehicle being stuck in a jam} - average time of each vehicle being in a jam.
+	
+	\item \textbf{Channel busy time ratio} - Average value of each vehicle's and each drone's busy time ratios.
+
+	\item \textbf{End-to-end latency of broadcasts} - Average time it takes for a jamming announcement to reach a vehicle. Only successful transmissions are considered.
+
+	\item \textbf{Received announcements ratio} - each vehicle keeps a list of received announcements. The received announcements ratio for a particular vehicle is the number of announcements it received divided by a total number of unique broadcast announcements. The output value is the average of received announcements ratio of all vehicles.
+
+	\item \textbf{Number of jammed vehicles} - number of vehicles which stayed still for at least \SI{10}{\second}. This number includes both broken vehicles (vehicles that were "ordered" to break down) and vehicles that failed to avoid the jams for any reason (e.g. did not receive an announcement or it was already too late to change the route).
+
+\end{itemize}
+
+\section{Results}
+
+Simulation runs were divided into two groups: Number Of Vehicles Evaluation group and Accident Probability Evaluation group. In the first group the Accident Probability was fixed and the simulations received two variables: Number of Vehicles and Number of Drones. In the second group the Number of Vehicles was fixed, the varying part consisted of Accident Probability and Number Of Drones. \cref{tab:inputrange1} and \cref{tab:inputrange2} show the range of values, used in these two cases respectively.
+
+\begin{table}
+    \centering
+    \begin{tabular}{rlcl}
+        \toprule
+        Parameter & Start & Stop & Step \\
+        \midrule
+		Number of vehicles & 20 & 100 & 25 \\
+		Number of drones & 0 & 100 & 25 \\
+		Accident probability & 0.3 & - & - \\
+        \bottomrule
+    \end{tabular}
+    \caption{Parametric studies: parameter ranges for Number of Vehicles Evaluation group of simulations}
+    \label{tab:inputrange1}
+\end{table}
+
+\FIXME {Recheck the Number of Vehicles in \cref{tab:inputrange1}}
+
+\begin{table}
+    \centering
+    \begin{tabular}{rlcl}
+        \toprule
+        Parameter & Start & Stop & Step \\
+        \midrule
+		Number of vehicles & 60 & - & - \\
+		Number of drones & 0 & 100 & 25 \\
+		Accident probability & 0.2 & 0.6 & 0.2 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Parametric studies: parameter ranges for Accident Probability Evaluation group of simulations}
+    \label{tab:inputrange2}
+\end{table}
+
+\subsection{Average Vehicle Speed}
+
+\cref{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA} shows how Average Vehicle Speed depends from Number of Vehicles and Number of Drones with fixed Accident Probability. \cref{fig:Evaluation-AccidentProbability-VehicleSpeed-NA} shows how Average Vehicle Speed depends from  Accident Probability and Number of Drones with fixed Number of Vehicles . 
+
+\begin{figure}
+  	\caption{Average Vehicle Speed with fixed Accident Probability}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-VehicleSpeed-NA.pdf}
+	\label{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA}
+\end{figure}
+
+\begin{figure}
+  	\caption{Average Vehicle Speed with fixed Number of Vehicles}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-VehicleSpeed-NA.pdf}
+	\label{fig:Evaluation-AccidentProbability-VehicleSpeed-NA}
+\end{figure}
+
+\begin{figure}
+  	\caption{Average Latency with fixed Accident Probability}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-Latency-NA.pdf}
+	\label{fig:Evaluation-NumberOfVehicles-Latency-NA}
+\end{figure}
+
+\begin{figure}
+  	\caption{Average Latency with fixed Number of Vehicles}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-Latency-NA.pdf}
+	\label{fig:Evaluation-AccidentProbability-Latency-NA}
+\end{figure}
+
+\begin{figure}
+  	\caption{Average Channel Busy Time Ratio with fixed Accident Probability}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA.pdf}
+	\label{fig:Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA}
+\end{figure}
+
+\begin{figure}
+  	\caption{Average Channel Busy Time Ratio with fixed Number of Vehicles}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA.pdf}
+	\label{fig:Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA}
+\end{figure}
+
+\begin{figure}
+  	\caption{Number of Jammed Vehicles with fixed Accident Probability}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-JammedNumber-NA.pdf}
+	\label{fig:Evaluation-NumberOfVehicles-JammedNumber-NA}
+\end{figure}
+
+\begin{figure}
+  	\caption{Number of Jammed Vehicles with fixed Number of Vehicles}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-JammedNumber-NA.pdf}
+	\label{fig:Evaluation-AccidentProbability-JammedNumber-NA}
+\end{figure}
+
+\begin{figure}
+  	\caption{Average Time in Jam with fixed Accident Probability}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-JamTime-NA.pdf}
+	\label{fig:Evaluation-NumberOfVehicles-JamTime-NA}
+\end{figure}
+
+\begin{figure}
+  	\caption{Average Time in Jam with fixed Number of Vehicles}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-JamTime-NA.pdf}
+	\label{fig:Evaluation-AccidentProbability-JamTime-NA}
+\end{figure}
+
+\begin{figure}
+  	\caption{Received Announcements Ratio with fixed Accident Probability}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA.pdf}
+	\label{fig:Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA}
+\end{figure}
+
+\begin{figure}
+  	\caption{Received Announcements Ratio with fixed Number of Vehicles}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-ReceivedAnnouncements-NA.pdf}
+	\label{fig:Evaluation-AccidentProbability-ReceivedAnnouncements-NA}
+\end{figure}
+
 
 \chapter{Conclusion}
 

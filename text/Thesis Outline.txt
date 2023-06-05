@@ -55,17 +55,17 @@
 	+ Manhatten Grid
 		+ Dimensions, street length, building sizes
 		? Comparison to the real Manhatten
-	~ Input parameters
-		> Number of drones (drone density)
-		> Number of vehicles (vehicle density)
-		> Breakdown probability
-	> Output values:
-		> From proposal: Average vehicle speed
-		> From proposal: Time of a vehicle being stuck in a jam
-		> From proposal: Channel busy time ratio
-		> From proposal: End-to-end latency of broadcasts
-		> New: received announcements ratio
-	> Results, graphs, discussion.
+	+ Input parameters
+		+ Number of drones (drone density)
+		+ Number of vehicles (vehicle density)
+		+ Breakdown probability
+	+ Output values:
+		+ From proposal: Average vehicle speed
+		+ From proposal: Time of a vehicle being stuck in a jam
+		+ From proposal: Channel busy time ratio
+		+ From proposal: End-to-end latency of broadcasts
+		+ New: received announcements ratio
+	~ Results, graphs, discussion.
 		
 	
 > Conclusion
