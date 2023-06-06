@@ -44,7 +44,7 @@ get_itervars_join <- function(itervars_table, prefix1, prefix2){
 }
 
 option_list = list(
-  make_option(c("-i", "--collected_csv"), type="character", default="../eval/Evaluation-NumberOfVehicles.csv", help="Path to collected CSV file", metavar="character"),
+  make_option(c("-i", "--collected_csv"), type="character", default="../../hpc/eval/Evaluation-NumberOfVehicles.csv", help="Path to collected CSV file", metavar="character"),
   make_option(c("-o", "--output_dir"), type="character", default="../eval", help="Path to output directory", metavar="character")
 ); 
 
@@ -119,10 +119,10 @@ busytime_table3 <- get_scalar_by_itervars_table(busytime_table2, itervars_table,
 busytime_table <- get_scalar_by_itervars_avg_table(busytime_table3, itervars_table, "busyTime")
 
 # Hop count
-hops_table1 <- get_scalar_table(scalars, "hopsAverage")
-hops_table2 <- get_scalar_by_run_table(hops_table1, "hopsAverage")
-hops_table3 <- get_scalar_by_itervars_table(hops_table2, itervars_table, run_itervars_table, "hopsAverage")
-hops_table <- get_scalar_by_itervars_avg_table(hops_table3, itervars_table, "hopsAverage")
+#hops_table1 <- get_scalar_table(scalars, "hopsAverage")
+#hops_table2 <- get_scalar_by_run_table(hops_table1, "hopsAverage")
+#hops_table3 <- get_scalar_by_itervars_table(hops_table2, itervars_table, run_itervars_table, "hopsAverage")
+#hops_table <- get_scalar_by_itervars_avg_table(hops_table3, itervars_table, "hopsAverage")
 
 # E2E Latency
 # latency_table1 <- get_scalar_table(scalars, "latencyAverage")
@@ -152,35 +152,35 @@ time <- "NA"
 
 pdf_name <- paste(opp_config_name, "-ReceivedAnnouncements-", time, ".pdf", sep="")
 pdf(file.path(output_dir, pdf_name))
-plot_default(received_div_jammed_table, ReceivedDivJammed, param1_values, param2_values)
+plot_default(received_div_jammed_table, ReceivedDivJammed, param1_values, param2_values, "Received Announcements Ratio")
 dev.off()
 
 pdf_name <- paste(opp_config_name, "-JamTime-", time, ".pdf", sep="")
 pdf(file.path(output_dir, pdf_name))
-plot_default(jam_time_table, TotalTimeInJam, param1_values, param2_values)
+plot_default(jam_time_table, TotalTimeInJam, param1_values, param2_values, "Jam Time", "s")
 dev.off()
 
 pdf_name <- paste(opp_config_name, "-JammedNumber-", time, ".pdf", sep="")
 pdf(file.path(output_dir, pdf_name))
-plot_default(jammed_by_itervars_avg_table, JammedNumber, param1_values, param2_values)
+plot_default(jammed_by_itervars_avg_table, JammedNumber, param1_values, param2_values, "Jammed Vehicles")
 dev.off()
 
 pdf_name <- paste(opp_config_name, "-VehicleSpeed-", time, ".pdf", sep="")
 pdf(file.path(output_dir, pdf_name))
-plot_default(speed_table, Speed, param1_values, param2_values)
+plot_default(speed_table, Speed, param1_values, param2_values, "Vehicle Speed", "m/s")
 dev.off()
 
 pdf_name <- paste(opp_config_name, "-ChannelBusyTimeRatio-", time, ".pdf", sep="")
 pdf(file.path(output_dir, pdf_name))
-plot_default(busytime_table, busyTime, param1_values, param2_values)
+plot_default(busytime_table, busyTime, param1_values, param2_values, "Channel Busy Time Ratio")
 dev.off()
 
 pdf_name <- paste(opp_config_name, "-Latency-", time, ".pdf", sep="")
 pdf(file.path(output_dir, pdf_name))
-plot_default(latency_table, latencyAverage, param1_values, param2_values)
+plot_default(latency_table, latencyAverage, param1_values, param2_values, "Latency", "s")
 dev.off()
 
-pdf_name <- paste(opp_config_name, "-Hops-", time, ".pdf", sep="")
-pdf(file.path(output_dir, pdf_name))
-plot_default(hops_table, hopsAverage, param1_values, param2_values)
-dev.off()
+#pdf_name <- paste(opp_config_name, "-Hops-", time, ".pdf", sep="")
+#pdf(file.path(output_dir, pdf_name))
+#plot_default(hops_table, hopsAverage, param1_values, param2_values)
+#dev.off()
