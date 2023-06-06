@@ -135,6 +135,7 @@ void RebroadcastDecider::rebroadcast(cMessage *msg)
 	if (CarJammingAnnouncement *jamMsg = dynamic_cast<CarJammingAnnouncement*>(msg))
 	{
 		jamMsg->setLastRebroadcasterPosition(getCurrentPosition());
+		jamMsg->setHop(jamMsg->getHop() + 1);
 	}
 
 	sendDirect(msg, bLayer, gate);
