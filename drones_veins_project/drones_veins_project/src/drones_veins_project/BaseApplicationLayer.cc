@@ -120,7 +120,7 @@ void BaseApplicationLayer::finish()
 		}
 
 		double hops_avg = hops_sum / hops.size();
-		recordScalar("hopsAverage", latency_avg);
+		recordScalar("hopsAverage", hops_avg);
 	}
 }
 
