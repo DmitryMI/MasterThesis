@@ -585,6 +585,7 @@ Simulation runs were divided into two groups: Number Of Vehicles Evaluation grou
 \end{table}
 
 \subsection{Received Announcements Ratio}
+\label{sec:ReceivedAnnouncementsRatio}
 
 I chose this metric as the metric to start with because it shows, how drones contribute to the connectivity of the network (by "connectivity" I mean how well the nodes in the network are connected to each other). Basically, if Received Announcements Ratio is 1, then each message is received by all vehicles in the simulation. If Received Announcements Ratio is 0, then no message is received by any vehicle. Although this metric is not precisely the connectivity of the network, it with no doubt correlates with the connectivity. Therefore this metric can be used to determine, how well are the nodes are interconnected and how well the messages disseminated between vehicles. It does not depend heavily on traffic conditions and route generation as some other metrics like average vehicle speed or number of jammed vehicles, for example.
 
@@ -600,96 +601,80 @@ The figure shows that the ratio becomes smaller with increase in accident probab
 
 In conclusion, it is clear that the drones improve the network connectivity in an urban environment. When number of drones is maximum, almost all messages are received by almost all vehicles in the simulation.
 
-\begin{figure}
+\begin{figure}%
 	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA.pdf}
-	\caption{Received Announcements Ratio with Accident Probability = 0.3. The value is calculated as the number of received by a vehicle unique messages divided by total number of unique messages sent.}
-	\label{fig:Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA}
+	\subfloat[Accident Probability = 0.3]{\label{fig:Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA.pdf}}
+	\hfill
+	\subfloat[Number of Vehicles = 60]{\label{fig:Evaluation-AccidentProbability-ReceivedAnnouncements-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-AccidentProbability-ReceivedAnnouncements-NA.pdf}}
+	\hfill
+	\caption{Received Announcements Ratio. The Received Announcements Ratio is calculated as the number of unique messages received by a single vehicle divided by total number of unique messages sent by all vehicles. The Y-axis is the average value between all vehicles.}%
+	\label{fig:Evaluation-ReceivedAnnouncements}%
 \end{figure}
 
-\begin{figure}
+\subsection{Average Vehicle Speed, Number of jammed vehicles and Total time in jam}
+
+These metrics are not very good to evaluate the network connectivity and drone contribution as the Received Announcements Ratio. In fact, they depend on the network connectivity, no matter how this connectivity was achieved. However, these values can be used to check, how well the protocol can improve the traffic flow.
+
+These three metrics are closely connected to each other, therefore they will be discussed together. \cref{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA} shows how Average Vehicle Speed depends from Number of Vehicles and Number of Drones with fixed Accident Probability. The number of jammed vehicles can be seen on cref{fig:Evaluation-NumberOfVehicles-JammedNumber-NA} and cref{fig:Evaluation-AccidentProbability-JammedNumber-NA}. Time in jam is depicted on cref{fig:Evaluation-NumberOfVehicles-JamTime-NA} and cref{fig:Evaluation-AccidentProbability-JamTime-NA}.
+
+It is clearly seen, that the average speed increases with increase in Number of Drones. However, the increase in average speed is not linear: it increases quicker when the number of drones is low than when the number of drones is closer to 100. It is pretty safe to assume that the average speed is increasing due to drones contributing to the network connectivity, as discussed in \cref{sec:ReceivedAnnouncementsRatio}. The more jam announcements reach the vehicles, the more vehicles will avoid the jam, which leads to less jammed vehicles. The same behavior is observed in time in jam and number of jammed vehicles.
+
+When number of drones is zero, there are only vehicles in the simulation. Vehicle speed is minimal, time in jam and number of jammed vehicles are maximal. With introduction of drones the situation begins to improve until the values reach the best state when number of drones is 100. All three metrics depend heavily on the total number of vehicles and accident probability. Average vehicle speed decreases with increase in number of vehicles and accident probability. Number of jammed vehicles increases with increase in number of vehicles and in number of drones. The same is for average time in jam.
+
+All three metric show that the drones' effect increases when there are more vehicles. 
+
+\begin{figure}%
 	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-ReceivedAnnouncements-NA.pdf}
-	\caption{Received Announcements Ratio with Number of Vehicles = 60. The Received Announcements Ratio is calculated as the number of unique messages received by a single vehicle divided by total number of unique messages sent by all vehicles. The Y-axis is the average value between all vehicles.}
-	\label{fig:Evaluation-AccidentProbability-ReceivedAnnouncements-NA}
+	\subfloat[Accident Probability = 0.3]{\label{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-NumberOfVehicles-VehicleSpeed-NA.pdf}}
+	\hfill
+	\subfloat[Number of Vehicles = 60]{\label{fig:Evaluation-AccidentProbability-VehicleSpeed-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-AccidentProbability-VehicleSpeed-NA.pdf}}
+	\hfill
+	\caption{Average Vehicle Speed. Initially-broken vehicles are also considered.}%
+	\label{fig:Evaluation-VehicleSpeed}%
 \end{figure}
 
-\subsection{Average Vehicle Speed}
-
-This metric is not very good to evaluate the network connectivity and drone contribution as the Received Announcements Ratio. In fact, average vehicle speed depends on the network connectivity, no matter how this connectivity was achieved. However, this value can be used to check, how well the protocol can improve the traffic flow.
-
-\cref{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA} shows how Average Vehicle Speed depends from Number of Vehicles and Number of Drones with fixed Accident Probability. \cref{fig:Evaluation-AccidentProbability-VehicleSpeed-NA} shows how Average Vehicle Speed depends from Accident Probability and Number of Drones with fixed Number of Vehicles. It is clearly seen, that the average speed increases with increase in Number of Drones. However, the increase in average is not linear: it increases quicker when the number of drones is low than when the number of drones reaches 100. It is pretty safe to assume that the average speed is increasing due to drones contributing to the network connectivity. 
-
-\begin{figure}
+\begin{figure}%
 	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-VehicleSpeed-NA.pdf}
-	\caption{Average Vehicle Speed with Accident Probability = 0.3. Initially-broken vehicles are also considered.}
-	\label{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA}
+	\subfloat[Accident Probability = 0.3]{\label{fig:Evaluation-NumberOfVehicles-JammedNumber-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-NumberOfVehicles-JammedNumber-NA.pdf}}
+	\hfill
+	\subfloat[Number of Vehicles = 60]{\label{fig:Evaluation-AccidentProbability-JammedNumber-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-AccidentProbability-JammedNumber-NA.pdf}}
+	\hfill
+	\caption{Number of Jammed Vehicles. Both initially-broken and later-jammed vehicles are considered.}%
+	\label{fig:Evaluation-JammedNumber}%
 \end{figure}
 
-\begin{figure}
+\begin{figure}%
 	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-VehicleSpeed-NA.pdf}
-	\caption{Average Vehicle Speed with Number of Vehicles = 60. Initially-broken vehicles are also considered.}
-	\label{fig:Evaluation-AccidentProbability-VehicleSpeed-NA}
+	\subfloat[Accident Probability = 0.3]{\label{fig:Evaluation-NumberOfVehicles-JamTime-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-NumberOfVehicles-JamTime-NA.pdf}}
+	\hfill
+	\subfloat[Number of Vehicles = 60]{\label{fig:Evaluation-AccidentProbability-JamTime-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-AccidentProbability-JamTime-NA.pdf}}
+	\hfill
+	\caption{Average Time in Jam. Jam time is the time between the vehicle stopped moving for any reason and the end of the simulation. Only stops longer than 10 seconds are considered a jam. Both initially-broken and later-jammed vehicles are considered.}%
+	\label{fig:Evaluation-JamTime}%
 \end{figure}
 
-\begin{figure}
+\begin{figure}%
 	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-Latency-NA.pdf}
-	\caption{Average Latency with Accident Probability = 0.3. Latency is the time between an initial broadcast and it's reception by a vehicle. If a message is rebroadcast, its timestamp is not modified, therefore the latency includes the time spent by message being rebroadcast. The latency is calculated on the receiving side, therefore the same broadcast can result in different latencies, depending on the receiver, number of hops and distance, among other factors. Only successful and unique transmissions are considered, receiver does not calculate and record latency of a message, that is a duplicate of earlier received message.}
-	\label{fig:Evaluation-NumberOfVehicles-Latency-NA}
+	\subfloat[Accident Probability = 0.3]{\label{fig:Evaluation-NumberOfVehicles-Latency-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-NumberOfVehicles-Latency-NA.pdf}}
+	\hfill
+	\subfloat[Number of Vehicles = 60]{\label{fig:Evaluation-AccidentProbability-Latency-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-AccidentProbability-Latency-NA.pdf}}
+	\hfill
+	\caption{Average End-to-End Latency. Latency is the time between an initial broadcast and it's reception by a vehicle. If a message is rebroadcast, its timestamp is not modified, therefore the latency includes the time spent by message being rebroadcast. The latency is calculated on the receiving side, therefore the same broadcast can result in different latencies, depending on the receiver, number of hops and distance, among other factors. Only successful and unique transmissions are considered, receiver does not calculate and record latency of a message, that is a duplicate of earlier received message.}%
+	\label{fig:Evaluation-Latency}%
 \end{figure}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-Latency-NA.pdf}
-	\caption{Average Latency with Number of Vehicles = 60. Latency is the time between an initial broadcast and it's reception by a vehicle. If a message is rebroadcast, its timestamp is not modified, therefore the latency includes the time spent by message being rebroadcast. The latency is calculated on the receiving side, therefore the same broadcast can result in different latencies, depending on the receiver, number of hops and distance, among other factors. Only successful and unique transmissions are considered, receiver does not calculate and record latency of a message, that is a duplicate of earlier received message.}
-	\label{fig:Evaluation-AccidentProbability-Latency-NA}
-\end{figure}
 
 \FIXME{Check definition of Busy Time!}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA.pdf}
-	\caption{Average Channel Busy Time Ratio with Accident Probability = 0.3. Busy time ratio is the time, while the antenna is receiving or broadcasting divided by the simulation time. Both vehicles and drones are considered.}
-	\label{fig:Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA}
-\end{figure}
 
-\begin{figure}
+\begin{figure}%
 	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA.pdf}
-	\caption{Average Channel Busy Time Ratio with Number of Vehicles = 60. Busy time ratio is the time, while the antenna is receiving or broadcasting divided by the simulation time. Both vehicles and drones are considered.}
-	\label{fig:Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-JammedNumber-NA.pdf}
-	\caption{Number of Jammed Vehicles with Accident Probability = 0.3. Both initially-broken and later-jammed vehicles are considered.}
-	\label{fig:Evaluation-NumberOfVehicles-JammedNumber-NA}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-JammedNumber-NA.pdf}
-	\caption{Number of Jammed Vehicles with Number of Vehicles = 60. Both initially-broken and later-jammed vehicles are considered.}
-	\label{fig:Evaluation-AccidentProbability-JammedNumber-NA}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-JamTime-NA.pdf}
-	\caption{Average Time in Jam with Accident Probability = 0.3. Jam time is the time between the vehicle stopped moving for any reason and the end of the simulation. Only stops longer than 10 seconds are considered a jam. Both initially-broken and later-jammed vehicles are considered.}
-	\label{fig:Evaluation-NumberOfVehicles-JamTime-NA}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-JamTime-NA.pdf}
-	\caption{Average Time in Jam with Number of Vehicles = 60. Jam time is the time between the vehicle stopped moving for any reason and the end of the simulation. Only stops longer than 10 seconds are considered a jam. Both initially-broken and later-jammed vehicles are considered.}
-	\label{fig:Evaluation-AccidentProbability-JamTime-NA}
+	\subfloat[Accident Probability = 0.3]{\label{fig:Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA.pdf}}
+	\hfill
+	\subfloat[Number of Vehicles = 60]{\label{fig:Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA.pdf}}
+	\hfill
+	\caption{Average Channel Busy Time Ratio. Busy time ratio is the time, while the antenna is receiving or broadcasting divided by the simulation time. Both vehicles and drones are considered.}%
+	\label{fig:Evaluation-ChannelBusyTimeRatio}%
 \end{figure}
 
 
