@@ -54,6 +54,9 @@ void CarApplicationLayer::finish()
 {
 	BaseApplicationLayer::finish();
 
+	ASSERT(receivedJammingAnnouncements.size() == hops.size());
+	ASSERT(receivedJammingAnnouncements.size() == latencies.size());
+
 	this->clearCanvasRouteFigures();
 
 	VehicleCounter *counter = VehicleCounter::getInstance();
@@ -68,6 +71,31 @@ void CarApplicationLayer::finish()
 	recordScalar("totalTimeInJam", totalTimeInJam);
 	recordScalar("receivedJammingAnnouncementsNum", receivedJammingAnnouncements.size());
 	// recordScalar("actualRoute", actualRoute.str());
+
+	if (latencies.size() > 0)
+	{
+		double latency_sum = 0;
+		for (double latency : latencies)
+		{
+			latency_sum += latency;
+		}
+
+		double latency_avg = latency_sum / latencies.size();
+
+		recordScalar("latencyAverage", latency_avg);
+	}
+
+	if (hops.size() > 0)
+	{
+		double hops_sum = 0;
+		for (long hop : hops)
+		{
+			hops_sum += hop;
+		}
+
+		double hops_avg = hops_sum / hops.size();
+		recordScalar("hopsAverage", hops_avg);
+	}
 }
 
 std::string CarApplicationLayer::getCarDescriptor()
@@ -167,6 +195,12 @@ void CarApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *m
 		if (receivedJammingAnnouncements.count(sender) == 0)
 		{
 			receivedJammingAnnouncements.insert(sender);
+			double time = simTime().dbl();
+			double latency = time - msg->getSenderTimestamp().dbl();
+			long hop = msg->getHop();
+			ASSERT(latency > 0);
+			latencies.push_back(latency);
+			hops.push_back(hop);
 		}
 	}
 
@@ -224,7 +258,7 @@ void CarApplicationLayer::changeRoute(cMessage *changeRouteMessage)
 			std::list<std::string> route;
 			bool routeGenerated = pathfinder->generateRandomRouteStr(startEdge, route, disallowedEdges,
 					minRouteDistance);
-			if(routeGenerated)
+			if (routeGenerated)
 			{
 				routeChanged = traciVehicle->changeVehicleRoute(route);
 			}

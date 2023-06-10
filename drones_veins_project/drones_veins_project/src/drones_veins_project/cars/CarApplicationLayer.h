@@ -33,6 +33,8 @@ namespace drones_veins_project
 		std::set<veins::LAddress::L2Type> receivedJammingAnnouncements;
 		double totalTimeInJam = 0.0;
 		std::set<std::string> disallowedEdges;
+		std::vector<double> latencies;
+		std::vector<long> hops;
 
 		mutable std::string lastShownRouteId = "";
 		std::string currentRouteId = "";

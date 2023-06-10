@@ -97,31 +97,6 @@ void BaseApplicationLayer::initialize(int stage)
 void BaseApplicationLayer::finish()
 {
 	veins::DemoBaseApplLayer::finish();
-
-	if (latencies.size() > 0)
-	{
-		double latency_sum = 0;
-		for (double latency : latencies)
-		{
-			latency_sum += latency;
-		}
-
-		double latency_avg = latency_sum / latencies.size();
-
-		recordScalar("latencyAverage", latency_avg);
-	}
-
-	if (hops.size() > 0)
-	{
-		double hops_sum = 0;
-		for (long hop : hops)
-		{
-			hops_sum += hop;
-		}
-
-		double hops_avg = hops_sum / hops.size();
-		recordScalar("hopsAverage", hops_avg);
-	}
 }
 
 void BaseApplicationLayer::onWSM(veins::BaseFrame1609_4 *wsm)
@@ -175,14 +150,11 @@ void BaseApplicationLayer::handleSelfMsg(cMessage *msg)
 
 void BaseApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *msg)
 {
-	if (simTime() >= getSimulation()->getWarmupPeriod())
+	veins::LAddress::L2Type sender = msg->getSenderAddress();
+	if (sender == getAddress())
 	{
-		double time = simTime().dbl();
-		double latency = time - msg->getSenderTimestamp().dbl();
-		long hop = time - msg->getHop();
-		ASSERT(latency > 0);
-		latencies.push_back(latency);
-		hops.push_back(hop);
+		// Ignore own messages
+		return;
 	}
 
 	setIconColor("green");

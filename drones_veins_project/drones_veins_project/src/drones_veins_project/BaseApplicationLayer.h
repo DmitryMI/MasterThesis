@@ -31,8 +31,6 @@ namespace drones_veins_project
 
 		int rebroadcastDeciderInGate;
 		veins::LAddress::L2Type address;
-		std::vector<double> latencies;
-		std::vector<long> hops;
 
 	protected:
 		RebroadcastDecider* getRebroadcastDecider();
