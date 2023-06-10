@@ -584,9 +584,39 @@ Simulation runs were divided into two groups: Number Of Vehicles Evaluation grou
     \label{tab:inputrange2}
 \end{table}
 
+\subsection{Received Announcements Ratio}
+
+I chose this metric as the metric to start with because it shows, how drones contribute to the connectivity of the network (by "connectivity" I mean how well the nodes in the network are connected to each other). Basically, if Received Announcements Ratio is 1, then each message is received by all vehicles in the simulation. If Received Announcements Ratio is 0, then no message is received by any vehicle. Although this metric is not precisely the connectivity of the network, it with no doubt correlates with the connectivity. Therefore this metric can be used to determine, how well are the nodes are interconnected and how well the messages disseminated between vehicles. It does not depend heavily on traffic conditions and route generation as some other metrics like average vehicle speed or number of jammed vehicles, for example.
+
+\cref{fig:Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA} shows how Received Announcements Ratio depends on the Number of Drones and Number of Vehicles. This figure depicts 4 subplots for 4 different Number of Vehicles values. The figure includes points when Number of Drones is 0. This means that the simulation contains only vehicles. The ratio is minimal in this case. The ratio increases almost linearly with increase in number of drones until the number reaches 50 with ratio being between 0.59 and 0.75 (depending on Number of Vehicles). The increase is slowed down after that, reaching around 0.8 in all cases. It is clear that the lines' shape only slightly depend on the number of vehicles.
+
+It can be seen that the difference between subplots is minimal at 0, 75 and 100 drones. The difference is the largest when Number of Drones is at 25 and slightly less at 50. This can be explained in this way: when there is no drones, the vehicles barely communicate with each other because of buildings, no matter how many vehicles there are. When the drones are introduces in small numbers, the messages get a chance to escape the streets and get to another side of buildings. However, the distance between drones is still too large to let them communicate with each other (when number of drones is 25, there is only one drone in a square with \SI{420}{\meter} side). Therefore the ratio strongly depends on the number of vehicles, who can transmit messages along the roads. When the number of drones is 75, there is one drone in a square with \SI{242}{\meter} side. This is enough already for drones to communicate with each other, meaning that the number of vehicles does not contribute as much to the network connectivity.
+
+\TODO{Another interesting feature is that the subplot with Number of Vehicles equal to 20...}
+
+\cref{fig:Evaluation-AccidentProbability-ReceivedAnnouncements-NA} shows how Received Announcements Ratio depends on the Number of Drones and Accident Probability. This figure depicts 3 subplots for 3 different Accident Probability values.
+
+In conclusion, it is clear that the drones improve the network connectivity in an urban environment. When number of drones is maximum, almost all messages are received by almost all vehicles in the simulation.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA.pdf}
+	\caption{Received Announcements Ratio with Accident Probability = 0.3. The value is calculated as the number of received by a vehicle unique messages divided by total number of unique messages sent.}
+	\label{fig:Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-ReceivedAnnouncements-NA.pdf}
+	\caption{Received Announcements Ratio with Number of Vehicles = 60. The Received Announcements Ratio is calculated as the number of unique messages received by a single vehicle divided by total number of unique messages sent by all vehicles. The Y-axis is the average value between all vehicles.}
+	\label{fig:Evaluation-AccidentProbability-ReceivedAnnouncements-NA}
+\end{figure}
+
 \subsection{Average Vehicle Speed}
 
-\cref{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA} shows how Average Vehicle Speed depends from Number of Vehicles and Number of Drones with fixed Accident Probability. \cref{fig:Evaluation-AccidentProbability-VehicleSpeed-NA} shows how Average Vehicle Speed depends from  Accident Probability and Number of Drones with fixed Number of Vehicles . 
+This metric is not very good to evaluate the network connectivity and drone contribution as the Received Announcements Ratio. In fact, average vehicle speed depends on the network connectivity, no matter how this connectivity was achieved. However, this value can be used to check, how well the protocol can improve the traffic flow.
+
+\cref{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA} shows how Average Vehicle Speed depends from Number of Vehicles and Number of Drones with fixed Accident Probability. \cref{fig:Evaluation-AccidentProbability-VehicleSpeed-NA} shows how Average Vehicle Speed depends from Accident Probability and Number of Drones with fixed Number of Vehicles. It is clearly seen, that the average speed increases with increase in Number of Drones. However, the increase in average is not linear: it increases quicker when the number of drones is low than when the number of drones reaches 100. It is pretty safe to assume that the average speed is increasing due to drones contributing to the network connectivity. 
 
 \begin{figure}
 	\centering
@@ -658,20 +688,6 @@ Simulation runs were divided into two groups: Number Of Vehicles Evaluation grou
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-JamTime-NA.pdf}
 	\caption{Average Time in Jam with Number of Vehicles = 60. Jam time is the time between the vehicle stopped moving for any reason and the end of the simulation. Only stops longer than 10 seconds are considered a jam. Both initially-broken and later-jammed vehicles are considered.}
 	\label{fig:Evaluation-AccidentProbability-JamTime-NA}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA.pdf}
-	\caption{Received Announcements Ratio with Accident Probability = 0.3. The value is calculated as the number of received by a vehicle unique messages divided by total number of unique messages sent.}
-	\label{fig:Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-ReceivedAnnouncements-NA.pdf}
-	\caption{Received Announcements Ratio with Number of Vehicles = 60. The Received Announcements Ratio is calculated as the number of unique messages received by a single vehicle divided by total number of unique messages sent by all vehicles. The Y-axis is the average value between all vehicles.}
-	\label{fig:Evaluation-AccidentProbability-ReceivedAnnouncements-NA}
 \end{figure}
 
 
