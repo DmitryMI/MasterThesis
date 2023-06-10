@@ -179,9 +179,9 @@ According to \textcite[Page~2]{Varga2010}, OMNeT++ is a discrete-event simulator
 In order to simulate a hybrid network of drones and vehicles a network simulator is not enough. A combined solution is needed to create a realistic scenario consisting of vehicles, buildings and drones. The software must implement a combination of a network simulator and a traffic simulator. My solution is based on Veins by \textcite{Sommer2019}.
 
 \begin{figure}
-  	\caption{High-level architecture of Veins. Veins bridges OMNeT++ with SUMO traffic simulator to enable simulation of \acp{VANET} \cite{Sommer2019}}
-	\centering
+  	\centering
 	\includegraphics[width=1\textwidth]{figures/High-level Veins.png}
+	\caption{High-level architecture of Veins. Veins bridges OMNeT++ with SUMO traffic simulator to enable simulation of \acp{VANET} \cite{Sommer2019}}
 	\label{fig:veinshighlevel}
 \end{figure}
 
@@ -192,9 +192,9 @@ This a suitable solution for my scenario, because I indeed need each vehicle to 
 According to \textcite{traci}, \ac{TraCI} is a protocol, used to interlink road traffic and network simulators. The authors explain, that this protocol permits to control the behavior of vehicles during simulation time, therefore the network simulator can influence the driver's behavior. SUMO exposes \ac{TraCI} endpoints \cite{sumotraci} and Veins connects to them, allowing OMNeT++ user code to simulate \acp{VANET} \cite[Pages~217-218]{Sommer2019}. According to \textcite{Sommer2019}, Veins receives positions of vehicles from SUMO, these positions are later used as positions for network nodes, modeling vehicles in OMNeT++ simulation environment.
 
 \begin{figure}
-  	\caption{SUMO \ac{GUI} screenshot, gray rectangles depict obstacles (buildings), the black wide lines are the roads, the yellow triangle is a vehicle.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/SUMO-GUI.png}
+	\caption{SUMO \ac{GUI} screenshot, gray rectangles depict obstacles (buildings), the black wide lines are the roads, the yellow triangle is a vehicle.}
 	\label{fig:sumogui}
 \end{figure}
 
@@ -204,9 +204,9 @@ According to \textcite{traci}, \ac{TraCI} is a protocol, used to interlink road 
 To further understand my implementation of drones in Veins, it is necessary to consider two files included in Veins: the file Scenario.ned \cite{scenarioned} and the file Car.ned \cite{carned}. Scenario.ned defines the overall structure of the network, contains an array of all nodes and a list of auxiliary modules that control the vehicles or participate in the visualization when working with the GUI. The Car.ned file defines the structure of one of the most important modules - Car module, which is the internal representation of a vehicle. It contains, in particular, information about the network controller simulator and information about the user code of the application. Also, the Car module has a sub-module, which is responsible for synchronizing the movement with SUMO. Based on these two files in the future I will implement my version of the scenario, which will include drones in addition to vehicles, as well as support three-dimensional visualization of the scene. 
 
 \begin{figure}
-  	\caption{Simplified diagram of Scenario \cite{scenarioned} network. Not all modules, parameters and connections are shown.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Scenario.pdf}
+	\caption{Simplified diagram of Scenario \cite{scenarioned} network. Not all modules, parameters and connections are shown.}
 	\label{fig:scenarioned}
 \end{figure}
 
@@ -217,9 +217,9 @@ To further understand my implementation of drones in Veins, it is necessary to c
 Next in my work I will describe the algorithm that calculates the fading of the radio signal, which takes into account three-dimensional objects. My algorithm is based on the Simple Obstacle Shadowing algorithm \cite{SimpleObstacleShadowing} that is implemented in Veins, and therefore I will briefly describe it here. In Veins' Simple Obstacle Shadowing algorithm each building is defined as a 2D-polygon with arbitrary number of vertices. The radio transmission is modeled as a ray starting from sender's antenna and ending in receiver's antenna. The algorithm determines, how much of the total distance the radio signal traveled through a building. Based on this information the algorithm than calculates the power with which the radio signal reaches the receiver. The signal can penetrate an arbitrary number of buildings. The algorithm also allows the user to set values that determine, how much buildings block the signal via their walls and via their interior. A graphical representation of this model can be seen on \cref{fig:SimpleObstacleShadowing}
 
 \begin{figure}
-  	\caption{Visualization of the Simple Obstacle Shadowing algorithm implemented in Veins. The gray rectangles depict buildings (or any other obstacles), white circles are the points of intersection between radio signal and obstacles' walls.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/SimpleObstacleShadowing.pdf}
+	\caption{Visualization of the Simple Obstacle Shadowing algorithm implemented in Veins. The gray rectangles depict buildings (or any other obstacles), white circles are the points of intersection between radio signal and obstacles' walls.}
 	\label{fig:SimpleObstacleShadowing}
 \end{figure}
 
@@ -230,7 +230,7 @@ I would like to emphasize the usage of OpenSceneGraph \cite{osg} as a 3D-renderi
 Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize this class along with my own vehicle-, drone- and building- visualizers.
 
 \subsection{IEEE 802.11p}
-Veins includes a simple simulation model of IEEE 802.11p for vehicle-to-vehicle communication \cite[Page~216]{Sommer2019}. The following brief description of IEEE 802.11p is based on \textcite{IEEE80211p}.
+Veins includes a simple simulation model of IEEE 802.11p for vehicle-to-vehicle communication \cite[Page~216]{Sommer2019}. The following brief description of IEEE 802.11p is based on \textcite{jiang2008ieee}.
 
 IEEE 802.11p is a set of standards dedicated exclusively to vehicle-to-vehicle and infrastructure-to-vehicle communication. It uses 75 MHz of \ac{DSRC} spectrum at 5.9 GHz. The primary goal is to enable public safety applications that can help with road safety and improve traffic flow. Private services are permitted to use these frequencies. The \ac{DSRC} band is free, but licensed spectrum, therefore it is more restricted in terms of usages and technologies in comparison to unlicensed spectrums like Wi-Fi. \ac{DSRC} can be used only for vehicular networks, nobody is allowed to develop another technology, that uses the same radio spectrum. The key feature of IEEE 802.11p is the WAVE mode, that allows a vehicles to communicate immediately upon encounter, without the overhead of scanning for channels and executing handshakes. 
 
@@ -243,16 +243,16 @@ Now it is time to develop a network model for a scenario in which vehicles and d
 \FIXME{VANET scheme.png - Drone image is not mine!}
 
 \begin{figure}
-  	\caption{Schematic view on the network. My scenario does not include any infrastructure, the \ac{V2V}, \ac{V2D} and \ac{D2D} communication is implemented using the same IEEE 802.11p model, provided by Veins.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/VANET scheme.png}
+	\caption{Schematic view on the network. My scenario does not include any infrastructure, the \ac{V2V}, \ac{V2D} and \ac{D2D} communication is implemented using the same IEEE 802.11p model, provided by Veins.}
 	\label{fig:vanetscheme}
 \end{figure}
 
 \begin{figure}
-  	\caption{Simplified diagram of DroneScenario network. In contrast to Veins, the following modules were added to the network: ObstacleShadowingVisualizer, Pathfinder, DroneManager and array of Drones. Some modules replace analogues Veins modules to add new functionality: RoadsOsgVisualizer2, ObstacleControl3d, array of Car3d}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/DroneScenario.pdf}
+	\caption{Simplified diagram of DroneScenario network. In contrast to Veins, the following modules were added to the network: ObstacleShadowingVisualizer, Pathfinder, DroneManager and array of Drones. Some modules replace analogues Veins modules to add new functionality: RoadsOsgVisualizer2, ObstacleControl3d, array of Car3d}
 	\label{fig:dronescenarioned}
 \end{figure}
 
@@ -263,9 +263,9 @@ The first issue with implementing my scenario is that Veins does not support dro
 \cref{fig:dronened} shows a simplified structure of the Drone.ned module. Like the Car.ned from Veins, Drone.ned uses a special submodule for moving in space. To improve simulation efficiency (i.e., to reduce the number of events), all drone movements are performed once every 1 second as part of the single event processing. The DroneManager.ned module is responsible for managing this event (scheduling and execution), as well as for creating and removing drones. Simply put, the DroneManager module creates a specified number of drones, and then sends a position update signal to each drone at a period of 1 second (configurable). 
 
 \begin{figure}
-  	\caption{Simplified diagram of Drone module.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Drone.pdf}
+	\caption{Simplified diagram of Drone module.}
 	\label{fig:dronened}
 \end{figure}
 
@@ -276,9 +276,9 @@ DroneMobility submodule is based on Veins' LinearMobility with some minor change
 The \cref{fig:dronemanagerflow} shows a simplified algorithm for updating the drone's position. The drones themselves use the methods implemented in Veins to update their position. The Z-coordinate of each drone can be set through a configuration file.
 
 \begin{figure}
-  	\caption{Simplified flowchart of DroneManager updating DroneMobility submodules of each Drone.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/DroneManager.pdf}
+	\caption{Simplified flowchart of DroneManager updating DroneMobility submodules of each Drone.}
 	\label{fig:dronemanagerflow}
 \end{figure}
 
@@ -288,9 +288,9 @@ The \cref{fig:dronemanagerflow} shows a simplified algorithm for updating the dr
 To integrate the drones more easily, I decided to create an additional level of abstraction: BaseApplicationLayer (\cref{fig:baseapplicationlayer}), which will be common for drones and cars. This class is responsible for automatically assigning network addresses, for keeping track of statistics common to drones and cars, and, importantly, for decisions about relaying incoming messages. BaseApplicationLayer inherits from DemoBaseApplLayer, that is implemented in Veins.
 
 \begin{figure}
-  	\caption{Simplified diagram of BaseApplicationLayer. Not all parameters are shown. DemoBaseApplLayer is implemented in Veins \cite{demobaseappllayer}}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/BaseApplicationLayer.pdf}
+	\caption{Simplified flowchart of DroneManager updating DroneMobility submodules of each Drone.}
 	\label{fig:baseapplicationlayer}
 \end{figure}
 
@@ -303,9 +303,9 @@ As you can see in \cref{fig:baseapplicationlayer}, BaseApplicationLayer is assoc
 The \cref{fig:rebroadcastdeciderseq} shows the sequence of message exchange between the broadcast medium and network nodes (drone or vehicle). In some places, the activation time of the actor is not shown. This is done to indicate that at these points in the sequence the packet processing time is zero in terms of simulation time. Packets reach the RebroadcastDecider instantaneously as soon as they have been received and decoded. It should also be noted that in case the RebroadcastDecider decides to rebroadcast a packet, this can happen at any point in time and any number of times (depending on the particular implementation of the RebroadcastDecider).
 
 \begin{figure}
-  	\caption{UML Sequence for RebroadcastDecider. Note that other messages, unrelated to RebroadcastDecider are not shown.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/RebroadcastDecider.png}
+	\caption{Simplified flowchart of DroneManager updating DroneMobility submodules of each Drone.}
 	\label{fig:rebroadcastdeciderseq}
 \end{figure}
 
@@ -318,25 +318,25 @@ The next problem was that Veins does not support three-dimensional obstacles, an
 In my work I assume that buildings can be approximated as right prisms, example shown in \cref{fig:rightprism}. 
 
 \begin{figure}
-  	\caption{Example of a right prism. The bases are two equal arbitrary polygons, and the walls are rectangles with equal height perpendicular to the bases. The right prism can be easily imagined via "extruding" a random polygon straight upwards.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/RightPrism.pdf}
+	\caption{Example of a right prism. The bases are two equal arbitrary polygons, and the walls are rectangles with equal height perpendicular to the bases. The right prism can be easily imagined via "extruding" a random polygon straight upwards.}
 	\label{fig:rightprism}
 \end{figure}
 
 This way a 3D shadowing algorithm can be extended from Veins' Simple Obstacle Shadowing. Instead of looking for intersections of 2D rays with 2D polygons, I will look for intersections of 3D rays with right prisms. The classes, used to augment the Veins' code are shown on \cref{fig:obstacle3d-classes}.  Basically, my class ObstacleControl3d reuses Veins' ObstacleControl and only overrides some methods in order to spawn Obstacle3d objects instead of Veins' Obstacle objects. Also ObstacleControl3d reads obstacles' height from the same xml file, that Veins uses, but additionally reads the \emph{height} attribute to set Obstacle3d's height. If this attribute is not found, ObstacleControl3d uses its configuration parameter to set the default height for obstacles. The search for intersections is done inside Obstacle3d. This class inherits Vein's Obstacle class, but adds new methods that calculate line-right-prism intersection. The simplified flow chart of Obstacle3d's algorithm can be seen on \cref{fig:obstacle3d-flow}. 
 
 \begin{figure}
-  	\caption{Simplified diagram of classes for 3D obstacles system.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Obstacle3d-classes.pdf}
+	\caption{Example of a right prism. The bases are two equal arbitrary polygons, and the walls are rectangles with equal height perpendicular to the bases. The right prism can be easily imagined via "extruding" a random polygon straight upwards.}
 	\label{fig:obstacle3d-classes}
 \end{figure}
 
 \begin{figure}
-  	\caption{Flowchart of line-right-prism intersection algorithm. Flow for only single Obstacle3d is shown. The ObstacleControl3d iterates over all Obstacle3d objects, calls their getIntersections() methods and combines results.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Obstacle3d-flow.pdf}
+	\caption{Flowchart of line-right-prism intersection algorithm. Flow for only single Obstacle3d is shown. The ObstacleControl3d iterates over all Obstacle3d objects, calls their getIntersections() methods and combines results.}
 	\label{fig:obstacle3d-flow}
 \end{figure}
 
@@ -365,9 +365,9 @@ The central modules that are responsible for 3D visualization in my project are:
 \end{figure}
 
 \begin{figure}
-  	\caption{ObstacleShadowingVisualizer work example. Radio signals are emitted from the vehicle and are shown as blue lines. Red spheres depict intersections with buildings. Note that the drone and the vehicle are not in scale, they are intentionally made visually bigger in order to make them visible. Model scale can be adjusted in configuration file.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/ObstacleShadowingVisualizer.png}
+	\caption{Flowchart of line-right-prism intersection algorithm. Flow for only single Obstacle3d is shown. The ObstacleControl3d iterates over all Obstacle3d objects, calls their getIntersections() methods and combines results.}
 	\label{fig:ObstacleShadowingVisualizer}
 \end{figure}
 
@@ -396,12 +396,12 @@ In my project, a single broadcast message is defined, which the cars send to the
 
 \cref{fig:protocol} shows how the CarJammingAnnouncement is propagated through the network. The protocol is based on the distribution of broadcast messages about the occurrence of a traffic jam. When a message is received, the vehicle checks if its route goes through the road whose identifier is contained in the message. If it does, the vehicle remembers this identifier (makes a list of all roads where a traffic jam occurred) and recreates the route so that it does not get into the traffic jam. After receiving the message, the vehicle sends the message back on the air according to the rules for avoiding broadcast storms. Drones act in the same way, except that they ignore the information about the traffic jam in the message. They only rebroadcast a copy of the message.
 
-\FIXME{\cref{fig:protocol} does not fit!}
-
 \begin{figure}%
 	\centering
 	\subfloat[Step 1]{\label{fig:protocol1}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol1.png}}
+	\hfill
 	\subfloat[Step 2]{\label{fig:protocol2}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol2.png}}
+	\hfill
 	\subfloat[Step 3]{\label{fig:protocol3}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol3.png}}
 	\caption{Jamming announcement protocol. On step 1 (\cref{fig:protocol1}) the vehicle detects that its speed is zero and broadcasts CarJammingAnnouncement message. The vehicles, who receive the broadcast (\cref{fig:protocol2}), read the road id from the message and adjust their routes in order not to get into the jam. Finally  (\cref{fig:protocol3}), the vehicles rebroadcast the initial message and the receivers perform the same steps. This way the jam announcement propagates through the network. The drones also receive and rebroadcast the announcements in the same manner.}%
 	\label{fig:protocol}%
@@ -422,30 +422,30 @@ Now it is time to describe the setup of the experiment, the input and output par
 For simulating a high-density urban environment the Manhattan Grid was selected. The road networks is a square grid of streets with crossroads in the grid nodes. The buildings are located between the roads in places called city block. The global schematic view on the simulation environment can be seen on \cref{fig:manhattangrid}. \cref{fig:manhattangridblock} explains some parameters. The grid's parameters are based on the real Manhattan, the \cref{tab:manhattangrid} shows the exact values used in my simulation. A 3D view of the simulation environment can be seen on \cref{fig:manhattangrid3d} and \cref{fig:manhattangrid3dblock}. On this picture building heights can be seen.
 
 \begin{figure}
-  	\caption{Global schematic view on the road network and buildings. Each block is 150 meters long, there are 14 blocks in total (15 junctions), which results in a map being square with \SI{2100}{\meter} long sides.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/ManhattanGrid.png}
+	\caption{Global schematic view on the road network and buildings. Each block is 150 meters long, there are 14 blocks in total (15 junctions), which results in a map being square with \SI{2100}{\meter} long sides.}
 	\label{fig:manhattangrid}
 \end{figure}
 
 \begin{figure}
-  	\caption{Building-block parameters. Street length - is a distance between two junctions and also the size of a block. Margin is the distance between buildings and the road. Padding is the distance between buildings in one block.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/ManhattanGridBlock-commented.png}
+	\caption{Building-block parameters. Street length - is a distance between two junctions and also the size of a block. Margin is the distance between buildings and the road. Padding is the distance between buildings in one block.}
 	\label{fig:manhattangridblock}
 \end{figure}
 
 \begin{figure}
-  	\caption{3D view on the simulation.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/GlobalView3D.png}
+	\caption{Building-block parameters. Street length - is a distance between two junctions and also the size of a block. Margin is the distance between buildings and the road. Padding is the distance between buildings in one block.}
 	\label{fig:manhattangrid3d}
 \end{figure}
 
 \begin{figure}
-  	\caption{3D view on the block. Buildings of different heights can be seen.}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/GlobalView3D-Block.png}
+	\caption{3D view on the block. Buildings of different heights can be seen.}
 	\label{fig:manhattangrid3dblock}
 \end{figure}
 
@@ -492,19 +492,19 @@ For parametric studies the following input parameters were selected:
 		Vehicle Breakdown start time & - & \SI{15}{\second} & - \\
 		Vehicle Breakdown end time & - & End of simulation & - \\
 		Vehicle position update period & - & \SI{1}{\second} & - \\
-		Vehicle Weighted p-persistence \ac{ATR} & - & \SI{150}{\meter} & - \\
+		Vehicle \ac{ATR} & - & \SI{150}{\meter} & - \\
 
         	Drone speed & \SI{10}{\meter\per\second} & - & \SI{30}{\meter\per\second} \\
         	Drone flight height & \SI{250}{\meter} & - & \SI{300}{\meter} \\
 		Drone position update period & - & \SI{1}{\second} & - \\
-		Drone Weighted p-persistence \ac{ATR} & - & \SI{500}{\meter} & - \\
+		Drone \ac{ATR} & - & \SI{500}{\meter} & - \\
 
 		Simulation time & - & \SI{600}{\second} & - \\
 		Warm-up period & - & \SI{10}{\second} & - \\
 		
         \bottomrule
     \end{tabular}
-    \caption{Static simulation parameters (shared between simulations). Const column means that this value is constant (non-random). Min-Max columns show that this value varies between Minimum and Maximum.}
+    \caption{Static simulation parameters (shared between simulations). Const column means that this value is constant (non-random). Min-Max columns show that this value varies between Minimum and Maximum. Vehicle- and Drone- \ac{ATR} is the estimated average range of communication needed by weighted p-persistence algorithm.}
     \label{tab:simulationparams}
 \end{table}
 
@@ -569,86 +569,86 @@ Simulation runs were divided into two groups: Number Of Vehicles Evaluation grou
 \cref{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA} shows how Average Vehicle Speed depends from Number of Vehicles and Number of Drones with fixed Accident Probability. \cref{fig:Evaluation-AccidentProbability-VehicleSpeed-NA} shows how Average Vehicle Speed depends from  Accident Probability and Number of Drones with fixed Number of Vehicles . 
 
 \begin{figure}
-  	\caption{Average Vehicle Speed with fixed Accident Probability}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-VehicleSpeed-NA.pdf}
+	\caption{Average Vehicle Speed with fixed Accident Probability}
 	\label{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA}
 \end{figure}
 
 \begin{figure}
-  	\caption{Average Vehicle Speed with fixed Number of Vehicles}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-VehicleSpeed-NA.pdf}
+	\caption{Average Vehicle Speed with fixed Number of Vehicles}
 	\label{fig:Evaluation-AccidentProbability-VehicleSpeed-NA}
 \end{figure}
 
 \begin{figure}
-  	\caption{Average Latency with fixed Accident Probability}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-Latency-NA.pdf}
+	\caption{Average Latency with fixed Accident Probability}
 	\label{fig:Evaluation-NumberOfVehicles-Latency-NA}
 \end{figure}
 
 \begin{figure}
-  	\caption{Average Latency with fixed Number of Vehicles}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-Latency-NA.pdf}
+	\caption{Average Latency with fixed Number of Vehicles}
 	\label{fig:Evaluation-AccidentProbability-Latency-NA}
 \end{figure}
 
 \begin{figure}
-  	\caption{Average Channel Busy Time Ratio with fixed Accident Probability}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA.pdf}
+	\caption{Average Channel Busy Time Ratio with fixed Accident Probability}
 	\label{fig:Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA}
 \end{figure}
 
 \begin{figure}
-  	\caption{Average Channel Busy Time Ratio with fixed Number of Vehicles}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA.pdf}
+	\caption{Average Channel Busy Time Ratio with fixed Number of Vehicles}
 	\label{fig:Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA}
 \end{figure}
 
 \begin{figure}
-  	\caption{Number of Jammed Vehicles with fixed Accident Probability}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-JammedNumber-NA.pdf}
+	\caption{Number of Jammed Vehicles with fixed Accident Probability}
 	\label{fig:Evaluation-NumberOfVehicles-JammedNumber-NA}
 \end{figure}
 
 \begin{figure}
-  	\caption{Number of Jammed Vehicles with fixed Number of Vehicles}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-JammedNumber-NA.pdf}
+	\caption{Number of Jammed Vehicles with fixed Number of Vehicles}
 	\label{fig:Evaluation-AccidentProbability-JammedNumber-NA}
 \end{figure}
 
 \begin{figure}
-  	\caption{Average Time in Jam with fixed Accident Probability}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-JamTime-NA.pdf}
+	\caption{Average Time in Jam with fixed Accident Probability}
 	\label{fig:Evaluation-NumberOfVehicles-JamTime-NA}
 \end{figure}
 
 \begin{figure}
-  	\caption{Average Time in Jam with fixed Number of Vehicles}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-JamTime-NA.pdf}
+	\caption{Average Time in Jam with fixed Number of Vehicles}
 	\label{fig:Evaluation-AccidentProbability-JamTime-NA}
 \end{figure}
 
 \begin{figure}
-  	\caption{Received Announcements Ratio with fixed Accident Probability}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA.pdf}
+	\caption{Received Announcements Ratio with fixed Accident Probability}
 	\label{fig:Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA}
 \end{figure}
 
 \begin{figure}
-  	\caption{Received Announcements Ratio with fixed Number of Vehicles}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-ReceivedAnnouncements-NA.pdf}
+	\caption{Received Announcements Ratio with fixed Number of Vehicles}
 	\label{fig:Evaluation-AccidentProbability-ReceivedAnnouncements-NA}
 \end{figure}
 
