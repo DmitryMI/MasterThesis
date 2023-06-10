@@ -92,8 +92,8 @@ Plotting:
 	> Move legend to plot space
 	
 Text:
-	> Figure captions UNDER the picture (change the order of \caption command!)
-	> Table 4.2 - lines too long! Add line breaks or reduce line lengths
+	+ Figure captions UNDER the picture (change the order of \caption command!)
+	+ Table 4.2 - lines too long! Add line breaks or reduce line lengths
 	> ALWAYS REFERENCE A FIGURE FROM THE TEXT!
 	> Related work: what is new in my work
 		> Whats is the current state of the art

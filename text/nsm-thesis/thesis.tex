@@ -417,7 +417,7 @@ There is only one Pathfinder module in the simulation. It stores information abo
 
 Now it is time to describe the setup of the experiment, the input and output parameters, and to describe and discuss the results.
 
-\section{Manhattan Grid}
+\section{Road Network}
 
 For simulating a high-density urban environment the Manhattan Grid was selected. The road networks is a square grid of streets with crossroads in the grid nodes. The buildings are located between the roads in places called city block. The global schematic view on the simulation environment can be seen on \cref{fig:manhattangrid}. \cref{fig:manhattangridblock} explains some parameters. The grid's parameters are based on the real Manhattan, the \cref{tab:manhattangrid} shows the exact values used in my simulation. A 3D view of the simulation environment can be seen on \cref{fig:manhattangrid3d} and \cref{fig:manhattangrid3dblock}. On this picture building heights can be seen.
 
@@ -427,6 +427,7 @@ For simulating a high-density urban environment the Manhattan Grid was selected.
 	\caption{Global schematic view on the road network and buildings. Each block is 150 meters long, there are 14 blocks in total (15 junctions), which results in a map being square with \SI{2100}{\meter} long sides.}
 	\label{fig:manhattangrid}
 \end{figure}
+
 
 \begin{figure}
 	\centering
@@ -466,6 +467,23 @@ For simulating a high-density urban environment the Manhattan Grid was selected.
     \caption{Manhattan Grid Parameters. Const column means that this value is constant (non-random). Min-Max columns show that this value varies and is uniformly distributed between Minimum and Maximum. Grid size is the number of junctions in the side of road network grid. Grid subdivisions is the number of buildings in the side of a city block. Street length - is a distance between two junctions and also the size of a block. Margin is the distance between buildings and the road. Padding is the distance between buildings in one block. Building height is the distribution of heights of buildings. }
     \label{tab:manhattangrid}
 \end{table}
+
+
+\section {Simulation flow}
+
+The simulation starts with SUMO loading the road network and buildings. Next simulation steps are explained in the following list.
+
+\begin{enumerate}
+	\item Drones are spawned by the DroneManager. Number of drones is an input parameter. Drones start with random height, speed and angle. See \cref{tab:simulationparams} for value ranges of height and speed.
+	\item Vehicles are spawned by SUMO. Number of vehicles is an input parameter. Each vehicle starts following a random route.
+	\item The simulator waits for a couple of seconds, determined by the warm-up period (see \cref{tab:simulationparams}).
+	\item After the Vehicle Breakdown start time is reached (see \cref{tab:simulationparams}), some vehicles break down. The probability of a break down is called Accident Probability and is an input parameter.
+  	\item The broken vehicles broadcast a single CarJammingAnnouncement each and stay on there place until the end of the simulation. They still participate in rebroadcasting.
+	\item Not broken vehicles receive the broadcasts of broken vehicles and try to adjust there routes to avoid the broken vehicles.
+	\item If a vehicle drives into a broken vehicle (or any other stationary vehicle) it is considered jammed. This vehicle broadcasts a single CarJammingAnnouncement and stands still until the end of the simulation. Jammed vehicles still participate in rebroadcasting.
+\end{enumerate}
+
+Both initially-broken and later-jammed vehicles are treated as vehicles in jam. They both contribute to Time of a vehicle being in jam, Number of Jammed Vehicles and Average Vehicle Speed output values. There broadcasts are treated equally for the Received Announcements Ratio output value. 
 
 \section{Input Parameters}
 
@@ -526,6 +544,8 @@ The following data was selected as the output to be analyzed:
 
 	\item \textbf{Number of jammed vehicles} - number of vehicles which stayed still for at least \SI{10}{\second}. This number includes both broken vehicles (vehicles that were "ordered" to break down) and vehicles that failed to avoid the jams for any reason (e.g. did not receive an announcement or it was already too late to change the route).
 
+	\item \textbf{Number of hops} - average number of rebroadcasts it was needed for a message to be received by a vehicle. Only successful transmissions are considered.
+
 \end{itemize}
 
 \section{Results}
@@ -571,84 +591,86 @@ Simulation runs were divided into two groups: Number Of Vehicles Evaluation grou
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-VehicleSpeed-NA.pdf}
-	\caption{Average Vehicle Speed with fixed Accident Probability}
+	\caption{Average Vehicle Speed with Accident Probability = 0.3. Initially-broken vehicles are also considered.}
 	\label{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-VehicleSpeed-NA.pdf}
-	\caption{Average Vehicle Speed with fixed Number of Vehicles}
+	\caption{Average Vehicle Speed with Number of Vehicles = 60. Initially-broken vehicles are also considered.}
 	\label{fig:Evaluation-AccidentProbability-VehicleSpeed-NA}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-Latency-NA.pdf}
-	\caption{Average Latency with fixed Accident Probability}
+	\caption{Average Latency with Accident Probability = 0.3. Latency is the time between an initial broadcast and it's reception by a vehicle. If a message is rebroadcast, its timestamp is not modified, therefore the latency includes the time spent by message being rebroadcast. The latency is calculated on the receiving side, therefore the same broadcast can result in different latencies, depending on the receiver, number of hops and distance, among other factors. Only successful and unique transmissions are considered, receiver does not calculate and record latency of a message, that is a duplicate of earlier received message.}
 	\label{fig:Evaluation-NumberOfVehicles-Latency-NA}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-Latency-NA.pdf}
-	\caption{Average Latency with fixed Number of Vehicles}
+	\caption{Average Latency with Number of Vehicles = 60. Latency is the time between an initial broadcast and it's reception by a vehicle. If a message is rebroadcast, its timestamp is not modified, therefore the latency includes the time spent by message being rebroadcast. The latency is calculated on the receiving side, therefore the same broadcast can result in different latencies, depending on the receiver, number of hops and distance, among other factors. Only successful and unique transmissions are considered, receiver does not calculate and record latency of a message, that is a duplicate of earlier received message.}
 	\label{fig:Evaluation-AccidentProbability-Latency-NA}
 \end{figure}
+
+\FIXME{Check definition of Busy Time!}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA.pdf}
-	\caption{Average Channel Busy Time Ratio with fixed Accident Probability}
+	\caption{Average Channel Busy Time Ratio with Accident Probability = 0.3. Busy time ratio is the time, while the antenna is receiving or broadcasting divided by the simulation time. Both vehicles and drones are considered.}
 	\label{fig:Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA.pdf}
-	\caption{Average Channel Busy Time Ratio with fixed Number of Vehicles}
+	\caption{Average Channel Busy Time Ratio with Number of Vehicles = 60. Busy time ratio is the time, while the antenna is receiving or broadcasting divided by the simulation time. Both vehicles and drones are considered.}
 	\label{fig:Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-JammedNumber-NA.pdf}
-	\caption{Number of Jammed Vehicles with fixed Accident Probability}
+	\caption{Number of Jammed Vehicles with Accident Probability = 0.3. Both initially-broken and later-jammed vehicles are considered.}
 	\label{fig:Evaluation-NumberOfVehicles-JammedNumber-NA}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-JammedNumber-NA.pdf}
-	\caption{Number of Jammed Vehicles with fixed Number of Vehicles}
+	\caption{Number of Jammed Vehicles with Number of Vehicles = 60. Both initially-broken and later-jammed vehicles are considered.}
 	\label{fig:Evaluation-AccidentProbability-JammedNumber-NA}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-JamTime-NA.pdf}
-	\caption{Average Time in Jam with fixed Accident Probability}
+	\caption{Average Time in Jam with Accident Probability = 0.3. Jam time is the time between the vehicle stopped moving for any reason and the end of the simulation. Only stops longer than 10 seconds are considered a jam. Both initially-broken and later-jammed vehicles are considered.}
 	\label{fig:Evaluation-NumberOfVehicles-JamTime-NA}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-JamTime-NA.pdf}
-	\caption{Average Time in Jam with fixed Number of Vehicles}
+	\caption{Average Time in Jam with Number of Vehicles = 60. Jam time is the time between the vehicle stopped moving for any reason and the end of the simulation. Only stops longer than 10 seconds are considered a jam. Both initially-broken and later-jammed vehicles are considered.}
 	\label{fig:Evaluation-AccidentProbability-JamTime-NA}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA.pdf}
-	\caption{Received Announcements Ratio with fixed Accident Probability}
+	\caption{Received Announcements Ratio with Accident Probability = 0.3. The value is calculated as the number of received by a vehicle unique messages divided by total number of unique messages sent.}
 	\label{fig:Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Evaluation-AccidentProbability-ReceivedAnnouncements-NA.pdf}
-	\caption{Received Announcements Ratio with fixed Number of Vehicles}
+	\caption{Received Announcements Ratio with Number of Vehicles = 60. The Received Announcements Ratio is calculated as the number of unique messages received by a single vehicle divided by total number of unique messages sent by all vehicles. The Y-axis is the average value between all vehicles.}
 	\label{fig:Evaluation-AccidentProbability-ReceivedAnnouncements-NA}
 \end{figure}
 
