@@ -179,7 +179,7 @@ void BaseApplicationLayer::handleCarJammingAnnouncement(CarJammingAnnouncement *
 	{
 		double time = simTime().dbl();
 		double latency = time - msg->getSenderTimestamp().dbl();
-		int hop = time - msg->getHop();
+		long hop = time - msg->getHop();
 		ASSERT(latency > 0);
 		latencies.push_back(latency);
 		hops.push_back(hop);

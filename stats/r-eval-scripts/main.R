@@ -119,7 +119,7 @@ busytime_table3 <- get_scalar_by_itervars_table(busytime_table2, itervars_table,
 busytime_table <- get_scalar_by_itervars_avg_table(busytime_table3, itervars_table, "busyTime")
 
 # Hop count
-hops_table1 <- get_scalar_table(scalars, "hopsAverage")
+hops_table1 <- get_scalar_table_where(scalars, "hopsAverage", "Module LIKE '%node%'")
 hops_table2 <- get_scalar_by_run_table(hops_table1, "hopsAverage")
 hops_table3 <- get_scalar_by_itervars_table(hops_table2, itervars_table, run_itervars_table, "hopsAverage")
 hops_table <- get_scalar_by_itervars_avg_table(hops_table3, itervars_table, "hopsAverage")
@@ -182,5 +182,5 @@ dev.off()
 
 pdf_name <- paste(opp_config_name, "-Hops-", time, ".pdf", sep="")
 pdf(file.path(output_dir, pdf_name))
-plot_default(hops_table, hopsAverage, param1_values, param2_values)
+plot_default(hops_table, hopsAverage, param1_values, param2_values, "Number of Hops")
 dev.off()
