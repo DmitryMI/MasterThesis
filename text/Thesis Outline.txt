@@ -84,12 +84,12 @@
 ~ Add hop counter
 
 Plotting:	
-	> Title goes to caption
-	> Remove the background entirely
-	> Add axis (lines or arrows)
+	+ Title goes to caption
+	+ Remove the background entirely
+	+ Add axis (lines or arrows)
 	> (optional) match the font with Thesis
 	> Ensure the font size is readable
-	> Move legend to plot space
+	+ Move legend to plot space
 	
 Text:
 	+ Figure captions UNDER the picture (change the order of \caption command!)

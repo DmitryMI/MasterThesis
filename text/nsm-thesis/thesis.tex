@@ -613,7 +613,7 @@ In conclusion, it is clear that the drones improve the network connectivity in a
 
 \subsection{Average Vehicle Speed, Number of jammed vehicles and Total time in jam}
 
-These metrics are not as good to evaluate the network connectivity and drone contribution as the Received Announcements Ratio. In fact, they depend on the network connectivity, no matter how this connectivity was achieved. However, these values can be used to check, how well the protocol can improve the traffic flow.
+These metrics are not as good to evaluate the network connectivity and drone contribution as the Received Announcements Ratio. The reason is that these metrics heavily depend not only on the network connectivity, but also on vehicle positions and routes. For example, a vehicle can successfully receive a jamming announcement, but do not contribute anything to the metrics, because its route did not include the jam location anyways. The same thing happens if this vehicle does not receive anything. Opposite situation is also common: if it is too late for a vehicle to change the route, it does not matter, if it received a message or not. However, these values can still be used to check, how well the protocol can improve the traffic flow.
 
 These three metrics are closely connected to each other, therefore they will be discussed together. \cref{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA} shows how Average Vehicle Speed depends from Number of Vehicles and Number of Drones with fixed Accident Probability. The number of jammed vehicles can be seen on \cref{fig:Evaluation-NumberOfVehicles-JammedNumber-NA} and \cref{fig:Evaluation-AccidentProbability-JammedNumber-NA}. Time in jam is depicted on \cref{fig:Evaluation-NumberOfVehicles-JamTime-NA} and \cref{fig:Evaluation-AccidentProbability-JamTime-NA}.
 
@@ -622,6 +622,8 @@ It is clearly seen, that the average speed increases with increase in Number of 
 When number of drones is zero, there are only vehicles in the simulation. Vehicle speed is minimal, time in jam and number of jammed vehicles are maximal. With introduction of drones the situation begins to improve until the values reach the best state when number of drones is 100. All three metrics depend heavily on the total number of vehicles and accident probability. Average vehicle speed decreases with increase in number of vehicles and accident probability. Number of jammed vehicles increases with increase in number of vehicles and in number of drones. The same is for average time in jam.
 
 All three metric show that the drones' effect increases with increase in the number of vehicles. Drones' effect on average vehicle speed is increasing due to heavier consequences of lost messages when there are more vehicles. In a dense traffic broken vehicle leads to a chain of vehicle jams, if the announcement is not delivered. The more there are vehicles, the more likely it is for a vehicle to drive into a jam. This leads to a greater effect of drones on the traffic flow. The same explanation applies to number of jammed vehicles and average time in jam. At the same time, the accident probability seem to have almost now effect on the drone effect, since the curves on \cref{fig:Evaluation-AccidentProbability-VehicleSpeed-NA}, \cref{fig:Evaluation-AccidentProbability-JammedNumber-NA} and \cref{fig:Evaluation-AccidentProbability-JamTime-NA} have roughly the same shape across all Accident Probability values.
+
+Anyway, the fact that these output values show better traffic flow with increase in the number of drones allows me to conclude that drones definitely improve the traffic in an urban environment. And this effect seems to become stronger the more vehicles are present in the simulation. For example, there are around 42\% less jammed vehicles for 100 drones than for 0 drones, when Accident Probability is 0.3, and Number of Vehicles is 100. If Number of Vehicles is 40, this improvement will be reduced to only 35\%. It would be good to compare these plots to \cref{fig:Evaluation-ReceivedAnnouncements} and note, that the most probable reason for these improvements is the drones' contribution to network connectivity. The more there are drones, the more jamming announcements are delivered, and therefore more vehicles avoid traffic jams.
 
 \begin{figure}%
 	\centering
@@ -653,6 +655,10 @@ All three metric show that the drones' effect increases with increase in the num
 	\label{fig:Evaluation-JamTime}%
 \end{figure}
 
+\subsection{Latency}
+
+\TODO{Add latency discussion, add hop counter}
+
 \begin{figure}%
 	\centering
 	\subfloat[Accident Probability = 0.3]{\label{fig:Evaluation-NumberOfVehicles-Latency-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-NumberOfVehicles-Latency-NA.pdf}}
@@ -663,9 +669,16 @@ All three metric show that the drones' effect increases with increase in the num
 	\label{fig:Evaluation-Latency}%
 \end{figure}
 
+\subsection{Busy time ratio}
+
+\cref{fig:Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA} shows how busy time ratio depends on the number of vehicles and number of drones. It is clearly seen that busy time ratio rises with both increase in the number of drones and increase in the number of vehicles. Basically, the more nodes are there in the network, the more busy the transmission medium will be. Busy time ratio is almost zero when there are no drones, which indicates that there is almost no communication between the vehicles, if drones are not present. Definitely, the buildings block the broadcasts too much. The busy time ratio is at maximum for all Number of Vehicles values when the Number of Drones is maximal (100).
+
+\cref{fig:Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA} shows how busy time ratio depends on the number of drones and accident probability.
+Busy time ratio increases with both increase in the number of drones and increase in accident probability. Busy time ratio increases with accident probability for a simple reason: if more vehicles are broken, then there are more messages transmitted.
+
+Across all input parameters, the busy time ratio is always much smaller than 1. This indicates that the transmission medium is free most of the time. Therefore I can state that the broadcast storm problem is solved in my simulation.
 
 \FIXME{Check definition of Busy Time!}
-
 
 \begin{figure}%
 	\centering
