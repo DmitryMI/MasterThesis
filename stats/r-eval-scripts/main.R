@@ -43,8 +43,8 @@ get_itervars_join <- function(itervars_table, prefix1, prefix2){
   return(result)
 }
 
-input_path_default <- "../../hpc/eval/Evaluation-NumberOfVehicles.csv"
-# input_path_default <- "../eval/Evaluation-NumberOfVehicles-10.csv"
+# input_path_default <- "../../hpc/eval/Evaluation-NumberOfVehicles.csv"
+input_path_default <- "../eval/Evaluation-NumberOfVehicles-10.csv"
 
 option_list = list(
   make_option(c("-i", "--collected_csv"), type="character", default=input_path_default, help="Path to collected CSV file", metavar="character"),

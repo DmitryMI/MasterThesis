@@ -28,8 +28,23 @@ plot_default <- function(data_table, y_id, param1_values, param2_values, y_label
       query_slice2 = stringr::str_interp("select * from data_slice1 where ${param2_name} == ${param2_value}")
       data_slice2 <- sqldf(query_slice2)
       if (is.null(multiline_plot)){
-        multiline_plot <- ggplot(data = data_slice2, mapping = map) + geom_line() + geom_point() + ggtitle(plot_name) +
-          scale_linetype_discrete(name = param2_name, breaks = param2_vec) + scale_shape_discrete(name = param2_name, breaks = param2_vec)
+        
+        legend_background <- element_rect(fill=alpha("lightblue", 0.3), size=0.2, linetype="solid", colour ="darkblue")
+        panel_background <- element_blank()
+        axis_line = element_line(colour = "black")
+        panel_grid_major = element_blank()
+        panel_grid_minor = element_blank()
+        
+        theme <- theme(
+          legend.position = c(0.8, 0.2),
+          legend.background = legend_background,
+          panel.background = panel_background,
+          axis.line = axis_line,
+          panel.grid.major = panel_grid_major, panel.grid.minor = panel_grid_minor
+          )
+        
+        multiline_plot <- ggplot(data = data_slice2, mapping = map) + geom_line() + geom_point() +
+          scale_linetype_discrete(name = param2_name, breaks = param2_vec) + scale_shape_discrete(name = param2_name, breaks = param2_vec) + theme
       }
       else{
         multiline_plot <- multiline_plot + geom_line(data = data_slice2) + geom_point(data = data_slice2)
@@ -46,7 +61,7 @@ plot_default <- function(data_table, y_id, param1_values, param2_values, y_label
       }
     }
     
-    plot(multiline_plot, main=plot_name)
+    plot(multiline_plot)
   }
   
   
