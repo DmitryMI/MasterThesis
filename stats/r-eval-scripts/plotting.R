@@ -8,8 +8,12 @@ plot_default <- function(data_table, y_id, param1_values, param2_values, y_label
   print(stringr::str_interp("Multiline param: ${param2_name}"))
   
   style_param <- sym(param2_name)
+  
+  param2_vec <- param2_values[, 1]
+  print(param2_vec)
+  
   # map <- aes(x = NumberOfDrones, y = {{ y_id }}, color = {{ style_param }})
-  map <- aes(x = NumberOfDrones, y = {{ y_id }}, linetype = as.factor({{ style_param }}), shape = as.factor({{ style_param }}))
+  map <- aes(x = NumberOfDrones, y = {{ y_id }}, linetype = as.factor({{style_param}}), shape = as.factor({{style_param}}))
   
   for(i in 1:nrow(param1_values)){
     param1_value <- param1_values[i,]
@@ -25,7 +29,7 @@ plot_default <- function(data_table, y_id, param1_values, param2_values, y_label
       data_slice2 <- sqldf(query_slice2)
       if (is.null(multiline_plot)){
         multiline_plot <- ggplot(data = data_slice2, mapping = map) + geom_line() + geom_point() + ggtitle(plot_name) +
-          scale_linetype_discrete(name = param2_name) + scale_shape_discrete(name = param2_name)
+          scale_linetype_discrete(name = param2_name, breaks = param2_vec) + scale_shape_discrete(name = param2_name, breaks = param2_vec)
       }
       else{
         multiline_plot <- multiline_plot + geom_line(data = data_slice2) + geom_point(data = data_slice2)
