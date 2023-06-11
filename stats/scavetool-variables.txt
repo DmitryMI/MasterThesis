@@ -4,5 +4,6 @@ totalDistance
 totalTime
 busyTime
 latencyAverage
+hopsAverage
 repetition
 configname
