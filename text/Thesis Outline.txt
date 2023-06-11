@@ -54,7 +54,6 @@
 ~ Evaluation
 	+ Manhatten Grid
 		+ Dimensions, street length, building sizes
-		? Comparison to the real Manhatten
 	+ Input parameters
 		+ Number of drones (drone density)
 		+ Number of vehicles (vehicle density)

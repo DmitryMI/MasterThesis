@@ -27,6 +27,8 @@
 
 % Define abbreviations used in the thesis here.
 %\acrodef{WSN}{Wireless Sensor Network}
+\acrodef{DAVN}{Drone-assisted vehicular network}
+\acrodef{LOS}{Line of sight}
 \acrodef{MANET}{Mobile Ad Hoc Network}
 \acrodef{VANET}{Vehicular Ad Hoc Network}
 \acrodef{OSG}{OpenSceneGraph}
@@ -34,6 +36,7 @@
 \acrodef{NIC}{Network interface controller}
 \acrodef{DSRC}{Dedicated Short-Range Communications}
 \acrodef{V2V}{Vehicle-to-vehicle}
+\acrodef{V2I}{Vehicle-to-infrastructure}
 \acrodef{V2D}{Vehicle-to-drone}
 \acrodef{D2D}{Drone-to-drone}
 \acrodef{GUI}{Graphical User Interface}
@@ -157,6 +160,10 @@ In my scenario, I will use different \emph{R} values for vehicles and drones. On
 
 \section {Related Work}
 \TODO{Related Work: merging \acp{VANET} and DroneNETs}
+
+\acp{DAVN} are already known in literature, however the purpose and role of drones differ from source to source. \textcite{shi2018drone} propose an architecture for a \ac{DAVN} and provide experimental proof that drones can improve networking between the vehicles, in particular, the authors show improved communication throughput and delay. The authors discuss different drone roles, use cases for \acp{DAVN} and three types of \ac{DAVN}: Drone Swarm Network, Drone Assisted \ac{V2I} and Drone Assisted \ac{V2V}. The \ac{V2I} type describes how drones can assist in expanding the coverage of preexisting infrastructure. In my work I do not implement any type of infrastructure. The proposed drone-swarming architecture describes \ac{D2D} links used by drones to avoid collisions and calculate safe flying paths. The last one, Drone Assisted \ac{V2V}, is closely related to my project. The authors explain, that in Drone Assisted \ac{V2V} the drones try to maintain the \ac{LOS} with the vehicles in order to assist with message broadcasting. The drones relay messages from vehicles to other drones and vehicles. The architecture is somewhat similar to mine, however, my work differs in the simulation setup, used software and goals. At first, \textcite{shi2018drone} use a static pre-generated traffic flow using PTV VISSIM. In my work another traffic simulator (SUMO) is used and the routes are dynamic. Since I am trying to evaluate, how the drones can assist in improving the traffic flow, my vehicles can regenerate and change the routes according to incoming information. Second, in the scenario of \textcite{shi2018drone} the authors use a long straight bi-directional highway. In contrast, I use a road grid with dense urban environment. Third, I use OMNeT++ as a network simulator, when they use NS-2. \textcite{shi2018drone} use the simulation to evaluate the improvement of networking, but my main goal is to check, how drones help to avoid traffic jams in an environment, where \ac{V2V} communications are highly obstructed.
+
+
 
 \section {Simulation Software}
 
@@ -499,6 +506,8 @@ For parametric studies the following input parameters were selected:
 
 	\item \textbf{Channel busy time ratio} - Average value of each vehicle's and each drone's busy time ratios.
 \end{itemize}
+
+\TODO{Radio parameters}
 
 \begin{table}
     \centering
