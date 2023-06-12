@@ -146,7 +146,6 @@ if [[ $DO_EVAL == 1 ]]
 then
     echo "Evaluating..."
     
-    
     if [ -z "$CSV_DIR" ]
     then
         CSV_DIR=$EVAL_DIR
@@ -157,22 +156,27 @@ then
     input=$(realpath "opp-configs.txt")
     while IFS= read -r opp_config
     do
-        echo "Config: $opp_config"
-        echo "Evaluating from $CSV_DIR/$opp_config.csv to $EVAL_DIR/$opp_config.pdf..."
-        
-        cd ./r-eval-scripts
-        Rscript ./main.R -i $CSV_DIR/$opp_config.csv -o $EVAL_DIR
-
-        if [ $? != 0 ]
+        if [[ $opp_config =~ ^#.* ]]
         then
+	        echo "Line $opp_config ignored"
+        else
+            echo "Config: $opp_config"
+            echo "Evaluating from $CSV_DIR/$opp_config.csv to $EVAL_DIR/$opp_config.pdf..."
+            
+            cd ./r-eval-scripts
+            Rscript ./main.R -i $CSV_DIR/$opp_config.csv -o $EVAL_DIR
+
+            if [ $? != 0 ]
+            then
+                cd ..
+                exit 1
+            fi
+            
             cd ..
-            exit 1
+            
+            echo "Done for $opp_config"
+            echo ""
         fi
-        
-        cd ..
-        
-        echo "Done for $opp_config"
-        echo ""
         
     done < "$input"
     

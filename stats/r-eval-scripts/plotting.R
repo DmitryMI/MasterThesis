@@ -1,3 +1,33 @@
+plot_drone_height <- function(data_table, y_id, y_label = NULL, unit_name = NULL, x_label = "Drones Height [m]"){
+  map <- aes(x = DroneHeightMin, y = {{ y_id }}, shape = "circle")
+
+  panel_background <- element_blank()
+  axis_line = element_line(colour = "black")
+  panel_grid_major = element_blank()
+  panel_grid_minor = element_blank()
+  
+  theme <- theme(
+    panel.background = panel_background,
+    legend.position = "none",
+    axis.line = axis_line,
+    panel.grid.major = panel_grid_major, panel.grid.minor = panel_grid_minor
+  )
+  
+  singleline_plot <- ggplot(data = data_table, mapping = map) + geom_line() + geom_point() + theme
+  
+  if (!is.null(y_label))
+  {
+    y_label_value <- y_label
+    if (!is.null(unit_name))
+    {
+      y_label_value <- paste(y_label_value, " [", unit_name, "]", sep="")
+    }
+    singleline_plot <- singleline_plot + xlab(x_label) + ylab(y_label_value)
+  }
+  
+  plot(singleline_plot)
+}
+
 plot_default <- function(data_table, y_id, param1_values, param2_values, y_label = NULL, unit_name = NULL, x_label = "Number of Drones"){
   print("Drawing...")
   

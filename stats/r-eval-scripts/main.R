@@ -43,8 +43,9 @@ get_itervars_join <- function(itervars_table, prefix1, prefix2){
   return(result)
 }
 
-input_path_default <- "../../hpc/eval/Evaluation-NumberOfVehicles.csv"
+# input_path_default <- "../../hpc/eval/Evaluation-NumberOfVehicles.csv"
 # input_path_default <- "../eval/Evaluation-NumberOfVehicles-10.csv"
+input_path_default <- "../../hpc/eval/Evaluation-DroneHeight.csv"
 
 option_list = list(
   make_option(c("-i", "--collected_csv"), type="character", default=input_path_default, help="Path to collected CSV file", metavar="character"),
@@ -59,7 +60,6 @@ csv_name <- basename(csv_path)
 opp_config_name <- tools::file_path_sans_ext(csv_name)
 
 output_dir <- opt$output_dir
-
 
 scalars <- load_scalars(csv_path)
 
@@ -136,54 +136,105 @@ latency_table <- get_scalar_by_itervars_avg_table(latency_table3, itervars_table
 
 accident_probabilities_values <- sqldf("select distinct AccidentProbability from received_div_jammed_table")
 number_of_vehicles_values <-sqldf("select distinct NumberOfVehicles from received_div_jammed_table")
+
+if("DroneHeightMin" %in% colnames(received_div_jammed_table))
+{
+  drone_height_min <- sqldf("select distinct DroneHeightMin from received_div_jammed_table")
+  drone_height_max <- sqldf("select distinct DroneHeightMax from received_div_jammed_table")
+}else
+{
+  drone_height_min = NULL
+  drone_height_max = NULL
+}
 print(accident_probabilities_values)
 print(number_of_vehicles_values)
+print(drone_height_min)
+print(drone_height_max)
 
-param1_values = NULL
-param2_values = NULL
-
-if (nrow(accident_probabilities_values) < nrow(number_of_vehicles_values)) {
-  param1_values <- accident_probabilities_values
-  param2_values <- number_of_vehicles_values
-} else {
-  param2_values <- accident_probabilities_values
-  param1_values <- number_of_vehicles_values
+if (! is.null(drone_height_min))
+{
+  pdf_name <- paste(opp_config_name, "-ReceivedAnnouncements-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_drone_height(received_div_jammed_table, ReceivedDivJammed, "Received Announcements Ratio")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-JamTime-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_drone_height(jam_time_table, TotalTimeInJam, "Jam Time", "s")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-JammedNumber-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_drone_height(jammed_by_itervars_avg_table, JammedNumber, "Jammed Vehicles")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-VehicleSpeed-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_drone_height(speed_table, Speed, "Vehicle Speed", "m/s")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-ChannelBusyTimeRatio-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_drone_height(busytime_table, busyTime, "Channel Busy Time Ratio")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-Latency-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_drone_height(latency_table, latencyAverage, "Latency", "s")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-Hops-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_drone_height(hops_table, hopsAverage, param1_values, param2_values, "Number of Hops")
+  dev.off()
+  
+}else{
+  param1_values = NULL
+  param2_values = NULL
+  
+  if (nrow(accident_probabilities_values) < nrow(number_of_vehicles_values)) {
+    param1_values <- accident_probabilities_values
+    param2_values <- number_of_vehicles_values
+  } else {
+    param2_values <- accident_probabilities_values
+    param1_values <- number_of_vehicles_values
+  }
+  
+  # time <- Sys.time()
+  time <- "NA"
+  
+  pdf_name <- paste(opp_config_name, "-ReceivedAnnouncements-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_default(received_div_jammed_table, ReceivedDivJammed, param1_values, param2_values, "Received Announcements Ratio")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-JamTime-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_default(jam_time_table, TotalTimeInJam, param1_values, param2_values, "Jam Time", "s")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-JammedNumber-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_default(jammed_by_itervars_avg_table, JammedNumber, param1_values, param2_values, "Jammed Vehicles")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-VehicleSpeed-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_default(speed_table, Speed, param1_values, param2_values, "Vehicle Speed", "m/s")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-ChannelBusyTimeRatio-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_default(busytime_table, busyTime, param1_values, param2_values, "Channel Busy Time Ratio")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-Latency-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_default(latency_table, latencyAverage, param1_values, param2_values, "Latency", "s")
+  dev.off()
+  
+  pdf_name <- paste(opp_config_name, "-Hops-", time, ".pdf", sep="")
+  pdf(file.path(output_dir, pdf_name))
+  plot_default(hops_table, hopsAverage, param1_values, param2_values, "Number of Hops")
+  dev.off()
 }
-
-# time <- Sys.time()
-time <- "NA"
-
-pdf_name <- paste(opp_config_name, "-ReceivedAnnouncements-", time, ".pdf", sep="")
-pdf(file.path(output_dir, pdf_name))
-plot_default(received_div_jammed_table, ReceivedDivJammed, param1_values, param2_values, "Received Announcements Ratio")
-dev.off()
-
-pdf_name <- paste(opp_config_name, "-JamTime-", time, ".pdf", sep="")
-pdf(file.path(output_dir, pdf_name))
-plot_default(jam_time_table, TotalTimeInJam, param1_values, param2_values, "Jam Time", "s")
-dev.off()
-
-pdf_name <- paste(opp_config_name, "-JammedNumber-", time, ".pdf", sep="")
-pdf(file.path(output_dir, pdf_name))
-plot_default(jammed_by_itervars_avg_table, JammedNumber, param1_values, param2_values, "Jammed Vehicles")
-dev.off()
-
-pdf_name <- paste(opp_config_name, "-VehicleSpeed-", time, ".pdf", sep="")
-pdf(file.path(output_dir, pdf_name))
-plot_default(speed_table, Speed, param1_values, param2_values, "Vehicle Speed", "m/s")
-dev.off()
-
-pdf_name <- paste(opp_config_name, "-ChannelBusyTimeRatio-", time, ".pdf", sep="")
-pdf(file.path(output_dir, pdf_name))
-plot_default(busytime_table, busyTime, param1_values, param2_values, "Channel Busy Time Ratio")
-dev.off()
-
-pdf_name <- paste(opp_config_name, "-Latency-", time, ".pdf", sep="")
-pdf(file.path(output_dir, pdf_name))
-plot_default(latency_table, latencyAverage, param1_values, param2_values, "Latency", "s")
-dev.off()
-
-pdf_name <- paste(opp_config_name, "-Hops-", time, ".pdf", sep="")
-pdf(file.path(output_dir, pdf_name))
-plot_default(hops_table, hopsAverage, param1_values, param2_values, "Number of Hops")
-dev.off()
