@@ -514,7 +514,7 @@ For parametric studies the following input parameters were selected:
 	\item \textbf{Channel busy time ratio} - Average value of each vehicle's and each drone's busy time ratios.
 \end{itemize}
 
-\TODO{Radio parameters}
+\TODO{Radio parameters - noise floor?}
 
 \begin{table}
     \centering
@@ -527,18 +527,25 @@ For parametric studies the following input parameters were selected:
 		Vehicle Breakdown end time & - & End of simulation & - \\
 		Vehicle position update period & - & \SI{1}{\second} & - \\
 		Vehicle \ac{ATR} & - & \SI{150}{\meter} & - \\
-
+		\hline
         	Drone speed & \SI{10}{\meter\per\second} & - & \SI{30}{\meter\per\second} \\
         	Drone flight height & \SI{250}{\meter} & - & \SI{300}{\meter} \\
 		Drone position update period & - & \SI{1}{\second} & - \\
 		Drone \ac{ATR} & - & \SI{500}{\meter} & - \\
-
+		\hline
+		TX-Power & - & \SI{20}{\milli\watt} & - \\
+		Bit-rate & - & \SI{6}{\mega\bit\per\second} & - \\
+		Min power level  & - & \SI{-110}{\decibel} & - \\
+		\hline
+		Building wall attenuation  & - & \SI{9}{\decibel} & - \\
+		Building internal attenuation & - & \SI{0.4}{\decibel\per\meter} & - \\
+		\hline
 		Simulation time & - & \SI{600}{\second} & - \\
 		Warm-up period & - & \SI{10}{\second} & - \\
 		
         \bottomrule
     \end{tabular}
-    \caption{Static simulation parameters (shared between simulations). Const column means that this value is constant (non-random). Min-Max columns show that this value varies between Minimum and Maximum. Vehicle- and Drone- \ac{ATR} is the estimated average range of communication needed by weighted p-persistence algorithm.}
+    \caption{Static simulation parameters (shared between simulations). Const column means that this value is constant (non-random). Min-Max columns show that this value varies between Minimum and Maximum. Vehicle- and Drone- \ac{ATR} is the estimated average range of communication needed by weighted p-persistence algorithm. Min power level - minimum receive power needed for a message to be decoded. TX-Power - transmission power. Radio parameters apply for both vehicles and drones. Building wall attenuation determines how much the signal is attenuated per one wall intersection. Building internal attenuation determines how much the signal is attenuated per one meter going through the building.}
     \label{tab:simulationparams}
 \end{table}
 
