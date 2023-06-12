@@ -195,8 +195,8 @@ In order to simulate a hybrid network of drones and vehicles a network simulator
 
 \begin{figure}
   	\centering
-	\includegraphics[width=1\textwidth]{figures/High-level Veins.png}
-	\caption{High-level architecture of Veins. Veins bridges OMNeT++ with SUMO traffic simulator to enable simulation of \acp{VANET} \cite{Sommer2019}}
+	\includegraphics[width=1\textwidth]{figures/VeinsHighLevel.pdf}
+	\caption{Simplified diagram of Veins high-level architecture, based on \cite{Sommer2019}. Veins bridges OMNeT++ with SUMO traffic simulator to enable simulation of \acp{VANET} \cite{Sommer2019}}
 	\label{fig:veinshighlevel}
 \end{figure}
 
@@ -350,7 +350,7 @@ This way a 3D shadowing algorithm can be extended from Veins' Simple Obstacle Sh
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\textwidth]{figures/Obstacle3d-flow.pdf}
+	\includegraphics[width=0.5\textwidth]{figures/Obstacle3d-flow.pdf}
 	\caption{Flowchart of line-right-prism intersection algorithm. Flow for only single Obstacle3d is shown. The ObstacleControl3d iterates over all Obstacle3d objects, calls their getIntersections() methods and combines results.}
 	\label{fig:obstacle3d-flow}
 \end{figure}
@@ -413,11 +413,11 @@ In my project, a single broadcast message is defined, which the cars send to the
 
 \begin{figure}%
 	\centering
-	\subfloat[Step 1]{\label{fig:protocol1}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol1.png}}
+	\subfloat[Step 1]{\label{fig:protocol1}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol1.pdf}}
 	\hfill
-	\subfloat[Step 2]{\label{fig:protocol2}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol2.png}}
+	\subfloat[Step 2]{\label{fig:protocol2}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol2.pdf}}
 	\hfill
-	\subfloat[Step 3]{\label{fig:protocol3}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol3.png}}
+	\subfloat[Step 3]{\label{fig:protocol3}\includegraphics[clip,width=0.5\columnwidth]{figures/Protocol3.pdf}}
 	\caption{Jamming announcement protocol. On step 1 (\cref{fig:protocol1}) the vehicle detects that its speed is zero and broadcasts CarJammingAnnouncement message. The vehicles, who receive the broadcast (\cref{fig:protocol2}), read the road id from the message and adjust their routes in order not to get into the jam. Finally  (\cref{fig:protocol3}), the vehicles rebroadcast the initial message and the receivers perform the same steps. This way the jam announcement propagates through the network. The drones also receive and rebroadcast the announcements in the same manner.}%
 	\label{fig:protocol}%
 \end{figure}
