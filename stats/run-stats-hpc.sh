@@ -52,7 +52,7 @@ input=$(realpath "opp-configs.txt")
 cd $SIMULATION_DIR
 while IFS= read -r opp_config
 do
-    if [[ $opp_config = #* ]]
+    if [[ $opp_config =~ ^#.* ]]
     then
 	    echo "Line $opp_config ignored"
     else
