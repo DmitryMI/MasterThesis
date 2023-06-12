@@ -151,6 +151,9 @@ print(number_of_vehicles_values)
 print(drone_height_min)
 print(drone_height_max)
 
+# time <- Sys.time()
+time <- "NA"
+
 if (! is.null(drone_height_min))
 {
   pdf_name <- paste(opp_config_name, "-ReceivedAnnouncements-", time, ".pdf", sep="")
@@ -185,7 +188,7 @@ if (! is.null(drone_height_min))
   
   pdf_name <- paste(opp_config_name, "-Hops-", time, ".pdf", sep="")
   pdf(file.path(output_dir, pdf_name))
-  plot_drone_height(hops_table, hopsAverage, param1_values, param2_values, "Number of Hops")
+  plot_drone_height(hops_table, hopsAverage, "Number of Hops")
   dev.off()
   
 }else{
@@ -199,9 +202,6 @@ if (! is.null(drone_height_min))
     param2_values <- accident_probabilities_values
     param1_values <- number_of_vehicles_values
   }
-  
-  # time <- Sys.time()
-  time <- "NA"
   
   pdf_name <- paste(opp_config_name, "-ReceivedAnnouncements-", time, ".pdf", sep="")
   pdf(file.path(output_dir, pdf_name))
