@@ -52,22 +52,28 @@ input=$(realpath "opp-configs.txt")
 cd $SIMULATION_DIR
 while IFS= read -r opp_config
 do
-    echo "Config: $opp_config"
-    runnumbers=$($PROJECT_EXECUTABLE -c $opp_config -s -q runnumbers)
-    # echo $runnumbers
-    if [ $? != 0 ]
+    if [[ $opp_config = #* ]]
     then
-        echo "Failed to request runnumbers!"
-        exit
-    fi
+	    echo "Line $opp_config ignored"
+    else
     
-    for runnumber in $runnumbers
-    do
-        runline=$(printf "$LINE_TEMPLATE" $opp_config $runnumber)
-        # echo "Runline: $runline"
-        echo $runline >> $RUNFILE
-        RUNCOUNTER=$((RUNCOUNTER + 1))
-    done  
+        echo "Config: $opp_config"
+        runnumbers=$($PROJECT_EXECUTABLE -c $opp_config -s -q runnumbers)
+        # echo $runnumbers
+        if [ $? != 0 ]
+        then
+            echo "Failed to request runnumbers!"
+            exit
+        fi
+        
+        for runnumber in $runnumbers
+        do
+            runline=$(printf "$LINE_TEMPLATE" $opp_config $runnumber)
+            # echo "Runline: $runline"
+            echo $runline >> $RUNFILE
+            RUNCOUNTER=$((RUNCOUNTER + 1))
+        done  
+    fi
        
 done < "$input"
 

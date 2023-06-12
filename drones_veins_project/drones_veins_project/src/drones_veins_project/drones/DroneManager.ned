@@ -31,8 +31,6 @@ simple DroneManager
         string moduleName = default("drone");  	
         
         string moduleDisplayString = default("i=veins/node/drone,blue;is=vs;");	
-        
-        double droneLocationZ @unit("m") = default(300m);
-        
+
         int numberOfDrones = default(10);
 }
