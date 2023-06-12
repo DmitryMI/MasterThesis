@@ -78,9 +78,8 @@
 > Add Software versions
 > Maybe remove fields from UMLS
 > Maybe change UMLs to "inclusion diagram"
-~ "This section is based on [3]"
 > Redraw not my own pictures
-~ Add hop counter
++ Add hop counter
 
 Plotting:	
 	+ Title goes to caption
@@ -92,7 +91,6 @@ Plotting:
 	
 Text:
 	+ Figure captions UNDER the picture (change the order of \caption command!)
-	+ Table 4.2 - lines too long! Add line breaks or reduce line lengths
 	> ALWAYS REFERENCE A FIGURE FROM THE TEXT!
-	> Related work: what is new in my work
-		> Whats is the current state of the art
+	~ Related work: what is new in my work
+		~ Whats is the current state of the art

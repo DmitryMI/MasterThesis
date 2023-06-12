@@ -674,7 +674,7 @@ Anyway, the fact that these output values show better traffic flow with increase
 
 \subsection{Latency}
 
-\TODO{Add latency discussion, add hop counter}
+\cref{fig:Evaluation-NumberOfVehicles-Latency-NA} and \cref{fig:Evaluation-AccidentProbability-Latency-NA} show the average end-to-end latency of the jamming announcements. \cref{fig:Evaluation-NumberOfVehicles-Hops-NA} and \cref{fig:Evaluation-AccidentProbability-Hops-NA} represent an additional output value that is used to show how heavily the latency depends on the number of hops. The latency lines' shape can be explained by the fact that only successful transmissions are considered. When there are no drones on the scene, the majority of messages are only delivered between vehicles being close to each other and on the same street. This leads to a very small number of hops and therefore to minimal latency. When drones are introduced in small numbers, there is a chance for a message to leave a street and to be transmitted to other streets. But, since there are not enough drones to communicate with each other, their contribution to message rebroadcasting is relatively small. In this case the vehicles need to add many more rebroadcasts in order to the message to be "caught" by another drone. This leads to maximal number of hops and, therefore, to maximal latency. When the number of drones starts to increase, there is more and more communication possibilities between them, which reduces the number of hops (because drones can transmit messages through much larger space with less rebroadcasts) and, therefore, the latency.
 
 \begin{figure}%
 	\centering
@@ -683,6 +683,16 @@ Anyway, the fact that these output values show better traffic flow with increase
 	\subfloat[Number of Vehicles = 60]{\label{fig:Evaluation-AccidentProbability-Latency-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-AccidentProbability-Latency-NA.pdf}}
 	\hfill
 	\caption{Average End-to-End Latency. Latency is the time between an initial broadcast and it's reception by a vehicle. If a message is rebroadcast, its timestamp is not modified, therefore the latency includes the time spent by message being rebroadcast. The latency is calculated on the receiving side, therefore the same broadcast can result in different latencies, depending on the receiver, number of hops and distance, among other factors. Only successful and unique transmissions are considered, receiver does not calculate and record latency of a message, that is a duplicate of earlier received message.}%
+	\label{fig:Evaluation-Latency}%
+\end{figure}
+
+\begin{figure}%
+	\centering
+	\subfloat[Accident Probability = 0.3]{\label{fig:Evaluation-NumberOfVehicles-Hops-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-NumberOfVehicles-Hops-NA.pdf}}
+	\hfill
+	\subfloat[Number of Vehicles = 60]{\label{fig:Evaluation-AccidentProbability-Hops-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-AccidentProbability-Hops-NA.pdf}}
+	\hfill
+	\caption{Average number of hops. If a message was received directly from the original broadcaster, it is considered to have one hop. Each subsequent rebroadcast adds one hop to a message. The number of hops is calculated on the receiving side, therefore the same broadcast can result in different number of hops, depending on the receiver, distance, and other factors. Only successful and unique transmissions are considered, receiver does not calculate and record number of hops of a message, that is a duplicate of earlier received message.}%
 	\label{fig:Evaluation-Latency}%
 \end{figure}
 
