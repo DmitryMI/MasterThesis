@@ -6,11 +6,10 @@
 	+ Strategy: real-life experiment too expensive
 		~ Use software-simulation
 	
-~ Fundamentals
+! Fundamentals
 	+ Ad-hoc networks
-		~ VANETs and Drone-nets
-	> Related work: another examples of merging VANETs and DroneNETs
-		> Examples of network configurations
+	+ Related work: another examples of merging VANETs and DroneNETs
+		! Examples of network configurations
 	+ Challenge: broadcast storm
 	+ Broadcast-storm suppression techiques in literature
 	+ Why I will use weighted-p-persistence (because it is enough in my setup)
@@ -51,7 +50,7 @@
 	+ Pathfinder
 	
 
-~ Evaluation
++ Evaluation
 	+ Manhatten Grid
 		+ Dimensions, street length, building sizes
 	+ Input parameters
@@ -64,7 +63,7 @@
 		+ From proposal: Channel busy time ratio
 		+ From proposal: End-to-end latency of broadcasts
 		+ New: received announcements ratio
-	~ Results, graphs, discussion.
+	+ Results, graphs, discussion.
 		
 	
 > Conclusion
@@ -78,7 +77,7 @@
 > Add Software versions
 > Maybe remove fields from UMLS
 > Maybe change UMLs to "inclusion diagram"
-> Redraw not my own pictures
+~ Redraw not my own pictures
 + Add hop counter
 
 Plotting:	
