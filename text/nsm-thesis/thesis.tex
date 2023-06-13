@@ -124,6 +124,8 @@ A good definition of ad hoc networks was given by Ram Ramanathan and Jason Redi 
 
 According to Toor et al \cite{toor2008}, Vehicular ad hoc network (\ac{VANET}) is a special case of a mobile ad hoc network, where communication links are formed between the vehicles.
 
+
+
 \section{Broadcast Storm}
 
 A common challenge in implementing mobile ad hoc networks (including \acp{VANET}), according to \textcite{wisitrophan2007} is the broadcast storm. Authors define the broadcast storm as a frequent contention and collisions in transmission among neighboring nodes, when the nodes unconditionally broadcast packets. Authors further argue, that multiple solutions exist to alleviate this problem in usual \ac{MANET} environment, but only few are suitable to resolve the broadcast storm issue in \ac{VANET} context.
@@ -158,6 +160,8 @@ where \emph{R} is the average transmission range and $D_{ij}$ is relative distan
 
 In my scenario, I will use different \emph{R} values for vehicles and drones. On one hand, since drones maintain the line-of-sight with each other, the R can be relatively large for them, slightly less than there maximum transmission range. On the other hand, vehicles can only communicate withing the length of the street they are standing on. Therefore, the \emph{R} for vehicles will be roughly equal to the length of a city block (distance between two crossroads in a grid, which is much smaller than maximum possible transmission range of a vehicle). This way vehicles, that are standing near two crossroads will rebroadcast with probability around 1. This will ensure that messages can "turn around" the buildings with higher probability.
 
+
+
 \section {Related Work}
 
 \FIXME{Talk about DAVNs in general or focus on works, similar to mine?}
@@ -173,6 +177,8 @@ A couple of works focus on connecting the \acp{DAVN} to another networks. For ex
 \textcite{Khabbaz2021Multihop} investigate a setup similar to mine: the drones opportunistically fly above the vehicles and serve as flying base stations responsible for routing vehicle data. The work discusses how the communications between vehicles can be done using multihop paths connecting source vehicles and drones. However, the goal of their work is to improve the network connectivity, while my goal is to evaluate improvements in traffic flow performance.
 
 \textcite{Oubbati2021Dispatch} explores the improvements that drones can give to \ac{VANET} networking and proposes an algorithm to dispatch drones to cover maximum area. Interesting here is that the authors focus on urban environment, but, in contrast to my work, evaluate networking performance, coverage and energy consumption. Another example of work, using urban environment is \textcite{Oubbati2016intersection}. In this work the authors propose a drone-placement algorithm that improves routing performance and network connectivity in urban intersections. \textcite{OUBBATI201793} works on similar issue, again exploring routing protocols in urban \acp{VANET} and improve the protocol, proposed in \cite{Oubbati2016intersection}.
+
+
 
 \section {Simulation Software}
 
@@ -190,6 +196,8 @@ The one most suitable for my purposes is the OMNeT++. It is free for academical 
 
 According to \textcite[Page~2]{Varga2010}, OMNeT++ is a discrete-event simulator. According to the author, discrete-event simulator simulates a system whose state, defined by the state of all entities of the system, changes only at discrete points in time and the change of state is triggers by the occurrence of an event.
 
+
+
 \section {Veins}
 
 In order to simulate a hybrid network of drones and vehicles a network simulator is not enough. A combined solution is needed to create a realistic scenario consisting of vehicles, buildings and drones. The software must implement a combination of a network simulator and a traffic simulator. My solution is based on Veins by \textcite{Sommer2019}.
@@ -200,6 +208,8 @@ In order to simulate a hybrid network of drones and vehicles a network simulator
 	\caption{Simplified diagram of Veins high-level architecture, based on \cite{Sommer2019}. Veins bridges OMNeT++ with SUMO traffic simulator to enable simulation of \acp{VANET} \cite{Sommer2019}}
 	\label{fig:veinshighlevel}
 \end{figure}
+
+
 
 \subsection{SUMO and TraCI}
 As shown on \ref{fig:veinshighlevel}, Veins uses SUMO by \textcite[Page~218]{sumo2018} as a traffic simulator. According to the SUMO developers, SUMO is a microscopic traffic simulator, which means that each vehicle and its dynamics are modeled individually.
@@ -213,6 +223,8 @@ According to \textcite{traci}, \ac{TraCI} is a protocol, used to interlink road 
 	\caption{SUMO \ac{GUI} screenshot, gray rectangles depict obstacles (buildings), the black wide lines are the roads, the yellow triangle is a vehicle.}
 	\label{fig:sumogui}
 \end{figure}
+
+
 
 \subsection {Scenario and Car}
 \label{sec:scenarioned}
@@ -228,6 +240,8 @@ To further understand my implementation of drones in Veins, it is necessary to c
 
 \cref{fig:scenarioned} shows a simplified diagram of the network in Veins. It is not a diagram of classes in the usual sense, it shows the relationship of OMNeT++-modules and OMNeT++-networks , as well as some parameters that will be of interest in the rest of the work. 
 
+
+
 \subsection{2D Simple Shadowing}
 
 Next in my work I will describe the algorithm that calculates the fading of the radio signal, which takes into account three-dimensional objects. My algorithm is based on the Simple Obstacle Shadowing algorithm \cite{SimpleObstacleShadowing} that is implemented in Veins, and therefore I will briefly describe it here. In Veins' Simple Obstacle Shadowing algorithm each building is defined as a 2D-polygon with arbitrary number of vertices. The radio transmission is modeled as a ray starting from sender's antenna and ending in receiver's antenna. The algorithm determines, how much of the total distance the radio signal traveled through a building. Based on this information the algorithm than calculates the power with which the radio signal reaches the receiver. The signal can penetrate an arbitrary number of buildings. The algorithm also allows the user to set values that determine, how much buildings block the signal via their walls and via their interior. A graphical representation of this model can be seen on \cref{fig:SimpleObstacleShadowing}
@@ -239,11 +253,15 @@ Next in my work I will describe the algorithm that calculates the fading of the 
 	\label{fig:SimpleObstacleShadowing}
 \end{figure}
 
+
+
 \subsection{OpenSceneGraph}
 
 I would like to emphasize the usage of OpenSceneGraph \cite{osg} as a 3D-rendering tool.  OMNeT++ natively supports OpenSceneGraph \cite{omnetpposg}, therefore \ac{OSG} is the most convenient and easy way to implement a 3D scene in OMNeT++. In this work, I will use 3D visualization for debugging purposes.
 
 Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize this class along with my own vehicle-, drone- and building- visualizers.
+
+
 
 \subsection{IEEE 802.11p}
 Veins includes a simple simulation model of IEEE 802.11p for vehicle-to-vehicle communication \cite[Page~216]{Sommer2019}. The following brief description of IEEE 802.11p is based on \textcite{jiang2008ieee}.
@@ -251,6 +269,8 @@ Veins includes a simple simulation model of IEEE 802.11p for vehicle-to-vehicle 
 IEEE 802.11p is a set of standards dedicated exclusively to vehicle-to-vehicle and infrastructure-to-vehicle communication. It uses 75 MHz of \ac{DSRC} spectrum at 5.9 GHz. The primary goal is to enable public safety applications that can help with road safety and improve traffic flow. Private services are permitted to use these frequencies. The \ac{DSRC} band is free, but licensed spectrum, therefore it is more restricted in terms of usages and technologies in comparison to unlicensed spectrums like Wi-Fi. \ac{DSRC} can be used only for vehicular networks, nobody is allowed to develop another technology, that uses the same radio spectrum. The key feature of IEEE 802.11p is the WAVE mode, that allows a vehicles to communicate immediately upon encounter, without the overhead of scanning for channels and executing handshakes. 
 
 In my work I will use Veins-provided IEEE 802.11p simulation model working in WAVE mode for both vehicles and drones.
+
+
 
 \chapter{Implementation}
 
@@ -270,6 +290,8 @@ Now it is time to develop a network model for a scenario in which vehicles and d
 	\label{fig:dronescenarioned}
 \end{figure}
 
+
+
 \section{Drones}
 
 The first issue with implementing my scenario is that Veins does not support drones. Therefore, implementing drones was on of the first steps in my work. The easiest way to implement drones would be to reuse the existing Veins' code, that was used for vehicles. Therefore, drones will in fact only differ in their mobility, but in other things they will mostly share the code with Veins' vehicles.
@@ -282,6 +304,8 @@ The first issue with implementing my scenario is that Veins does not support dro
 	\caption{Simplified diagram of Drone module.}
 	\label{fig:dronened}
 \end{figure}
+
+
 
 \subsection{Drone Mobility}
 
@@ -297,6 +321,7 @@ The \cref{fig:dronemanagerflow} shows a simplified algorithm for updating the dr
 \end{figure}
 
 
+
 \section{BaseApplicationLayer}
 
 To integrate the drones more easily, I decided to create an additional level of abstraction: BaseApplicationLayer (\cref{fig:baseapplicationlayer}), which will be common for drones and cars. This class is responsible for automatically assigning network addresses, for keeping track of statistics common to drones and cars, and, importantly, for decisions about relaying incoming messages. BaseApplicationLayer inherits from DemoBaseApplLayer, that is implemented in Veins.
@@ -309,6 +334,8 @@ To integrate the drones more easily, I decided to create an additional level of 
 \end{figure}
 
 The main reason for creating the BaseApplicationLayer is to unify the way how decision about rebroadcasting is made. BaseApplicationLayer holds a reference to a special object of class RebroadcastDecider, which in fact is a virtual class. This object decides whether to rebroadcast the message or not. How exactly it makes this decision for the vehicle or for the drone is irrelevant. The drone or vehicle only receives a decision from this object. So it is relatively easy to change the algorithm that decides whether to retransmit a message. Also it is easy to enable a specific algorithm for both drones and vehicles in the same manner.
+
+
 
 \subsection {Rebroadcast Decider}
 
@@ -323,9 +350,13 @@ The \cref{fig:rebroadcastdeciderseq} shows the sequence of message exchange betw
 	\label{fig:rebroadcastdeciderseq}
 \end{figure}
 
+
+
 \section{Adding the third dimension}
 
 The next problem was that Veins does not support three-dimensional obstacles, and therefore does not take Z coordinate into account when calculating radio signal decay. In my scenario, this is a significant drawback, since drones tend to fly above buildings, and hence their radio transmissions are not affected by buildings. In that case, one could make the radio transmissions between drones simply ignore the buildings. However, such a strategy would ignore radio signals between drones and cars. Drone-vehicle communication cannot be described by simple rules from 2D space with at least acceptable accuracy. Because of this, I decided to implement three-dimensional buildings and, accordingly, a three-dimensional algorithm for signal shadowing.
+
+
 
 \subsection{3D buildings and signal shadowing}
 
@@ -353,6 +384,8 @@ This way a 3D shadowing algorithm can be extended from Veins' Simple Obstacle Sh
 	\caption{Flowchart of line-right-prism intersection algorithm. Flow for only single Obstacle3d is shown. The ObstacleControl3d iterates over all Obstacle3d objects, calls their getIntersections() methods and combines results.}
 	\label{fig:obstacle3d-flow}
 \end{figure}
+
+
 
 \subsection{3D visualization}
 
@@ -384,6 +417,7 @@ The central modules that are responsible for 3D visualization in my project are:
 	\caption{Flowchart of line-right-prism intersection algorithm. Flow for only single Obstacle3d is shown. The ObstacleControl3d iterates over all Obstacle3d objects, calls their getIntersections() methods and combines results.}
 	\label{fig:ObstacleShadowingVisualizer}
 \end{figure}
+
 
 
 \section{Protocol}
@@ -421,15 +455,21 @@ In my project, a single broadcast message is defined, which the cars send to the
 	\label{fig:protocol}%
 \end{figure}
 
+
+
 \section{Pathfinder}
 
 While working on the project, I encountered the need to generate random routes for cars. The Vehicle code in Veins when receiving a message can send a TraCI message to SUMO, which will force the vehicle to re-route, avoiding roads with traffic jams. However, the problem is that in this case, SUMO will re-align the route by the shortest path from the current position of the car to the point to which it was originally going. This led to the fact that the path, which was originally tens of kilometers long, was drastically shortened to hundreds of meters. This caused artifacts in the simulation results. The solution to the problem was the Pathfinder module, which builds random routes for cars, taking into account congestion and a given minimum route length.
 
 There is only one Pathfinder module in the simulation. It stores information about the road structure, taken from the same file that SUMO takes it from. The Pathfinder has methods for constructing random routes. Any vehicle can call these methods if needed and then send the resulting random route to SUMO via TraCI, which will cause the vehicle to follow it.
 
+
+
 \chapter{Evaluation}
 
 Now it is time to describe the setup of the experiment, the input and output parameters, and to describe and discuss the results.
+
+
 
 \section{Road Network}
 
@@ -483,6 +523,7 @@ For simulating a high-density urban environment the Manhattan Grid was selected.
 \end{table}
 
 
+
 \section {Simulation flow}
 
 The simulation starts with SUMO loading the road network and buildings. Next simulation steps are explained in the following list.
@@ -498,6 +539,8 @@ The simulation starts with SUMO loading the road network and buildings. Next sim
 \end{enumerate}
 
 Both initially-broken and later-jammed vehicles are treated as vehicles in jam. They both contribute to Time of a vehicle being in jam, Number of Jammed Vehicles and Average Vehicle Speed output values. There broadcasts are treated equally for the Received Announcements Ratio output value. 
+
+
 
 \section{Input Parameters}
 
@@ -529,7 +572,7 @@ For parametric studies the following input parameters were selected:
 		Vehicle \ac{ATR} & - & \SI{150}{\meter} & - \\
 		\hline
         	Drone speed & \SI{10}{\meter\per\second} & - & \SI{30}{\meter\per\second} \\
-        	Drone flight height & \SI{250}{\meter} & - & \SI{300}{\meter} \\
+        	Drone flight height & \SI{150}{\meter} & - & \SI{200}{\meter} \\
 		Drone position update period & - & \SI{1}{\second} & - \\
 		Drone \ac{ATR} & - & \SI{500}{\meter} & - \\
 		\hline
@@ -548,6 +591,8 @@ For parametric studies the following input parameters were selected:
     \caption{Static simulation parameters (shared between simulations). Const column means that this value is constant (non-random). Min-Max columns show that this value varies between Minimum and Maximum. Vehicle- and Drone- \ac{ATR} is the estimated average range of communication needed by weighted p-persistence algorithm. Min power level - minimum receive power needed for a message to be decoded. TX-Power - transmission power. Radio parameters apply for both vehicles and drones. Building wall attenuation determines how much the signal is attenuated per one wall intersection. Building internal attenuation determines how much the signal is attenuated per one meter going through the building.}
     \label{tab:simulationparams}
 \end{table}
+
+
 
 \section{Output values}
 
@@ -570,6 +615,8 @@ The following data was selected as the output to be analyzed:
 	\item \textbf{Number of hops} - average number of rebroadcasts it was needed for a message to be received by a vehicle. Only successful transmissions are considered.
 
 \end{itemize}
+
+
 
 \section{Results}
 
@@ -607,6 +654,8 @@ Simulation runs were divided into two groups: Number Of Vehicles Evaluation grou
     \label{tab:inputrange2}
 \end{table}
 
+
+
 \subsection{Received Announcements Ratio}
 \label{sec:ReceivedAnnouncementsRatio}
 
@@ -633,6 +682,8 @@ In conclusion, it is clear that the drones improve the network connectivity in a
 	\caption{Received Announcements Ratio. The Received Announcements Ratio is calculated as the number of unique messages received by a single vehicle divided by total number of unique messages sent by all vehicles. The Y-axis is the average value between all vehicles.}%
 	\label{fig:Evaluation-ReceivedAnnouncements}%
 \end{figure}
+
+
 
 \subsection{Average Vehicle Speed, Number of jammed vehicles and Total time in jam}
 
@@ -678,6 +729,8 @@ Anyway, the fact that these output values show better traffic flow with increase
 	\label{fig:Evaluation-JamTime}%
 \end{figure}
 
+
+
 \subsection{Latency}
 
 \cref{fig:Evaluation-NumberOfVehicles-Latency-NA} and \cref{fig:Evaluation-AccidentProbability-Latency-NA} show the average end-to-end latency of the jamming announcements. \cref{fig:Evaluation-NumberOfVehicles-Hops-NA} and \cref{fig:Evaluation-AccidentProbability-Hops-NA} represent an additional output value that is used to show how heavily the latency depends on the number of hops. The latency lines' shape can be explained by the fact that only successful transmissions are considered. When there are no drones on the scene, the majority of messages are only delivered between vehicles being close to each other and on the same street. This leads to a very small number of hops and therefore to minimal latency. When drones are introduced in small numbers, there is a much larger chance for a message to leave a street and to be transmitted to other streets. But, since there are not enough drones to communicate with each other, their contribution to coverage is relatively small. In this case the vehicles need to add many more rebroadcasts in order to the message to be "caught" by another drone or a vehicle. This leads to significant increase in the number of hops and, therefore, to increase in latency. When the number of drones starts to increase, there is more and more communication possibilities between them, which reduces the number of hops (because drones can transmit messages through much larger space with less rebroadcasts) and, therefore, the latency.
@@ -706,6 +759,8 @@ When number of drones is 50 and higher, the latency and number of hops start to 
 	\label{fig:Evaluation-Latency}%
 \end{figure}
 
+
+
 \subsection{Busy time ratio}
 
 \cref{fig:Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA} shows how busy time ratio depends on the number of vehicles and number of drones. It is clearly seen that busy time ratio rises with both increase in the number of drones and increase in the number of vehicles. Basically, the more nodes are there in the network, the more busy the transmission medium will be. Busy time ratio is almost zero when there are no drones, which indicates that there is almost no communication between the vehicles, if drones are not present. Definitely, the buildings block the broadcasts too much. The busy time ratio is at maximum for all Number of Vehicles values when the Number of Drones is maximal (100).
@@ -727,6 +782,8 @@ Across all input parameters, the busy time ratio is always much smaller than 1. 
 	\label{fig:Evaluation-ChannelBusyTimeRatio}%
 \end{figure}
 
+
+
 \section{Drone flight altitude}
 
 \TODO{Selection of drone flight altitude}
@@ -735,7 +792,9 @@ In addition to the main experiments I have also conducted a separate simulation 
 
 Simulation setup is the same as earlier, but number of vehicles and number of drones is fixed to 60 (average across all simulations). Accident probability set to 0.3. The resulting dependencies can be seen on \cref{fig:Evaluation-DroneHeight}.
 
-In my setup drones cannot fly lower than \SI{50}{\meter}, because this is the maximum height of a building and collision avoidance is not implemented. Therefore the experiment's minimum start at \SI{50}{\meter}. \cref{fig:Evaluation-DroneHeight-ReceivedAnnouncements} shows that maximum connectivity is reached at \SIrange{150}{250}{\meter}. Two main factors have influence of drone efficiency here: buildings and transmission power.  Building block signals more when drones fly low, therefore the line rises at the start with increase in altitude. At some point the increase in height stops providing more benefit, this happens around \SI{150}{\meter}. Then the second factor starts to play role. Increasing flight height leads to increase in distance between drones and vehicles. After height of \SI{300}{\meter} the transmission power influence becomes significant, leading to rapid worsening in connectivity. Additionally, \cref{fig:Evaluation-DroneHeight-JammedNumber} shows number of jammed vehicles dependency from drone altitude. This dependency is consistent with received announcement ratio: situation is the best when drones fly in range \SIrange{150}{200}{\meter}. In conclusion, it is clear that in my scenario the best efficiency of drones is achieved in range \SIrange{150}{350}{\meter}, with peak at \SIrange{150}{200}{\meter}. In the main part of the experiment the drone height parameter is set to \SIrange{200}{250}{\meter} (see \cref{tab:simulationparams}), which is inside this best case range.
+In my setup drones cannot fly lower than \SI{50}{\meter}, because this is the maximum height of a building and collision avoidance is not implemented. Therefore the experiment's minimum start at \SI{50}{\meter}. \cref{fig:Evaluation-DroneHeight-ReceivedAnnouncements} shows that maximum connectivity is reached at \SIrange{150}{350}{\meter}. Two main factors have influence of drone efficiency here: buildings and transmission power.  Building block signals more when drones fly low, therefore the line rises at the start with increase in altitude. At some point the increase in height stops providing more benefit, this happens around \SI{150}{\meter}. Then the second factor starts to play role. Increasing flight height leads to increase in distance between drones and vehicles. After height of \SI{300}{\meter} the transmission power influence becomes significant, leading to rapid worsening in connectivity. Additionally, \cref{fig:Evaluation-DroneHeight-JammedNumber} shows number of jammed vehicles dependency from drone altitude. This dependency is consistent with received announcement ratio: situation is the best when drones fly in range \SIrange{150}{350}{\meter}. When the altitude reaches \SI{600}{\meter} the drones loose any ability to communicate with the vehicles, which is clearly visible on the plots. 
+
+In conclusion, it is clear that in my scenario the best efficiency of drones is achieved in range \SIrange{150}{350}{\meter}, with peak at \SIrange{150}{200}{\meter}. In the main part of the experiment the drone height parameter is set to \SIrange{150}{200}{\meter} (see \cref{tab:simulationparams}), which is inside this best case range.
 
 \begin{figure}%
 	\centering
