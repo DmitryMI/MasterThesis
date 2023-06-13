@@ -90,7 +90,9 @@ Gleicher Text (sinngemäß, nicht wörtlich) in Deutsch
 \acresetall
 
 \cleardoublepage
+\setcounter{tocdepth}{1}
 \tableofcontents
+
 \TODO{The table of contents should fit on one page. When in doubt, adjust the \texttt{tocdepth} counter.}
 
 \cleardoublepage
@@ -628,7 +630,7 @@ Simulation runs were divided into two groups: Number Of Vehicles Evaluation grou
         \toprule
         Parameter & Start & Stop & Step \\
         \midrule
-		Number of vehicles & 20 & 100 & 25 \\
+		Number of vehicles & 25 & 100 & 25 \\
 		Number of drones & 0 & 100 & 25 \\
 		Accident probability & 0.3 & - & - \\
         \bottomrule
@@ -786,15 +788,13 @@ Across all input parameters, the busy time ratio is always much smaller than 1. 
 
 \section{Drone flight altitude}
 
-\TODO{Selection of drone flight altitude}
-
 In addition to the main experiments I have also conducted a separate simulation to determine the optimal flight altitude for the drones. The results will also justify the selection of values for this parameter in the main part (see \cref{tab:simulationparams}).
 
 Simulation setup is the same as earlier, but number of vehicles and number of drones is fixed to 60 (average across all simulations). Accident probability set to 0.3. The resulting dependencies can be seen on \cref{fig:Evaluation-DroneHeight}.
 
 In my setup drones cannot fly lower than \SI{50}{\meter}, because this is the maximum height of a building and collision avoidance is not implemented. Therefore the experiment's minimum start at \SI{50}{\meter}. \cref{fig:Evaluation-DroneHeight-ReceivedAnnouncements} shows that maximum connectivity is reached at \SIrange{150}{350}{\meter}. Two main factors have influence of drone efficiency here: buildings and transmission power.  Building block signals more when drones fly low, therefore the line rises at the start with increase in altitude. At some point the increase in height stops providing more benefit, this happens around \SI{150}{\meter}. Then the second factor starts to play role. Increasing flight height leads to increase in distance between drones and vehicles. After height of \SI{300}{\meter} the transmission power influence becomes significant, leading to rapid worsening in connectivity. Additionally, \cref{fig:Evaluation-DroneHeight-JammedNumber} shows number of jammed vehicles dependency from drone altitude. This dependency is consistent with received announcement ratio: situation is the best when drones fly in range \SIrange{150}{350}{\meter}. When the altitude reaches \SI{600}{\meter} the drones loose any ability to communicate with the vehicles, which is clearly visible on the plots. 
 
-In conclusion, it is clear that in my scenario the best efficiency of drones is achieved in range \SIrange{150}{350}{\meter}, with peak at \SIrange{150}{200}{\meter}. In the main part of the experiment the drone height parameter is set to \SIrange{150}{200}{\meter} (see \cref{tab:simulationparams}), which is inside this best case range.
+In conclusion, it is clear that in my scenario the best efficiency of drones is achieved in range \SIrange{150}{350}{\meter}, with peak at \SIrange{200}{250}{\meter}. In the main part of the experiment the drone height parameter is set to \SIrange{150}{200}{\meter} (see \cref{tab:simulationparams}), which is inside this best case range.
 
 \begin{figure}%
 	\centering
@@ -808,6 +808,16 @@ In conclusion, it is clear that in my scenario the best efficiency of drones is 
 
 
 \chapter{Conclusion}
+
+In this work I have developed a software simulation of a \ac{DAVN} and investigated the drones' impact on the vehicle traffic flow in a dense urban environment. In my scenario, the drones help to spread jam announcement message among the vehicles in order to enable them to change their routes to avoid the jams. The drones fly opportunistically and rebroadcast messages, received from vehicles or other drones, enabling multi-hop broadcasts. To evaluate the traffic flow improvements, some vehicles break down and broadcast a jamming announcement, which is rebroadcast be other vehicles and drones. The simulation was conducted as parametric studies with input parameters like number of drones, number of vehicles, accident probability. The effect was measured using output values like number of jammed vehicles, average vehicle speed, time spent in jam, etc.
+
+Broadcast storm suppression techniques were discussed and used in my work. Broadcast storm suppression effectiveness was confirmed experimentally using channel busy time ratio output value.
+
+My project added 3D visualization capability for debugging and visual assessment of simulation flow.
+
+The results show that drones can significantly improve network connectivity and, subsequently, the traffic flow. The drones fly above the buildings making them become less of a problem for radio communication. However, it was shown experimentally, that the drone's effect varies significantly depending on flight height, number of broken vehicles, number of drones and number of vehicles present on the area of interest. In best case (100 drones, 100 vehicles, 30\% broken vehicles), covered by the simulations, the drones can reduce number of jammed vehicles down by 42\%. This effect is expected to be even more significant with further increase in number of vehicles and drones.
+
+In future it would be possible to investigate more advanced \ac{DAVN} architectures (e.g. with specialized drone roles), interaction with roadside infrastructure or existing cellular networks. Also sophisticated drone-placements or path-finding algorithms could be investigated.
 
 \cleardoublepage
 
