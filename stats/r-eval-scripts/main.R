@@ -44,8 +44,8 @@ get_itervars_join <- function(itervars_table, prefix1, prefix2){
 }
 
 # input_path_default <- "../../hpc/eval/Evaluation-NumberOfVehicles.csv"
-# input_path_default <- "../eval/Evaluation-NumberOfVehicles-10.csv"
-input_path_default <- "../../hpc/eval/Evaluation-DroneHeight.csv"
+input_path_default <- "../eval/Evaluation-NumberOfVehicles-10.csv"
+# input_path_default <- "../../hpc/eval/Evaluation-DroneHeight.csv"
 
 option_list = list(
   make_option(c("-i", "--collected_csv"), type="character", default=input_path_default, help="Path to collected CSV file", metavar="character"),
@@ -96,7 +96,7 @@ received_and_jammed_table <- sqldf(received_and_jammed_query)
 
 # Jamed DIV Received
 itervars_str <- get_itervars_str(itervars_table)
-received_div_jammed_query <- stringr::str_interp("SELECT (ReceivedAnnouncements / JammedNumber) as ReceivedDivJammed, ${itervars_str} FROM received_and_jammed_table")
+received_div_jammed_query <- stringr::str_interp("SELECT (ReceivedAnnouncements / JammedNumber * 100) as ReceivedDivJammed, ${itervars_str} FROM received_and_jammed_table")
 print(received_div_jammed_query)
 received_div_jammed_table <- sqldf(received_div_jammed_query)
 # print(received_div_jammed_table)
@@ -158,7 +158,7 @@ if (! is.null(drone_height_min))
 {
   pdf_name <- paste(opp_config_name, "-ReceivedAnnouncements-", time, ".pdf", sep="")
   pdf(file.path(output_dir, pdf_name))
-  plot_drone_height(received_div_jammed_table, ReceivedDivJammed, "Received Announcements Ratio")
+  plot_drone_height(received_div_jammed_table, ReceivedDivJammed, "Received Announcements Ratio", unit_name = "%")
   dev.off()
   
   pdf_name <- paste(opp_config_name, "-JamTime-", time, ".pdf", sep="")
@@ -205,7 +205,7 @@ if (! is.null(drone_height_min))
   
   pdf_name <- paste(opp_config_name, "-ReceivedAnnouncements-", time, ".pdf", sep="")
   pdf(file.path(output_dir, pdf_name))
-  plot_default(received_div_jammed_table, ReceivedDivJammed, param1_values, param2_values, "Received Announcements Ratio")
+  plot_default(received_div_jammed_table, ReceivedDivJammed, param1_values, param2_values, "Received Announcements Ratio", unit_name = "%")
   dev.off()
   
   pdf_name <- paste(opp_config_name, "-JamTime-", time, ".pdf", sep="")

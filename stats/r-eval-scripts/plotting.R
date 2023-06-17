@@ -75,6 +75,7 @@ plot_default <- function(data_table, y_id, param1_values, param2_values, y_label
         
         multiline_plot <- ggplot(data = data_slice2, mapping = map) + geom_line() + geom_point() +
           scale_linetype_discrete(name = param2_name, breaks = param2_vec) + scale_shape_discrete(name = param2_name, breaks = param2_vec) + theme
+        multiline_plot <- multiline_plot + expand_limits(x = 0, y = 0)
       }
       else{
         multiline_plot <- multiline_plot + geom_line(data = data_slice2) + geom_point(data = data_slice2)
