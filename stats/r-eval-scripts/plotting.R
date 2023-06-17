@@ -28,8 +28,9 @@ plot_drone_height <- function(data_table, y_id, y_label = NULL, unit_name = NULL
   plot(singleline_plot)
 }
 
-plot_default <- function(data_table, y_id, param1_values, param2_values, y_label = NULL, unit_name = NULL, x_label = "Number of Drones"){
+plot_default <- function(data_table, y_id, param1_values, param2_values, y_label = NULL, unit_name = NULL, x_label = "Number of Drones", y_limits = NULL, legend_position = c(0.8, 0.2)){
   print("Drawing...")
+  point_size <- 3
   
   y_name = deparse(substitute(y_id))
   param1_name = names(param1_values)[1]
@@ -59,26 +60,32 @@ plot_default <- function(data_table, y_id, param1_values, param2_values, y_label
       data_slice2 <- sqldf(query_slice2)
       if (is.null(multiline_plot)){
         
-        legend_background <- element_rect(fill=alpha("lightblue", 0.3), size=0.2, linetype="solid", colour ="darkblue")
+        # legend_background <- element_rect(fill=alpha("lightblue", 0.3), size=0.2, linetype="solid", colour ="darkblue")
+        legend_background <- element_blank()
         panel_background <- element_blank()
         axis_line = element_line(colour = "black")
         panel_grid_major = element_blank()
         panel_grid_minor = element_blank()
         
         theme <- theme(
-          legend.position = c(0.8, 0.2),
+          legend.position = legend_position,
           legend.background = legend_background,
           panel.background = panel_background,
           axis.line = axis_line,
           panel.grid.major = panel_grid_major, panel.grid.minor = panel_grid_minor
           )
         
-        multiline_plot <- ggplot(data = data_slice2, mapping = map) + geom_line() + geom_point() +
+        multiline_plot <- ggplot(data = data_slice2, mapping = map) + geom_line() + geom_point(size = point_size) +
           scale_linetype_discrete(name = param2_name, breaks = param2_vec) + scale_shape_discrete(name = param2_name, breaks = param2_vec) + theme
         multiline_plot <- multiline_plot + expand_limits(x = 0, y = 0)
+        multiline_plot <- multiline_plot + scale_x_discrete(limits = c(0, 25, 50, 75, 100))
+        if(! is.null(y_limits))
+        {
+          multiline_plot <- multiline_plot + scale_y_discrete(limits = y_limits)
+        }
       }
       else{
-        multiline_plot <- multiline_plot + geom_line(data = data_slice2) + geom_point(data = data_slice2)
+        multiline_plot <- multiline_plot + geom_line(data = data_slice2) + geom_point(data = data_slice2, size = point_size)
       }
 
       if (!is.null(y_label))

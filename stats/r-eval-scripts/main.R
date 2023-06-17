@@ -205,27 +205,27 @@ if (! is.null(drone_height_min))
   
   pdf_name <- paste(opp_config_name, "-ReceivedAnnouncements-", time, ".pdf", sep="")
   pdf(file.path(output_dir, pdf_name))
-  plot_default(received_div_jammed_table, ReceivedDivJammed, param1_values, param2_values, "Received Announcements Ratio", unit_name = "%")
+  plot_default(received_div_jammed_table, ReceivedDivJammed, param1_values, param2_values, "Received Announcements Ratio", unit_name = "%", y_limits = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100))
   dev.off()
   
   pdf_name <- paste(opp_config_name, "-JamTime-", time, ".pdf", sep="")
   pdf(file.path(output_dir, pdf_name))
-  plot_default(jam_time_table, TotalTimeInJam, param1_values, param2_values, "Jam Time", "s")
+  plot_default(jam_time_table, TotalTimeInJam, param1_values, param2_values, "Jam Time", "s", legend_position = c(0.8, 0.6))
   dev.off()
   
   pdf_name <- paste(opp_config_name, "-JammedNumber-", time, ".pdf", sep="")
   pdf(file.path(output_dir, pdf_name))
-  plot_default(jammed_by_itervars_avg_table, JammedNumber, param1_values, param2_values, "Jammed Vehicles")
+  plot_default(jammed_by_itervars_avg_table, JammedNumber, param1_values, param2_values, "Jammed Vehicles", legend_position = c(0.8, 0.9))
   dev.off()
   
   pdf_name <- paste(opp_config_name, "-VehicleSpeed-", time, ".pdf", sep="")
   pdf(file.path(output_dir, pdf_name))
-  plot_default(speed_table, Speed, param1_values, param2_values, "Vehicle Speed", "m/s")
+  plot_default(speed_table, Speed, param1_values, param2_values, "Vehicle Speed", "m/s", legend_position = c(0.8, 0.4))
   dev.off()
   
   pdf_name <- paste(opp_config_name, "-ChannelBusyTimeRatio-", time, ".pdf", sep="")
   pdf(file.path(output_dir, pdf_name))
-  plot_default(busytime_table, busyTime, param1_values, param2_values, "Channel Busy Time Ratio")
+  plot_default(busytime_table, busyTime, param1_values, param2_values, "Channel Busy Time Ratio", legend_position = c(0.2, 0.8))
   dev.off()
   
   pdf_name <- paste(opp_config_name, "-Latency-", time, ".pdf", sep="")
