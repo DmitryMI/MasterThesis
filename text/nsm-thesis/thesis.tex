@@ -166,8 +166,6 @@ In my scenario, I will use different \emph{R} values for vehicles and drones. On
 
 \section {Related Work}
 
-\FIXME{Talk about DAVNs in general or focus on works, similar to mine?}
-
 \acp{DAVN} are already known in literature, however the proposed purpose and role of drones differ from work to work. \textcite{shi2018drone} propose an architecture for a \ac{DAVN} and provide experimental proof that drones can improve networking between the vehicles. In particular, the authors show improved communication throughput and delay. The authors discuss different drone roles, use cases for \acp{DAVN} and three types of \ac{DAVN}: Drone Swarm Network, Drone Assisted \ac{V2I} and Drone Assisted \ac{V2V}. The \ac{V2I} type describes how drones can assist in expanding the coverage of preexisting infrastructure. In my work I do not implement any type of infrastructure. The proposed drone-swarming architecture describes \ac{D2D} links used by drones to avoid collisions and calculate safe flying paths. The last one, Drone Assisted \ac{V2V}, is closely related to my project. The authors explain, that in Drone Assisted \ac{V2V} the drones try to maintain the \ac{LOS} with the vehicles in order to assist with message broadcasting. The drones relay messages from vehicles to other drones and vehicles. The architecture is somewhat similar to mine, however, my work differs in the simulation setup, used software and goals. At first, \textcite{shi2018drone} use a static pre-generated traffic flow using PTV VISSIM. In my work another traffic simulator (SUMO) is used and the routes are dynamic. Since I am trying to evaluate, how the drones can assist in improving the traffic flow, my vehicles can regenerate and change the routes according to incoming information. Second, in the scenario of \textcite{shi2018drone} the authors use a long straight bi-directional highway. In contrast, I use a road grid with dense urban environment. Third, I use OMNeT++ as a network simulator, when they use \ac{NS-2}. \textcite{shi2018drone} use the simulation to evaluate the improvement of networking, but my main goal is to check, how drones help to avoid traffic jams in an environment, where \ac{V2V} communications are highly obstructed.
 
 \textcite{peng2021edge} propose an architecture, where drones are used to assist in computations, needed for autonomous vehicles. The authors argue, that an AI-based resource management system can dynamically allocate drones to areas, where a demand for computational power is high. The authors also conduct a case-study to demonstrate the performance of applying AI technologies in resource management. Another work focusing on similar issue is \textcite{Wu2020Caching}. In this work the authors propose a technique allowing drones to be used as caches for heavy data. This technique tries to adjust the drones' locations in order to solve the problems of content placement and delivery.
@@ -180,7 +178,7 @@ A couple of works focus on connecting the \acp{DAVN} to another networks. For ex
 
 \textcite{Oubbati2021Dispatch} explores the improvements that drones can give to \ac{VANET} networking and proposes an algorithm to dispatch drones to cover maximum area. Interesting here is that the authors focus on urban environment, but, in contrast to my work, evaluate networking performance, coverage and energy consumption. Another example of work, using urban environment is \textcite{Oubbati2016intersection}. In this work the authors propose a drone-placement algorithm that improves routing performance and network connectivity in urban intersections. \textcite{OUBBATI201793} works on similar issue, again exploring routing protocols in urban \acp{VANET} and improve the protocol, proposed in \cite{Oubbati2016intersection}.
 
-
+I have listed multiple current works above, and none on them explore the possibility of drones improving the traffic flow. Although, the field of \acp{DAVN} is rapidly developing, it seems like there is little research is done of this particular scenario. Therefore I hope that my work will be a good contribution to this field of study. In my work, I will explore this area and show experimental evidence that drones can help with improving the traffic. The results of my work hopefully can serve as an additional reason to research and develop \acp{DAVN} more actively.
 
 \section {Simulation Software}
 
@@ -559,8 +557,6 @@ For parametric studies the following input parameters were selected:
 	\item \textbf{Channel busy time ratio} - Average value of each vehicle's and each drone's busy time ratios.
 \end{itemize}
 
-\TODO{Radio parameters - noise floor?}
-
 \begin{table}
     \centering
     \begin{tabular}{rlcl}
@@ -606,7 +602,7 @@ The following data was selected as the output to be analyzed:
 	
 	\item \textbf{Time of a vehicle being stuck in a jam} - average time of each vehicle being in a jam.
 	
-	\item \textbf{Channel busy time ratio} - Average value of each vehicle's and each drone's busy time ratios.
+	\item \textbf{Channel busy time ratio} - Average value of each vehicle's and each drone's busy time ratios. Each vehicle's and drone's \ac{NIC} considers the channel as busy, if the signal strength is above some threshold, no matter who is transmitting. This threshold value is determined by Veins' model.
 
 	\item \textbf{End-to-end latency of broadcasts} - Average time it takes for a jamming announcement to reach a vehicle. Only successful transmissions are considered.
 
@@ -638,8 +634,6 @@ Simulation runs were divided into two groups: Number Of Vehicles Evaluation grou
     \caption{Parametric studies: parameter ranges for Number of Vehicles Evaluation group of simulations}
     \label{tab:inputrange1}
 \end{table}
-
-\FIXME {Recheck the Number of Vehicles in \cref{tab:inputrange1}}
 
 \begin{table}
     \centering
@@ -761,8 +755,6 @@ When number of drones is 50 and higher, the latency and number of hops start to 
 	\label{fig:Evaluation-Latency}%
 \end{figure}
 
-
-
 \subsection{Busy time ratio}
 
 \cref{fig:Evaluation-NumberOfVehicles-ChannelBusyTimeRatio-NA} shows how busy time ratio depends on the number of vehicles and number of drones. It is clearly seen that busy time ratio rises with both increase in the number of drones and increase in the number of vehicles. Basically, the more nodes are there in the network, the more busy the transmission medium will be. Busy time ratio is almost zero when there are no drones, which indicates that there is almost no communication between the vehicles, if drones are not present. Definitely, the buildings block the broadcasts too much. The busy time ratio is at maximum for all Number of Vehicles values when the Number of Drones is maximal (100).
@@ -770,9 +762,11 @@ When number of drones is 50 and higher, the latency and number of hops start to 
 \cref{fig:Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA} shows how busy time ratio depends on the number of drones and accident probability.
 Busy time ratio increases with both increase in the number of drones and increase in accident probability. Busy time ratio increases with accident probability for a simple reason: if more vehicles are broken, then there are more messages transmitted.
 
-Across all input parameters, the busy time ratio is always much smaller than 1. This indicates that the transmission medium is free most of the time. Therefore I can state that the broadcast storm problem is solved in my simulation.
+There is a noticeable non-linearity, which appears on both figures when Number of Drones crosses 25. After this point the dependency is almost linear. However, the slope is more easy to the left of this point and more steep to the right. This possibly happens due to too large step in number of drones parameter. As it was discussed earlier, when there are too few drones, their coverage and, therefore, impact is too small. There probably is some minimal drone number that is required for their effect on network connectivity to become consistent, but this threshold is not visible on the figures, because it is somewhere between 0 drones and 25 drones. Search for this possible point was left out the scope of this work.
 
-\FIXME{Check definition of Busy Time!}
+Nevertheless, the most important observation here is that across all input parameters, the busy time ratio is always much smaller than 1. This indicates that the transmission medium is free most of the time. Therefore I can state that the broadcast storm problem is solved in my simulation.
+
+
 
 \begin{figure}%
 	\centering
@@ -780,7 +774,7 @@ Across all input parameters, the busy time ratio is always much smaller than 1. 
 	\hfill
 	\subfloat[Number of Vehicles = 60]{\label{fig:Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA}\includegraphics[width=0.8\textwidth]{figures/Evaluation-AccidentProbability-ChannelBusyTimeRatio-NA.pdf}}
 	\hfill
-	\caption{Average Channel Busy Time Ratio. Busy time ratio is the time, while the antenna is receiving or broadcasting divided by the simulation time. Both vehicles and drones are considered.}%
+	\caption{Average Channel Busy Time Ratio. Busy time ratio is the time, when the signal strength on the \ac{NIC} is above some threshold. Both vehicles and drones are considered.}%
 	\label{fig:Evaluation-ChannelBusyTimeRatio}%
 \end{figure}
 

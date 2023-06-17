@@ -77,7 +77,7 @@
 > Add Software versions
 > Maybe remove fields from UMLS
 > Maybe change UMLs to "inclusion diagram"
-~ Redraw not my own pictures
++ Redraw not my own pictures
 + Add hop counter
 
 Plotting:	
@@ -91,5 +91,14 @@ Plotting:
 Text:
 	+ Figure captions UNDER the picture (change the order of \caption command!)
 	> ALWAYS REFERENCE A FIGURE FROM THE TEXT!
-	~ Related work: what is new in my work
-		~ Whats is the current state of the art
+	+ Related work: what is new in my work
+		
+Eval comments:
+	~ Plot origin to bottom-left corner exactly
+	+ use percentages for Y on ReceivedAnnouncements
+	~ Add 100% percentage
+	+ Legend: remove background
+	+ Increase line marker sizes
+	~ Move legend to empty space
+	+ Busy time ratio - change of slope explaination.
+	+ Busy time - time when signal strength is higher than threshould (-65 dbm?), no matter who is transmitting
