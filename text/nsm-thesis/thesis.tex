@@ -617,6 +617,8 @@ Then number of vehicles is fixed, this parameter is set to 60. This is simply a 
 
 Accident probability is 0.3 for simulations, where this parameter is fixed. Of course, in reality the chance of a vehicle to break down is much smaller. This value was selected to compensate the small number of vehicles. At the same time, 0.3 is still low enough, so that the majority of vehicles will drive freely and listen for jamming announcements. For parametric studies of accident probability, the range from 0.2 to 0.6 was selected. Again, too low values will not make any sense with only 100 vehicles. 0.6 as maximum makes the majority of vehicles to break down, but there are still enough vehicles to participate in normal activity. Step for accident probability parameter is 0.2 again is a trade-off between accuracy and computation time.
 
+In all cases the simulations are repeated 1000 times each in order to get more statistically correct results. This value is good enough to remove most unexpected artifacts from the resulting plots and it is still results in tolerable simulation time. Further increase in number of repetitions seems unnecessary for me.
+
 \begin{table}
     \centering
     \begin{tabular}{rlcl}
@@ -782,6 +784,9 @@ In addition to the main experiments I have also conducted a separate simulation 
 Simulation setup is the same as earlier, but number of vehicles and number of drones is fixed to 60 (average across all simulations). Accident probability set to 0.3. The resulting dependencies can be seen on \cref{fig:Evaluation-DroneHeight}.
 
 In my setup drones cannot fly lower than \SI{50}{\meter}, because this is the maximum height of a building and collision avoidance is not implemented. Therefore the experiment's minimum start at \SI{50}{\meter}. \cref{fig:Evaluation-DroneHeight-ReceivedAnnouncements} shows that maximum connectivity is reached at \SIrange{150}{350}{\meter}. Two main factors have influence of drone efficiency here: buildings and transmission power.  Building block signals more when drones fly low, therefore the line rises at the start with increase in altitude. At some point the increase in height stops providing more benefit, this happens around \SI{150}{\meter}. Then the second factor starts to play role. Increasing flight height leads to increase in distance between drones and vehicles. After height of \SI{300}{\meter} the transmission power influence becomes significant, leading to rapid worsening in connectivity. Additionally, \cref{fig:Evaluation-DroneHeight-JammedNumber} shows number of jammed vehicles dependency from drone altitude. This dependency is consistent with received announcement ratio: situation is the best when drones fly in range \SIrange{150}{350}{\meter}. When the altitude reaches \SI{600}{\meter} the drones loose any ability to communicate with the vehicles, which is clearly visible on the plots. 
+
+At around \SIrange{250}{300}{\meter} there is small temporal decrease in connectivity, which is also visible on number of jammed vehicles plot.
+The exact reason for this is unknown and further exploration was left out of scope of this work.
 
 In conclusion, it is clear that in my scenario the best efficiency of drones is achieved in range \SIrange{150}{350}{\meter}, with peak at \SIrange{200}{250}{\meter}. In the main part of the experiment the drone height parameter is set to \SIrange{150}{200}{\meter} (see \cref{tab:simulationparams}), which is inside this best case range.
 
