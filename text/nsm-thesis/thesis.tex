@@ -583,10 +583,11 @@ For parametric studies the following input parameters were selected:
 		\hline
 		Simulation time & - & \SI{600}{\second} & - \\
 		Warm-up period & - & \SI{10}{\second} & - \\
+		Repetitions & - & 1000 & - \\
 		
         \bottomrule
     \end{tabular}
-    \caption{Static simulation parameters (shared between simulations). Const column means that this value is constant (non-random). Min-Max columns show that this value varies between Minimum and Maximum. Vehicle- and Drone- \ac{ATR} is the estimated average range of communication needed by weighted p-persistence algorithm. Min power level - minimum receive power needed for a message to be decoded. TX-Power - transmission power. Radio parameters apply for both vehicles and drones. Building wall attenuation determines how much the signal is attenuated per one wall intersection. Building internal attenuation determines how much the signal is attenuated per one meter going through the building.}
+    \caption{Static simulation parameters (shared between simulations). Const column means that this value is constant (non-random). Min-Max columns show that this value varies between Minimum and Maximum. Vehicle- and Drone- \ac{ATR} is the estimated average range of communication needed by weighted p-persistence algorithm. Min power level - minimum receive power needed for a message to be decoded. TX-Power - transmission power. Radio parameters apply for both vehicles and drones. Building wall attenuation determines how much the signal is attenuated per one wall intersection. Building internal attenuation determines how much the signal is attenuated per one meter going through the building. Repetitions - is the number of simulations conducted for each input parameter combination.}
     \label{tab:simulationparams}
 \end{table}
 
@@ -619,6 +620,14 @@ The following data was selected as the output to be analyzed:
 \section{Results}
 
 Simulation runs were divided into two groups: Number Of Vehicles Evaluation group and Accident Probability Evaluation group. In the first group the Accident Probability was fixed and the simulations received two variables: Number of Vehicles and Number of Drones. In the second group the Number of Vehicles was fixed, the varying part consisted of Accident Probability and Number Of Drones. \cref{tab:inputrange1} and \cref{tab:inputrange2} show the range of values, used in these two cases respectively.
+
+Minimal number of vehicles is 25 because the simulation has no sense when there are no vehicles on the scene or this number is very low. It will be shown later, that at number of vehicles equal to 25 the effect of drones is very small, but noticeable. Therefore 25 was selected as the minimal value. Ideally, maximal number of vehicles should be as high as possible, but there are computational limitations. 100 was selected as a maximum, because all effects-of-interest are well seen at this number and computation time is still tolerable. The step is 25 as a trade-off between accuracy and computation time. The same considerations apply to the number of drones, except the minimal number is set to 0 in order to also observe the simulation without drones at all.
+
+Then number of vehicles is fixed, this parameter is set to 60. This is simply a roughly average between minimum and maximum values of number of vehicles. This value is enough to show the effects of drones.
+
+Accident probability is 0.3 for simulations, where this parameter is fixed. Of course, in reality the chance of a vehicle to break down is much smaller. Therefore this value was selected to compensate the small number of vehicles. At the same time, 0.3 is still low enough, so that the majority of vehicles will drive freely and listen for jamming announcements. For parametric studies of accident probability, the range from 0.2 to 0.6 was selected. Again, too low values will not make any sense with only 100 vehicles. 0.6 as maximum makes the majority of vehicles to break down, but there are still enough vehicles to participate in normal activity. Step for accident probability parameter is 0.2 again is a trade-off between accuracy and computation time.
+
+Accident 
 
 \begin{table}
     \centering
@@ -660,8 +669,6 @@ I chose this metric as the metric to start with because it shows, how drones con
 \cref{fig:Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA} shows how Received Announcements Ratio depends on the Number of Drones and Number of Vehicles. This figure depicts 4 subplots for 4 different Number of Vehicles values. The figure includes points when Number of Drones is 0. This means that the simulation contains only vehicles. The ratio is minimal in this case. The ratio increases almost linearly with increase in number of drones until the number reaches 50 with ratio being between 0.59 and 0.75 (depending on Number of Vehicles). The increase is slowed down after that, reaching around 0.8 in all cases. The slowdown can be explained by the extra drones becoming more and more redundant. If there are two drones close to each other, their contribution is roughly the same and these drones can be substituted by only one drone flying in the same place. The ratio can only reach 1 asymptotically, because drones can not overcome all obstructions and other factors, that make the communication difficult.
 
 It can be seen that the difference between subplots is minimal at 0, 75 and 100 drones. The difference is the largest when Number of Drones is at 25 and slightly less at 50. This can be explained in this way: when there is no drones, the vehicles barely communicate with each other because of buildings, no matter how many vehicles there are. When the drones are introduces in small numbers, the messages get a chance to escape the streets and get to another side of buildings. However, the distance between drones is still too large to let them communicate with each other (when number of drones is 25, there is only one drone in a square with \SI{420}{\meter} side). Therefore the ratio strongly depends on the number of vehicles, who can transmit messages along the roads. When the number of drones is 75, there is one drone in a square with \SI{242}{\meter} side. This is enough already for drones to communicate with each other, meaning that the number of vehicles does not contribute as much to the network connectivity.
-
-\TODO{Another interesting feature is that the subplot with Number of Vehicles equal to 20...}
 
 \cref{fig:Evaluation-AccidentProbability-ReceivedAnnouncements-NA} shows how Received Announcements Ratio depends on the Number of Drones and Accident Probability. This figure depicts 3 subplots for 3 different Accident Probability values. The overall figure shape is the same as with the previous one: the ratio increases with increase in the number of drones. The increase is slower at the end of the plot for the same reason, explained above. 
 
