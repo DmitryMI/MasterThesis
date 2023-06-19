@@ -66,17 +66,15 @@
 	+ Results, graphs, discussion.
 		
 	
-> Conclusion
-	> "Drones definitely help"
-	> Future work:
-		> Test different broadcast-suppression techniques
-		> Test another map
-		> Test other flight heights
++ Conclusion
+	+ "Drones definitely help"
+	+ Future work:
+		+ Test different broadcast-suppression techniques
+		+ Test another map
+		+ Test other flight heights
 		
 		
-> Add Software versions
-> Maybe remove fields from UMLS
-> Maybe change UMLs to "inclusion diagram"
+~ Add Software versions
 + Redraw not my own pictures
 + Add hop counter
 
@@ -90,15 +88,15 @@ Plotting:
 	
 Text:
 	+ Figure captions UNDER the picture (change the order of \caption command!)
-	> ALWAYS REFERENCE A FIGURE FROM THE TEXT!
+	~ ALWAYS REFERENCE A FIGURE FROM THE TEXT!
 	+ Related work: what is new in my work
 		
 Eval comments:
-	~ Plot origin to bottom-left corner exactly
+	+ Plot origin to bottom-left corner exactly
 	+ use percentages for Y on ReceivedAnnouncements
-	~ Add 100% percentage
+	+ Add 100% percentage
 	+ Legend: remove background
 	+ Increase line marker sizes
-	~ Move legend to empty space
+	+ Move legend to empty space
 	+ Busy time ratio - change of slope explaination.
 	+ Busy time - time when signal strength is higher than threshould (-65 dbm?), no matter who is transmitting

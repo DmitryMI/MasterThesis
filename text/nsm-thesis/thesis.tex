@@ -108,7 +108,25 @@ Since a real-life experiment will be too expensive and difficult to conduct, I w
 \chapter{Fundamentals}
 \label{sec:fundamentals}
 
-Before the beginning of the work, I will explain the basic terms, technologies and methods that will be used later. I see the Ad-hoc networks as a good starting point.
+Before the beginning of the work, I will explain the basic terms, technologies and methods that will be used later. But first I am going to review available literature to show current state-of-the-art in drone-assisted vehicular vehicles and show what is new in my project.
+
+
+\section {Related Work}
+
+\acp{DAVN} are already known in literature, however the proposed purpose and role of drones differ from work to work. \textcite{shi2018drone} propose an architecture for a \ac{DAVN} and provide experimental proof that drones can improve networking between the vehicles. In particular, the authors show improved communication throughput and delay. The authors discuss different drone roles, use cases for \acp{DAVN} and three types of \ac{DAVN}: Drone Swarm Network, Drone Assisted \ac{V2I} and Drone Assisted \ac{V2V}. The \ac{V2I} type describes how drones can assist in expanding the coverage of preexisting infrastructure. In my work I do not implement any type of infrastructure. The proposed drone-swarming architecture describes \ac{D2D} links used by drones to avoid collisions and calculate safe flying paths. The last one, Drone Assisted \ac{V2V}, is closely related to my project. The authors explain, that in Drone Assisted \ac{V2V} the drones try to maintain the \ac{LOS} with the vehicles in order to assist with message broadcasting. The drones relay messages from vehicles to other drones and vehicles. The architecture is somewhat similar to mine, however, my work differs in the simulation setup, used software and goals. At first, \textcite{shi2018drone} use a static pre-generated traffic flow using PTV VISSIM. In my work another traffic simulator (SUMO) is used and the routes are dynamic. Since I am trying to evaluate, how the drones can assist in improving the traffic flow, my vehicles can regenerate and change the routes according to incoming information. Second, in the scenario of \textcite{shi2018drone} the authors use a long straight bi-directional highway. In contrast, I use a road grid with dense urban environment. Third, I use OMNeT++ as a network simulator, when they use \ac{NS-2}. \textcite{shi2018drone} use the simulation to evaluate the improvement of networking, but my main goal is to check, how drones help to avoid traffic jams in an environment, where \ac{V2V} communications are highly obstructed.
+
+\textcite{peng2021edge} propose an architecture, where drones are used to assist in computations, needed for autonomous vehicles. The authors argue, that an AI-based resource management system can dynamically allocate drones to areas, where a demand for computational power is high. The authors also conduct a case-study to demonstrate the performance of applying AI technologies in resource management. Another work focusing on similar issue is \textcite{Wu2020Caching}. In this work the authors propose a technique allowing drones to be used as caches for heavy data. This technique tries to adjust the drones' locations in order to solve the problems of content placement and delivery.
+
+Many works like \textcite{lin2020novel} focus on analyzing and improving the \ac{VANET} network connectivity using drones. In the cited article the authors propose an algorithm that dispatches the drones to the most appropriate locations in real-time according to the predicted distribution of the vehicles. To show the improvements, the authors conducted simulations, which test the network performance based on the real map data. Another example is \textcite{khabbaz2019modeling}, where the authors seek to analyze and model benefits for vehicular networking performance, derived from using an off-road relays like drones or road-side units. In \textcite{tariq2020imoc} the problem of routing is discussed. The authors try to improve routing performance using an AI-based clustering algorithm in order to provide an optimal route with minimum overhead.
+
+A couple of works focus on connecting the \acp{DAVN} to another networks. For example, \textcite{saputro2018security} propose a mechanism to integrate \ac{DAVN} into existing LTE infrastructure.
+
+\textcite{Khabbaz2021Multihop} investigate a setup similar to mine: the drones opportunistically fly above the vehicles and serve as flying base stations responsible for routing vehicle data. The work discusses how the communications between vehicles can be done using multihop paths connecting source vehicles and drones. However, the goal of their work is to improve the network connectivity, while my goal is to evaluate improvements in traffic flow performance.
+
+\textcite{Oubbati2021Dispatch} explores the improvements that drones can give to \ac{VANET} networking and proposes an algorithm to dispatch drones to cover maximum area. Interesting here is that the authors focus on urban environment, but, in contrast to my work, evaluate networking performance, coverage and energy consumption. Another example of work, using urban environment is \textcite{Oubbati2016intersection}. In this work the authors propose a drone-placement algorithm that improves routing performance and network connectivity in urban intersections. \textcite{OUBBATI201793} works on similar issue, again exploring routing protocols in urban \acp{VANET} and improve the protocol, proposed in \cite{Oubbati2016intersection}.
+
+I have listed multiple current works above, and none on them explore the possibility of drones improving the traffic flow. Although, the field of \acp{DAVN} is rapidly developing, it seems like there is little research is done of this particular scenario. Therefore I hope that my work will be a good contribution to this field of study. In my work, I will explore this area and show experimental evidence that drones can help with improving the traffic. The results of my work hopefully can serve as an additional reason to research and develop \acp{DAVN} more actively.
+
 
 \section{Ad hoc networks}
 
@@ -154,21 +172,7 @@ In my scenario, I will use different \emph{R} values for vehicles and drones. On
 
 
 
-\section {Related Work}
 
-\acp{DAVN} are already known in literature, however the proposed purpose and role of drones differ from work to work. \textcite{shi2018drone} propose an architecture for a \ac{DAVN} and provide experimental proof that drones can improve networking between the vehicles. In particular, the authors show improved communication throughput and delay. The authors discuss different drone roles, use cases for \acp{DAVN} and three types of \ac{DAVN}: Drone Swarm Network, Drone Assisted \ac{V2I} and Drone Assisted \ac{V2V}. The \ac{V2I} type describes how drones can assist in expanding the coverage of preexisting infrastructure. In my work I do not implement any type of infrastructure. The proposed drone-swarming architecture describes \ac{D2D} links used by drones to avoid collisions and calculate safe flying paths. The last one, Drone Assisted \ac{V2V}, is closely related to my project. The authors explain, that in Drone Assisted \ac{V2V} the drones try to maintain the \ac{LOS} with the vehicles in order to assist with message broadcasting. The drones relay messages from vehicles to other drones and vehicles. The architecture is somewhat similar to mine, however, my work differs in the simulation setup, used software and goals. At first, \textcite{shi2018drone} use a static pre-generated traffic flow using PTV VISSIM. In my work another traffic simulator (SUMO) is used and the routes are dynamic. Since I am trying to evaluate, how the drones can assist in improving the traffic flow, my vehicles can regenerate and change the routes according to incoming information. Second, in the scenario of \textcite{shi2018drone} the authors use a long straight bi-directional highway. In contrast, I use a road grid with dense urban environment. Third, I use OMNeT++ as a network simulator, when they use \ac{NS-2}. \textcite{shi2018drone} use the simulation to evaluate the improvement of networking, but my main goal is to check, how drones help to avoid traffic jams in an environment, where \ac{V2V} communications are highly obstructed.
-
-\textcite{peng2021edge} propose an architecture, where drones are used to assist in computations, needed for autonomous vehicles. The authors argue, that an AI-based resource management system can dynamically allocate drones to areas, where a demand for computational power is high. The authors also conduct a case-study to demonstrate the performance of applying AI technologies in resource management. Another work focusing on similar issue is \textcite{Wu2020Caching}. In this work the authors propose a technique allowing drones to be used as caches for heavy data. This technique tries to adjust the drones' locations in order to solve the problems of content placement and delivery.
-
-Many works like \textcite{lin2020novel} focus on analyzing and improving the \ac{VANET} network connectivity using drones. In the cited article the authors propose an algorithm that dispatches the drones to the most appropriate locations in real-time according to the predicted distribution of the vehicles. To show the improvements, the authors conducted simulations, which test the network performance based on the real map data. Another example is \textcite{khabbaz2019modeling}, where the authors seek to analyze and model benefits for vehicular networking performance, derived from using an off-road relays like drones or road-side units. In \textcite{tariq2020imoc} the problem of routing is discussed. The authors try to improve routing performance using an AI-based clustering algorithm in order to provide an optimal route with minimum overhead.
-
-A couple of works focus on connecting the \acp{DAVN} to another networks. For example, \textcite{saputro2018security} propose a mechanism to integrate \ac{DAVN} into existing LTE infrastructure.
-
-\textcite{Khabbaz2021Multihop} investigate a setup similar to mine: the drones opportunistically fly above the vehicles and serve as flying base stations responsible for routing vehicle data. The work discusses how the communications between vehicles can be done using multihop paths connecting source vehicles and drones. However, the goal of their work is to improve the network connectivity, while my goal is to evaluate improvements in traffic flow performance.
-
-\textcite{Oubbati2021Dispatch} explores the improvements that drones can give to \ac{VANET} networking and proposes an algorithm to dispatch drones to cover maximum area. Interesting here is that the authors focus on urban environment, but, in contrast to my work, evaluate networking performance, coverage and energy consumption. Another example of work, using urban environment is \textcite{Oubbati2016intersection}. In this work the authors propose a drone-placement algorithm that improves routing performance and network connectivity in urban intersections. \textcite{OUBBATI201793} works on similar issue, again exploring routing protocols in urban \acp{VANET} and improve the protocol, proposed in \cite{Oubbati2016intersection}.
-
-I have listed multiple current works above, and none on them explore the possibility of drones improving the traffic flow. Although, the field of \acp{DAVN} is rapidly developing, it seems like there is little research is done of this particular scenario. Therefore I hope that my work will be a good contribution to this field of study. In my work, I will explore this area and show experimental evidence that drones can help with improving the traffic. The results of my work hopefully can serve as an additional reason to research and develop \acp{DAVN} more actively.
 
 \section {Simulation Software}
 
@@ -182,15 +186,13 @@ There are multiple network simulators available on the market. A survey, conduct
 \item OMNeT++ \cite[Page~10]{pan2008survey}
 \end{itemize}
 
-The one most suitable for my purposes is the OMNeT++. It is free for academical usage, but the main reason why I chose it is the fact that Veins \cite{Sommer2019} is based on OMNeT++. Veins will be discussed in the next section.
+The one most suitable for my purposes is the OMNeT++. It is free for academical usage, but the main reason why I chose it is the fact that Veins \cite{Sommer2019} is based on OMNeT++. Veins will be discussed in the next section. The exact version of OMNeT++ used in my project is 5.7, however the source code can be easily switched to newer versions like 6.0 with very little changes in code.
 
-According to \textcite[Page~2]{Varga2010}, OMNeT++ is a discrete-event simulator. According to the author, discrete-event simulator simulates a system whose state, defined by the state of all entities of the system, changes only at discrete points in time and the change of state is triggers by the occurrence of an event.
-
-
+According to \textcite[Page~2]{Varga2010}, OMNeT++ is a discrete-event simulator. The authors explain, that a discrete-event simulator simulates a system whose state, defined by the state of all entities of the system, changes only at discrete points in time and the change of state is triggers by the occurrence of an event.
 
 \section {Veins}
 
-In order to simulate a hybrid network of drones and vehicles a network simulator is not enough. A combined solution is needed to create a realistic scenario consisting of vehicles, buildings and drones. The software must implement a combination of a network simulator and a traffic simulator. My solution is based on Veins by \textcite{Sommer2019}.
+In order to simulate a hybrid network of drones and vehicles a network simulator is not enough. A combined solution is needed to create a realistic scenario consisting of vehicles, buildings and drones. The software must implement a combination of a network simulator and a traffic simulator. My solution is based on Veins by \textcite{Sommer2019}. I use Veins version 5.2.
 
 \begin{figure}
   	\centering
@@ -206,6 +208,8 @@ As shown on \ref{fig:veinshighlevel}, Veins uses SUMO by \textcite[Page~218]{sum
 This a suitable solution for my scenario, because I indeed need each vehicle to be an independent object with its own known position. \cref{fig:sumogui} shows a screenshot of SUMO \ac{GUI}.
 
 According to \textcite{traci}, \ac{TraCI} is a protocol, used to interlink road traffic and network simulators. The authors explain, that this protocol permits to control the behavior of vehicles during simulation time, therefore the network simulator can influence the driver's behavior. SUMO exposes \ac{TraCI} endpoints \cite{sumotraci} and Veins connects to them, allowing OMNeT++ user code to simulate \acp{VANET} \cite[Pages~217-218]{Sommer2019}. According to \textcite{Sommer2019}, Veins receives positions of vehicles from SUMO, these positions are later used as positions for network nodes, modeling vehicles in OMNeT++ simulation environment.
+
+In my project I use SUMO version 1.8.0.
 
 \begin{figure}
 	\centering
@@ -247,7 +251,7 @@ Next in my work I will describe the algorithm that calculates the fading of the 
 
 \subsection{OpenSceneGraph}
 
-I would like to emphasize the usage of OpenSceneGraph \cite{osg} as a 3D-rendering tool.  OMNeT++ natively supports OpenSceneGraph \cite{omnetpposg}, therefore \ac{OSG} is the most convenient and easy way to implement a 3D scene in OMNeT++. In this work, I will use 3D visualization for debugging purposes.
+I would like to emphasize the usage of OpenSceneGraph \cite{osg} as a 3D-rendering tool.  OMNeT++ natively supports OpenSceneGraph \cite{omnetpposg} and is shipped with embedded \ac{OSG} build, therefore \ac{OSG} is the most convenient and easy way to implement a 3D scene in OMNeT++. In this work, I will use 3D visualization for debugging purposes.
 
 Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize this class along with my own vehicle-, drone- and building- visualizers.
 
