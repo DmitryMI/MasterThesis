@@ -100,3 +100,4 @@ Eval comments:
 	+ Move legend to empty space
 	+ Busy time ratio - change of slope explaination.
 	+ Busy time - time when signal strength is higher than threshould (-65 dbm?), no matter who is transmitting
+	
