@@ -43,8 +43,8 @@ get_itervars_join <- function(itervars_table, prefix1, prefix2){
   return(result)
 }
 
-# input_path_default <- "../../hpc/eval/Evaluation-NumberOfVehicles.csv"
-input_path_default <- "../eval/Evaluation-NumberOfVehicles-10.csv"
+input_path_default <- "../../hpc/eval/Evaluation-NumberOfVehicles.csv"
+# input_path_default <- "../eval/Evaluation-NumberOfVehicles-10.csv"
 # input_path_default <- "../../hpc/eval/Evaluation-DroneHeight.csv"
 
 option_list = list(
@@ -210,7 +210,7 @@ if (! is.null(drone_height_min))
   
   pdf_name <- paste(opp_config_name, "-JamTime-", time, ".pdf", sep="")
   pdf(file.path(output_dir, pdf_name))
-  plot_default(jam_time_table, TotalTimeInJam, param1_values, param2_values, "Jam Time", "s", legend_position = c(0.8, 0.6))
+  plot_default(jam_time_table, TotalTimeInJam, param1_values, param2_values, "Jam Time", "s", legend_position = c(0.8, 0.2))
   dev.off()
   
   pdf_name <- paste(opp_config_name, "-JammedNumber-", time, ".pdf", sep="")
@@ -220,7 +220,7 @@ if (! is.null(drone_height_min))
   
   pdf_name <- paste(opp_config_name, "-VehicleSpeed-", time, ".pdf", sep="")
   pdf(file.path(output_dir, pdf_name))
-  plot_default(speed_table, Speed, param1_values, param2_values, "Vehicle Speed", "m/s", legend_position = c(0.8, 0.4))
+  plot_default(speed_table, Speed, param1_values, param2_values, "Vehicle Speed", "m/s", legend_position = c(0.8, 0.2))
   dev.off()
   
   pdf_name <- paste(opp_config_name, "-ChannelBusyTimeRatio-", time, ".pdf", sep="")
