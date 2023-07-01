@@ -1,5 +1,6 @@
-plot_drone_height <- function(data_table, y_id, y_label = NULL, unit_name = NULL, x_label = "Drones Altitude Minimum [m]"){
-  map <- aes(x = DroneHeightMin, y = {{ y_id }}, shape = "circle")
+plot_drone_height <- function(data_table, y_id, y_label = NULL, unit_name = NULL, x_label = "Drones Altitude Average [m]"){
+
+  map <- aes(x = DroneHeightAvg, y = {{ y_id }}, shape = "circle")
 
   panel_background <- element_blank()
   axis_line = element_line(colour = "black")

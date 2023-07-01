@@ -43,9 +43,9 @@ get_itervars_join <- function(itervars_table, prefix1, prefix2){
   return(result)
 }
 
-input_path_default <- "../../hpc/eval/Evaluation-NumberOfVehicles.csv"
+# input_path_default <- "../../hpc/eval/Evaluation-NumberOfVehicles.csv"
 # input_path_default <- "../eval/Evaluation-NumberOfVehicles-10.csv"
-# input_path_default <- "../../hpc/eval/Evaluation-DroneHeight.csv"
+input_path_default <- "../../hpc/eval/Evaluation-DroneHeight.csv"
 
 option_list = list(
   make_option(c("-i", "--collected_csv"), type="character", default=input_path_default, help="Path to collected CSV file", metavar="character"),
@@ -141,15 +141,26 @@ if("DroneHeightMin" %in% colnames(received_div_jammed_table))
 {
   drone_height_min <- sqldf("select distinct DroneHeightMin from received_div_jammed_table")
   drone_height_max <- sqldf("select distinct DroneHeightMax from received_div_jammed_table")
+  drone_height_avg <- (drone_height_min$DroneHeightMin + drone_height_max$DroneHeightMax) / 2
+  
+  received_div_jammed_table["DroneHeightAvg"] <- drone_height_avg
+  jam_time_table["DroneHeightAvg"] <- drone_height_avg
+  jammed_by_itervars_avg_table["DroneHeightAvg"] <- drone_height_avg
+  speed_table["DroneHeightAvg"] <- drone_height_avg
+  busytime_table["DroneHeightAvg"] <- drone_height_avg
+  latency_table["DroneHeightAvg"] <- drone_height_avg
+  hops_table["DroneHeightAvg"] <- drone_height_avg
 }else
 {
   drone_height_min = NULL
   drone_height_max = NULL
+  drone_height_avg = NULL
 }
 print(accident_probabilities_values)
 print(number_of_vehicles_values)
 print(drone_height_min)
 print(drone_height_max)
+print(drone_height_avg)
 
 # time <- Sys.time()
 time <- "NA"
