@@ -20,5 +20,5 @@ then
 else
     echo "Cloning repository..."
     cd $CODEBASE_DIR
-    git clone https://DmitryMI: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@github.com/DmitryMI/MasterThesis
+    git clone https://DmitryMI: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@github.com/DmitryMI/MasterThesis
 fi
