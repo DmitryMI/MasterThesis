@@ -4,7 +4,7 @@
 	+ I will check if there is any benifit in connecting drone-net and vehicle-net
 		regarding assistance in urban traffic
 	+ Strategy: real-life experiment too expensive
-		~ Use software-simulation
+		+ Use software-simulation
 	
 ! Fundamentals
 	+ Ad-hoc networks
@@ -33,7 +33,6 @@
 		+ Scheme of drone-module (layers, app, rebroadcaster, etc.)
 		+ Drone Manager and Drone Mobility
 	+ Car module: enhancements
-		> Scheme of Car3d (derived from Veins, however, there are differences)
 	+ BaseApplicationLayer: base class for CarAppl and DroneAppl
 	+ Broadcasting and suppressing Broadcast-storm
 		+ RebroadcastDecider - OMNeT++ layer for abstact rebroadcast decision making
@@ -74,7 +73,7 @@
 		+ Test other flight heights
 		
 		
-~ Add Software versions
++ Add Software versions
 + Redraw not my own pictures
 + Add hop counter
 
@@ -101,3 +100,8 @@ Eval comments:
 	+ Busy time ratio - change of slope explaination.
 	+ Busy time - time when signal strength is higher than threshould (-65 dbm?), no matter who is transmitting
 	
+> Drone altitude minimum -> Drone altitude average
++ Remove German abstact
+! Merge input params and output values
+~ Handing in:
+	https://tu-dresden.de/ing/informatik/studium/beratung/faq/abschlussarbeiten?set_language=en

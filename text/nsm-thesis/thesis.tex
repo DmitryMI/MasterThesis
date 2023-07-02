@@ -68,22 +68,11 @@ The simulation results showed significant improvement in traffic flow in all con
 
 \end{otherlanguage*}
 
-
-\chapter*{Kurzfassung}
-\addcontentsline{toc}{chapter}{Kurzfassung}
-\begin{otherlanguage*}{ngerman}
-
-\TODO{Write short version of the Abstract in German}
-Gleicher Text (sinngemäß, nicht wörtlich) in Deutsch
-
-\end{otherlanguage*}
 \acresetall
 
 \cleardoublepage
 \setcounter{tocdepth}{1}
 \tableofcontents
-
-\TODO{The table of contents should fit on one page. When in doubt, adjust the \texttt{tocdepth} counter.}
 
 \cleardoublepage
 \pagenumbering{arabic}
@@ -205,7 +194,7 @@ In order to simulate a hybrid network of drones and vehicles a network simulator
 
 
 \subsection{SUMO and TraCI}
-As shown on \ref{fig:veinshighlevel}, Veins uses SUMO by \textcite[Page~218]{sumo2018} as a traffic simulator. According to the SUMO developers, SUMO is a microscopic traffic simulator, which means that each vehicle and its dynamics are modeled individually.
+As shown on \cref{fig:veinshighlevel}, Veins uses SUMO by \textcite[Page~218]{sumo2018} as a traffic simulator. According to the SUMO developers, SUMO is a microscopic traffic simulator, which means that each vehicle and its dynamics are modeled individually.
 This a suitable solution for my scenario, because I indeed need each vehicle to be an independent object with its own known position. \cref{fig:sumogui} shows a screenshot of SUMO \ac{GUI}.
 
 According to \textcite{traci}, \ac{TraCI} is a protocol, used to interlink road traffic and network simulators. The authors explain, that this protocol permits to control the behavior of vehicles during simulation time, therefore the network simulator can influence the driver's behavior. SUMO exposes \ac{TraCI} endpoints \cite{sumotraci} and Veins connects to them, allowing OMNeT++ user code to simulate \acp{VANET} \cite[Pages~217-218]{Sommer2019}. According to \textcite{Sommer2019}, Veins receives positions of vehicles from SUMO, these positions are later used as positions for network nodes, modeling vehicles in OMNeT++ simulation environment.
@@ -454,7 +443,7 @@ In my project, a single broadcast message is defined, which the vehicles send to
 
 \section{Pathfinder}
 
-While working on the project, I encountered the need to generate random routes for cars. The Vehicle code in Veins when receiving a message can send a TraCI message to SUMO, which will force the vehicle to re-route, avoiding roads with traffic jams. However, the problem is that in this case, SUMO re-aligns the route by the shortest path from the current position of the car to the point to which it was originally going. This leads to the fact that the path, which was originally tens of kilometers long, is drastically shortened to hundreds of meters. This causes artifacts in the simulation results. The solution to the problem is the Pathfinder module, which builds random routes for vehicles, taking taking traffic jams and minimum route length into account.
+While working on the project, I encountered the need to generate random routes for cars. The Vehicle code in Veins when receiving a message can send a TraCI message to SUMO, which will force the vehicle to re-route, avoiding roads with traffic jams. However, the problem is that in this case, SUMO re-aligns the route by the shortest path from the current position of the vehicle to the point to which it was originally going. This leads to the fact that the path, which was originally tens of kilometers long, is drastically shortened to hundreds of meters. This causes artifacts in the simulation results. The solution to the problem is the Pathfinder module, which builds random routes for vehicles, taking taking traffic jams and minimum route length into account.
 
 There is only one Pathfinder module in the simulation. It stores information about the road structure, taken from the same file that SUMO takes it from. The Pathfinder has methods for constructing random routes. Any vehicle can call these methods if needed and then send the resulting random route to SUMO via TraCI, which will make the vehicle to follow it.
 
