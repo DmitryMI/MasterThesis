@@ -313,7 +313,7 @@ To integrate the drones more easily, I decided to create an additional level of 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/BaseApplicationLayer.pdf}
-	\caption{Simplified flowchart of DroneManager updating DroneMobility submodules of each Drone.}
+	\caption{Simplified diagram of BaseApplicationLayer. This module is a common base for Drones and Vehicles.}
 	\label{fig:baseapplicationlayer}
 \end{figure}
 
@@ -325,12 +325,12 @@ The main reason for creating the BaseApplicationLayer is to unify the way how de
 
 As you can see in \cref{fig:baseapplicationlayer}, BaseApplicationLayer is associated with an object of the RebroadcastDecider class, which is also an OMNeT++ module. Objects of this class are responsible for rebroadcasting packets. The point of providing a separate object is that both drones and cars can use different interchangeable broadcast storm suppression algorithms. 
 
-The \cref{fig:rebroadcastdeciderseq} shows the sequence of message exchange between the broadcast medium and network nodes (drone or vehicle). In some places, the activation time of the actor is not shown. This is done to indicate that at these points in the sequence the packet processing time is zero in terms of simulation time. Packets reach the RebroadcastDecider instantaneously as soon as they have been received and decoded. It should also be noted that in case the RebroadcastDecider decides to rebroadcast a packet, this can happen at any point in time and any number of times (depending on the particular implementation of the RebroadcastDecider).
+The \cref{fig:rebroadcastdeciderseq} shows the sequence of message exchange between the broadcast medium and network nodes (drone or vehicle). Packets reach the RebroadcastDecider instantaneously as soon as they have been received and decoded. It should also be noted that in case the RebroadcastDecider decides to rebroadcast a packet, this can happen at any point in time and any number of times (depending on the particular implementation of the RebroadcastDecider).
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\textwidth]{figures/RebroadcastDecider.png}
-	\caption{Simplified flowchart of DroneManager updating DroneMobility submodules of each Drone.}
+	\includegraphics[width=1\textwidth]{figures/RebroadcastDecider.pdf}
+	\caption{Sequence of message exchange between the broadcast	medium and network nodes (drone or vehicle). The message propagation though BaseApplicationLayer to RebroadcastDecider is shown.}
 	\label{fig:rebroadcastdeciderseq}
 \end{figure}
 
