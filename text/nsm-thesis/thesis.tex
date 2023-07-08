@@ -448,7 +448,14 @@ While working on the project, I encountered the need to generate random routes f
 
 There is only one Pathfinder module in the simulation. It stores information about the road structure, taken from the same file that SUMO takes it from. The Pathfinder has methods for constructing random routes. Any vehicle can call these methods if needed and then send the resulting random route to SUMO via TraCI, which will make the vehicle to follow it.
 
+The simplified flowchart of Pathfinder's route generator is shown on \cref{fig:Pathfinder}. During module initialization, Pathfinder processes the road network and constructs an appropriate internal representation, omitting all unnecessary data in order to improve efficiency of this algorithm. The route generator may fail to generate a route if, for example, the vehicle is caught between two jams. In this case the vehicle continues to follow its original route.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/Pathfinder.pdf}
+	\caption{Simplified flowchart of Pathfinder's route generator. List of disallowed edges is the list of roads where a traffic jam was detected. Each vehicle keeps its own list according to jamming announcements it received. This is the way how the vehicles avoid traffic jams. If a vehicle did not receive a particular announcement, its list of disallowed edges will not contain the jammed road and therefore the vehicle's route may lead into a jam. Minimal route distance is always long enough to ensure that no vehicle leaves the simulation before the simulation end time is reached.}
+	\label{fig:Pathfinder}
+\end{figure}
 
 \chapter{Evaluation}
 
