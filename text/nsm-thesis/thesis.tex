@@ -228,7 +228,7 @@ To further understand my implementation of drones in Veins, it is necessary to c
 
 \subsection{2D Simple Shadowing}
 
-Next in my work I will describe the algorithm that calculates the attenuation of the radio signal, which takes into account three-dimensional objects. My algorithm is based on the Simple Obstacle Shadowing algorithm \cite{SimpleObstacleShadowing} that is implemented in Veins, and therefore I will briefly describe it here. In Veins' Simple Obstacle Shadowing algorithm each building is defined as a 2D-polygon with arbitrary number of vertices. The radio transmission is modeled as a ray starting from sender's antenna and ending in receiver's antenna. The algorithm determines, how much of the total distance the radio signal traveled through a building. Based on this information the algorithm than calculates the power with which the radio signal reaches the receiver. The signal can penetrate an arbitrary number of buildings. The algorithm also allows the user to set values that determine, how much buildings block the signal via their walls and via their interior. A graphical representation of this model can be seen on \cref{fig:SimpleObstacleShadowing}
+Next in my work I will describe the algorithm that calculates the attenuation of the radio signal, which takes into account three-dimensional objects. In Veins' Simple Obstacle Shadowing algorithm \cite{SimpleObstacleShadowing}, on which my algorithm is based, each building is defined as a 2D-polygon with arbitrary number of vertices. The radio transmission is modeled as a ray starting from sender's antenna and ending in receiver's antenna. The algorithm determines, how much of the total distance the radio signal traveled through a building. Based on this information the algorithm than calculates the power with which the radio signal reaches the receiver. The signal can penetrate an arbitrary number of buildings. The algorithm also allows the user to set values that determine, how much buildings block the signal via their walls and via their interior. A graphical representation of this model can be seen on \cref{fig:SimpleObstacleShadowing}. My implementation that amends Veins' Simple Obstacle Shadowing with the third dimension is described in \cref{sec:3dBuildings}.
 
 \begin{figure}
 	\centering
@@ -343,6 +343,7 @@ The next problem was that Veins does not support three-dimensional obstacles, an
 
 
 \subsection{3D buildings and signal shadowing}
+\label{sec:3dBuildings}
 
 In my work I assume that buildings can be approximated as right prisms, example shown in \cref{fig:rightprism}. 
 
