@@ -654,6 +654,24 @@ In all cases the simulations are repeated 1000 times each in order to get more s
 \subsection{Received Announcements Ratio}
 \label{sec:ReceivedAnnouncementsRatio}
 
+The Received Announcements Ratio for a single vehicle is calculated as the number of unique messages received by this vehicle divided by total number of unique messages sent by all vehicles, as it can be seen on this formula:
+
+\begin{equation}\label{eq:ra-ratio}
+Rar_{i} = \frac{R_{i}}{N}
+\end{equation}
+
+where $Rar_{i}$ is the Received Announcements Ratio of vehicle \emph{i}, $R_{i}$ is number of unique announcements, received by vehicle \emph{i} and \emph{N} is a total number of unique messages.
+
+The Overall Received Announcements Ratio, is the average Received Announcements Ratio of all vehicles. It is calculated using the next formula:
+
+\begin{equation}\label{eq:ra-ratio-avg}
+Rar = \frac{1}{V}\sum_{i=1}^{V} Rar_{i}
+\end{equation}
+
+where \emph{Rar} is the Overall Received Announcements Ratio, $Rar_{i}$ is Received Announcements Ratio of a vehicle \emph{i} \cref{eq:ra-ratio}, and \emph{V} is a total number of vehicles.
+
+In this and all consequent sections the term Received Announcements Ratio will refer to the Overall Received Announcements Ratio, calculated using equation \cref{eq:ra-ratio-avg}. 
+
 I chose this metric as a starting point because it shows, how drones contribute to the connectivity of the network (by "connectivity" I mean how well the nodes in the network are connected to each other). Basically, if Received Announcements Ratio is 1, then each message is received by all vehicles in the simulation. If Received Announcements Ratio is 0, then no message is received by any vehicle. Although this metric is not precisely the connectivity of the network, it with no doubt correlates with the connectivity. Therefore, this metric can be used to determine, how well are the nodes are interconnected and how well the messages are disseminated between vehicles. It does not depend heavily on traffic conditions and route generation as some other metrics like average vehicle speed or number of jammed vehicles, for example.
 
 \cref{fig:Evaluation-NumberOfVehicles-ReceivedAnnouncements-NA} shows how Received Announcements Ratio depends on the Number of Drones and Number of Vehicles. This figure depicts 4 subplots for 4 different Number of Vehicles values. The figure includes points when Number of Drones is 0. This means that the simulation contains only vehicles. The ratio is minimal in this case. The ratio increases almost linearly with increase in number of drones until the number reaches 50 with ratio being between 0.59 and 0.75 (depending on Number of Vehicles). The increase is slowed down after that, reaching around 0.8 in all cases. The slowdown can be explained by the extra drones becoming more and more redundant. If there are two drones close to each other, their contribution is roughly the same and these drones can be substituted by only one drone flying in the same place. The ratio can only reach 1 asymptotically, because drones can not overcome all obstructions and other factors, that make the communication difficult.
