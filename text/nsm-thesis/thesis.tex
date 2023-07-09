@@ -668,9 +668,9 @@ The Overall Received Announcements Ratio, is the average Received Announcements 
 Rar = \frac{1}{V}\sum_{i=1}^{V} Rar_{i}
 \end{equation}
 
-where \emph{Rar} is the Overall Received Announcements Ratio, $Rar_{i}$ is Received Announcements Ratio of a vehicle \emph{i} \cref{eq:ra-ratio}, and \emph{V} is a total number of vehicles.
+where \emph{Rar} is the Overall Received Announcements Ratio, $Rar_{i}$ is Received Announcements Ratio of a vehicle \emph{i}, calculated using \cref{eq:ra-ratio}, and \emph{V} is a total number of vehicles.
 
-In this and all consequent sections the term Received Announcements Ratio will refer to the Overall Received Announcements Ratio, calculated using equation \cref{eq:ra-ratio-avg}. 
+In this and all consequent sections the term Received Announcements Ratio will refer to the Overall Received Announcements Ratio, calculated using \cref{eq:ra-ratio-avg}. 
 
 I chose this metric as a starting point because it shows, how drones contribute to the connectivity of the network (by "connectivity" I mean how well the nodes in the network are connected to each other). Basically, if Received Announcements Ratio is 1, then each message is received by all vehicles in the simulation. If Received Announcements Ratio is 0, then no message is received by any vehicle. Although this metric is not precisely the connectivity of the network, it with no doubt correlates with the connectivity. Therefore, this metric can be used to determine, how well are the nodes are interconnected and how well the messages are disseminated between vehicles. It does not depend heavily on traffic conditions and route generation as some other metrics like average vehicle speed or number of jammed vehicles, for example.
 
