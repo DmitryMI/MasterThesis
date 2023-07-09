@@ -107,8 +107,8 @@ Eval comments:
 	https://tu-dresden.de/ing/informatik/studium/beratung/faq/abschlussarbeiten?set_language=en
 	
 	
-Figure 3.4 make a loop for events
-Figure 4.5 Y-axis cropped
++ Figure 3.4 make a loop for events
++ Figure 4.5 Y-axis cropped
 
 Drone height describe in more detail the height range (move range into text from caption)
 
