@@ -213,12 +213,12 @@ In my project I use SUMO version 1.8.0.
 \subsection {Scenario and Car}
 \label{sec:scenarioned}
 
-To further understand my implementation of drones in Veins, it is necessary to consider two files included in Veins: the file Scenario.ned \cite{scenarioned} and the file Car.ned \cite{carned}. Scenario.ned defines the overall structure of the network, contains an array of all nodes and a list of auxiliary modules that control the vehicles or participate in the visualization when working with the GUI. The Car.ned file defines the structure of one of the most important modules - Car module, which is the internal representation of a vehicle. It contains, in particular, information about the network controller simulator and information about the user code of the application. Also, the Car module has a submodule, which is responsible for synchronizing the movement with SUMO. Based on these two files in the future I will implement my version of the scenario, which will include drones in addition to vehicles, as well as support three-dimensional visualization of the scene. 
+To further understand my implementation of drones in Veins, it is necessary to consider two files included in Veins: the file Scenario.ned\footnote{\url{https://github.com/sommer/veins/blob/master/src/veins/nodes/Scenario.ned}} and the file Car.ned\footnote{\url{https://github.com/sommer/veins/blob/master/src/veins/nodes/Car.ned}}. Scenario.ned defines the overall structure of the network, contains an array of all nodes and a list of auxiliary modules that control the vehicles or participate in the visualization when working with the GUI. The Car.ned file defines the structure of one of the most important modules - Car module, which is the internal representation of a vehicle. It contains, in particular, information about the network controller simulator and information about the user code of the application. Also, the Car module has a submodule, which is responsible for synchronizing the movement with SUMO. Based on these two files in the future I will implement my version of the scenario, which will include drones in addition to vehicles, as well as support three-dimensional visualization of the scene. 
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Scenario.pdf}
-	\caption{Simplified diagram of Scenario \cite{scenarioned} network. Not all modules, parameters and connections are shown.}
+	\caption{Simplified diagram of Scenario network. Not all modules, parameters and connections are shown.}
 	\label{fig:scenarioned}
 \end{figure}
 
@@ -228,7 +228,7 @@ To further understand my implementation of drones in Veins, it is necessary to c
 
 \subsection{2D Simple Shadowing}
 
-Next in my work I will describe the algorithm that calculates the attenuation of the radio signal, which takes into account three-dimensional objects. In Veins' Simple Obstacle Shadowing algorithm \cite{SimpleObstacleShadowing}, on which my algorithm is based, each building is defined as a 2D-polygon with arbitrary number of vertices. The radio transmission is modeled as a ray starting from sender's antenna and ending in receiver's antenna. The algorithm determines, how much of the total distance the radio signal traveled through a building. Based on this information the algorithm than calculates the power with which the radio signal reaches the receiver. The signal can penetrate an arbitrary number of buildings. The algorithm also allows the user to set values that determine, how much buildings block the signal via their walls and via their interior. A graphical representation of this model can be seen on \cref{fig:SimpleObstacleShadowing}. My implementation that amends Veins' Simple Obstacle Shadowing with the third dimension is described in \cref{sec:3dBuildings}.
+Next in my work I will describe the algorithm that calculates the attenuation of the radio signal, which takes into account three-dimensional objects. In Veins' Simple Obstacle Shadowing algorithm\footnote{\url{https://github.com/sommer/veins/blob/master/src/veins/modules/analogueModel/SimpleObstacleShadowing.h}}, on which my algorithm is based, each building is defined as a 2D-polygon with arbitrary number of vertices. The radio transmission is modeled as a ray starting from sender's antenna and ending in receiver's antenna. The algorithm determines, how much of the total distance the radio signal traveled through a building. Based on this information the algorithm than calculates the power with which the radio signal reaches the receiver. The signal can penetrate an arbitrary number of buildings. The algorithm also allows the user to set values that determine, how much buildings block the signal via their walls and via their interior. A graphical representation of this model can be seen on \cref{fig:SimpleObstacleShadowing}. My implementation that amends Veins' Simple Obstacle Shadowing with the third dimension is described in \cref{sec:3dBuildings}.
 
 \begin{figure}
 	\centering
@@ -241,7 +241,7 @@ Next in my work I will describe the algorithm that calculates the attenuation of
 
 \subsection{OpenSceneGraph}
 
-I would like to emphasize the usage of OpenSceneGraph \cite{osg} as a 3D-rendering tool. OMNeT++ natively supports OpenSceneGraph \cite{omnetpposg} and is shipped with embedded \ac{OSG} build, therefore \ac{OSG} is the most convenient and easy way to implement a 3D scene in OMNeT++. In this work, I will use 3D visualization for debugging purposes.
+I would like to emphasize the usage of OpenSceneGraph\footnote{\url{http://www.openscenegraph.com/}} as a 3D-rendering tool. OMNeT++ natively supports OpenSceneGraph\footnote{\url{https://doc.omnetpp.org/omnetpp/api/group__OSG.html}} and is shipped with embedded \ac{OSG} build, therefore \ac{OSG} is the most convenient and easy way to implement a 3D scene in OMNeT++. In this work, I will use 3D visualization for debugging purposes.
 
 Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize this class along with my own vehicle-, drone- and building- visualizers.
 

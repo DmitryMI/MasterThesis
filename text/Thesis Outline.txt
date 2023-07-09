@@ -116,3 +116,7 @@ Add Mario, Sommer, Hensel to copies of thesis submission
 	http://www.cms-labs.org/people/hensel/contact/
 	
 	https://tu-dresden.de/ing/informatik/ressourcen/dateien/studium/formulare/master/master-dse/2023-01-31-Master-Thesis-Defence-DSE-2020.pdf?lang=en
+	
+	Also footnotes?
+		> SUMO Documentation - TraCI
+		> OMNeT++ documentation.
