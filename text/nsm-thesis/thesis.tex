@@ -42,6 +42,7 @@
 \acrodef{TraCI}{Traffic Control Interface}
 \acrodef{ATR}{Average Transmission Range}
 \acrodef{NS-2}{Network Simulator 2}
+\acrodef{FCC}{Federal Communications Commission}
 %\acrodef{ROI}{Region of Interest}{short-indefinite={an}, long-plural-form={Regions of Interest}}
 %\acrodef{ADAC}{German Automobile Association}{foreign={Allgemeiner Deutscher Automobilclub}}
 %\acrodef{CANhashing}[CAN]{Content Addressable Network}{extra={when referring to the distributed hash table}}
@@ -250,9 +251,11 @@ Veins provides a C++ class for \ac{OSG}-based road visualization. I will utilize
 \subsection{IEEE 802.11p}
 Veins includes a simple simulation model of IEEE 802.11p for vehicle-to-vehicle communication \cite[Page~216]{Sommer2019}. The following brief description of IEEE 802.11p is based on \textcite{jiang2008ieee}.
 
-IEEE 802.11p is a set of standards dedicated exclusively to vehicle-to-vehicle and infrastructure-to-vehicle communication. It uses 75 MHz of \ac{DSRC} spectrum at 5.9 GHz. The primary goal is to enable public safety applications that can help with road safety and improve traffic flow. Private services are permitted to use these frequencies. The \ac{DSRC} band is free, but licensed spectrum, therefore it is more restricted in terms of usages and technologies in comparison to unlicensed spectrums like Wi-Fi. \ac{DSRC} can be used only for vehicular networks, nobody is allowed to develop another technology, that uses the same radio spectrum. The key feature of IEEE 802.11p is the WAVE mode, that allows vehicles to communicate immediately upon encounter, without the overhead of scanning for channels and executing handshakes. 
+IEEE 802.11p is a set of standards dedicated exclusively to vehicle-to-vehicle and infrastructure-to-vehicle communication. It uses 75 MHz of \ac{DSRC} spectrum at 5.9 GHz. The primary goal is to enable public safety applications that can help with road safety and improve traffic flow. Private services are permitted to use these frequencies. The \ac{DSRC} band is free, but licensed spectrum, therefore it is more restricted in terms of usages and technologies in comparison to unlicensed spectrums like Wi-Fi. The \ac{FCC} rulings regulate usage within certain channels and limit all radios to be compliant to a standard. It is not allowed to develop a different radio technology for usage in the \ac{DSRC} band even it is limited in transmission power.
 
-In my work I will use Veins-provided IEEE 802.11p simulation model working in WAVE mode for both vehicles and drones.
+The key purpose of IEEE 802.11p amendment at the MAC level is to enable very efficient communication group setup without much overhead typically needed in the IEEE 802.11 MAC. The IEEE 802.11p is focused on simplifying the Basic Service Set (group of stations anchored by and Access Point and configured to communicate with each other over the air-link) operations in a truly ad hoc manner for vehicular usage.
+
+In my work I will use Veins-provided IEEE 802.11p simulation model for both vehicles and drones.
 
 
 
