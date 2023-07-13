@@ -357,7 +357,7 @@ In my work I assume that buildings can be approximated as right prisms, example 
 	\label{fig:rightprism}
 \end{figure}
 
-This way a 3D shadowing algorithm can be extended from Veins' Simple Obstacle Shadowing. Instead of looking for intersections of 2D line segments with 2D polygons, I will look for intersections of 3D line segments with right prisms. The classes, used to augment the Veins' code are shown on \cref{fig:obstacle3d-classes}.  Basically, my class ObstacleControl3d reuses Veins' ObstacleControl and only overrides some methods in order to spawn Obstacle3d objects instead of Veins' Obstacle objects. Also, ObstacleControl3d reads obstacles' height from the same XML file, that Veins uses, but additionally reads the \emph{height} attribute to set Obstacle3d's height. If this attribute is not found, ObstacleControl3d uses its configuration parameter to set the default height for obstacles. The search for intersections is done inside Obstacle3d. This class inherits Vein's Obstacle class, but adds new methods that calculate line-right-prism intersection. The simplified flow chart of Obstacle3d's algorithm can be seen on \cref{fig:obstacle3d-flow}. 
+This way a 3D shadowing algorithm can be extended from Veins' Simple Obstacle Shadowing. Instead of looking for intersections of 2D line segments with 2D polygons, I will look for intersections of 3D line segments with right prisms. The classes, used to augment the Veins' code are shown on \cref{fig:obstacle3d-classes}. Basically, my class ObstacleControl3d reuses Veins' ObstacleControl and only overrides some methods in order to spawn Obstacle3d objects instead of Veins' Obstacle objects. Also, ObstacleControl3d reads obstacles' height from the same XML file, that Veins uses, but additionally reads the \emph{height} attribute to set Obstacle3d's height. If this attribute is not found, ObstacleControl3d uses its configuration parameter to set the default height for obstacles. The search for intersections is done inside Obstacle3d. This class inherits Vein's Obstacle class, but adds new methods that calculate line-right-prism intersection. The simplified flow chart of Obstacle3d's algorithm can be seen on \cref{fig:obstacle3d-flow}. 
 
 \begin{figure}
 	\centering
@@ -387,7 +387,7 @@ The central modules that are responsible for 3D visualization in my project are:
 
 \item \emph{Obstacle3d} - in addition to methods for finding intersections with a prism, also draws a prism on the \ac{OSG} canvas.
 
-\item \emph{ObstacleShadowingVisualizer} - draws radio transmission as 3D lines on the \ac{OSG} canvas. Also shows intersections with 3D obstacles.  Work example showed on \cref{fig:ObstacleShadowingVisualizer}.
+\item \emph{ObstacleShadowingVisualizer} - draws radio transmission as 3D lines on the \ac{OSG} canvas. Also shows intersections with 3D obstacles. Work example showed on \cref{fig:ObstacleShadowingVisualizer}.
 
 \end{itemize}
 
@@ -584,7 +584,7 @@ For parametric studies the following input parameters were selected:
     \label{tab:simulationparams}
 \end{table}
 
-The simulation also has static parameters, that do not change during parametric studies. These values  are shown and explained on \cref{tab:simulationparams}.
+The simulation also has static parameters, that do not change during parametric studies. These values are shown and explained on \cref{tab:simulationparams}.
 
 \section{Output values}
 
@@ -809,7 +809,7 @@ In my setup drones cannot fly lower than \SI{50}{\meter}, because this is the ma
 At around 250-\SI{300}{\meter} there is small temporal decrease in connectivity, which is also visible on number of jammed vehicles plot.
 The exact reason for this is unknown and further exploration was left out of scope of this work.
 
-In conclusion, it is clear that in my scenario the best efficiency of drones is achieved in range 150-\SI{350}{\meter}, with peak at  200-\SI{250}{\meter}. In the main part of the experiment the drone height parameter is set to  150-\SI{200}{\meter} (see \cref{tab:simulationparams}), which is inside this best case range.
+In conclusion, it is clear that in my scenario the best efficiency of drones is achieved in range 150-\SI{350}{\meter}, with peak at 200-\SI{250}{\meter}. In the main part of the experiment the drone height parameter is set to 150-\SI{200}{\meter} (see \cref{tab:simulationparams}), which is inside this best case range.
 
 \begin{figure}%
 	\centering
