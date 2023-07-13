@@ -159,7 +159,7 @@ p_{ij} = \frac{D_{ij}}{R}
 
 where \emph{R} is the average transmission range and $D_{ij}$ is relative distance between nodes \emph{i} and \emph{j}. Authors further add, that if a node receives duplicate packets from multiple sources within the waiting period \emph{WAIT\textunderscore TIME} before rebroadcasting, this node selects the smallest $p_{ij}$ value as rebroadcasting probability. Authors clarify, that this means that nodes use the relative distance to the nearest broadcaster in order to ensure that nodes who are farther away rebroadcast with higher probability. Additionally, authors propose a method to prevent the messages from dying out: if a node decides not to rebroadcast, it keeps the message for time WAIT\textunderscore TIME + $\delta$, where $\delta$ is the one-hop transmission and propagation delay. If a node does not receive a packet from somebody else, it rebroadcasts it with probability 1 after WAIT\textunderscore TIME + $\delta$.
 
-In my scenario, I will use different \emph{R} values for vehicles and drones. On one hand, since drones maintain the line-of-sight with each other, the R can be relatively large for them, slightly less than there maximum transmission range. On the other hand, vehicles can only communicate withing the length of the street they are standing on. Therefore, the \emph{R} for vehicles will be roughly equal to the length of a city block (distance between two crossroads in a grid, which is much smaller than maximum possible transmission range of a vehicle). This way vehicles, that are standing near two crossroads will rebroadcast with probability around 1. This will ensure that messages can "turn around" the buildings with higher probability.
+In my scenario, I will use different \emph{R} values for vehicles and drones. On one hand, since drones maintain the line-of-sight with each other, the R can be relatively large for them, slightly less than their maximum transmission range. On the other hand, vehicles can only communicate withing the length of the street they are standing on. Therefore, the \emph{R} for vehicles will be roughly equal to the length of a city block (distance between two crossroads in a grid, which is much smaller than maximum possible transmission range of a vehicle). This way vehicles, that are standing near two crossroads will rebroadcast with probability around 1. This will ensure that messages can "turn around" the buildings with higher probability.
 
 
 
@@ -183,7 +183,7 @@ According to \textcite[Page~2]{Varga2010}, OMNeT++ is a discrete-event simulator
 
 \section {Veins}
 
-In order to simulate a hybrid network of drones and vehicles a network simulator is not enough. A combined solution is needed to create a realistic scenario consisting of vehicles, buildings and drones. The software must implement a combination of a network simulator and a traffic simulator. Because of this my solution is built on top of Veins by \textcite{Sommer2019}. I use Veins version 5.2.
+In order to simulate a hybrid network of drones and vehicles a network simulator is not enough. A combined solution is needed to create a realistic scenario consisting of vehicles, buildings and drones. The software must implement a combination of a network simulator and a traffic simulator. Because of this my solution is built on top of Veins by \textcite{Sommer2019}. I use Veins version 5.2. The high-level architecture of Veins can be seen on \cref{fig:veinshighlevel}.
 
 \begin{figure}
   	\centering
@@ -229,7 +229,7 @@ To further understand my implementation of drones in Veins, it is necessary to c
 
 \subsection{2D Simple Shadowing}
 
-Next in my work I will describe the algorithm that calculates the attenuation of the radio signal, which takes into account three-dimensional objects. In Veins' Simple Obstacle Shadowing algorithm\footnote{\url{https://github.com/sommer/veins/blob/master/src/veins/modules/analogueModel/SimpleObstacleShadowing.h}}, on which my algorithm is based, each building is defined as a 2D-polygon with arbitrary number of vertices. The radio transmission is modeled as a ray starting from sender's antenna and ending in receiver's antenna. The algorithm determines, how much of the total distance the radio signal traveled through a building. Based on this information the algorithm than calculates the power with which the radio signal reaches the receiver. The signal can penetrate an arbitrary number of buildings. The algorithm also allows the user to set values that determine, how much buildings block the signal via their walls and via their interior. A graphical representation of this model can be seen on \cref{fig:SimpleObstacleShadowing}. My implementation that amends Veins' Simple Obstacle Shadowing with the third dimension is described in \cref{sec:3dBuildings}.
+Later in my work I will describe the algorithm that calculates the attenuation of the radio signal, which takes into account three-dimensional objects. In Veins' Simple Obstacle Shadowing algorithm\footnote{\url{https://github.com/sommer/veins/blob/master/src/veins/modules/analogueModel/SimpleObstacleShadowing.h}}, on which my algorithm is based, each building is defined as a 2D-polygon with arbitrary number of vertices. The radio transmission is modeled as a ray starting from sender's antenna and ending in receiver's antenna. The algorithm determines, how much of the total distance the radio signal traveled through a building. Based on this information the algorithm then calculates the power with which the radio signal reaches the receiver. The signal can penetrate an arbitrary number of buildings. The algorithm also allows the user to set values that determine, how much buildings block the signal via their walls and via their interior. A graphical representation of this model can be seen on \cref{fig:SimpleObstacleShadowing}. My implementation that amends Veins' Simple Obstacle Shadowing with the third dimension is described in \cref{sec:3dBuildings}.
 
 \begin{figure}
 	\centering
@@ -261,7 +261,7 @@ In my work I will use Veins-provided IEEE 802.11p simulation model for both vehi
 
 \chapter{Implementation}
 
-Now it is time to develop a network model for a scenario in which vehicles and drones will interact within the same virtual space. My implementation is largely based on the model used in Veins, which was discussed in \cref{sec:scenarioned}. My model mostly repeats the structure of the model from Veins, as the main vehicle-related modules remain the same. However, I have integrated into my model: drones, support for the third dimension when calculating sight lines, and special modules for using OSG to render a three-dimensional scene, runtime vehicle rerouter. A schematic view on the communication between drones and vehicles can be seen on \cref{fig:vanetscheme}. \cref{fig:dronescenarioned} shows a simplified UML diagram of classes for the OMNeT++ network in my model, the scheme is analogues to \cref{fig:scenarioned} and is meant to show similarities and differences between my model and Veins' model.
+Now it is time to develop a network model for a scenario in which vehicles and drones will interact within the same virtual space. My implementation is largely based on the model used in Veins, which was discussed in \cref{sec:scenarioned}. My model mostly repeats the structure of the model from Veins, as the main vehicle-related modules remain the same. However, I have integrated into my model: drones, support for the third dimension when calculating sight lines, and special modules for using OSG to render a three-dimensional scene, runtime vehicle rerouter. A schematic view on the communication between drones and vehicles can be seen on \cref{fig:vanetscheme}. \cref{fig:dronescenarioned} shows a simplified diagram of classes for the OMNeT++ network in my model, the scheme is analogues to \cref{fig:scenarioned} and is meant to show similarities and differences between my model and Veins' model.
 
 \begin{figure}
 	\centering
@@ -320,13 +320,13 @@ To integrate the drones more easily, I decided to create an additional level of 
 	\label{fig:baseapplicationlayer}
 \end{figure}
 
-The main reason for creating the BaseApplicationLayer is to unify the way how decision about rebroadcasting is made. BaseApplicationLayer holds a reference to a special object of class RebroadcastDecider, which in fact is a virtual class. This object decides whether to rebroadcast the message or not. How exactly it makes this decision for the vehicle or for the drone is irrelevant. The drone or vehicle only receives a decision from this object. So it is relatively easy to change the algorithm that decides whether to rebroadcast a message. Also, it is easy to enable a specific algorithm for both drones and vehicles in the same manner.
-
+The main reason for creating the BaseApplicationLayer is to unify the way how decision about rebroadcasting is made. BaseApplicationLayer holds a reference to a special object of class RebroadcastDecider, which will be described in the next section. 
 
 
 \subsection {Rebroadcast Decider}
 
-As you can see in \cref{fig:baseapplicationlayer}, BaseApplicationLayer is associated with an object of the RebroadcastDecider class, which is also an OMNeT++ module. Objects of this class are responsible for rebroadcasting packets. The point of providing a separate object is that both drones and cars can use different interchangeable broadcast storm suppression algorithms. 
+As you can see in \cref{fig:baseapplicationlayer}, BaseApplicationLayer is associated with an object of the RebroadcastDecider class, which is also an OMNeT++ module.
+This object decides whether to rebroadcast the message or not. How exactly it makes this decision is irrelevant for the vehicle and for the drone. The drone or vehicle only receives a decision from this object. The point of providing a separate object for this purpose is that both drones and vehicles can use interchangeable broadcast storm suppression implementations. 
 
 The \cref{fig:rebroadcastdeciderseq} shows the sequence of message exchange between the broadcast medium and network nodes (drone or vehicle). Packets reach the RebroadcastDecider instantaneously as soon as they have been received and decoded. It should also be noted that in case the RebroadcastDecider decides to rebroadcast a packet, this can happen at any point in time and any number of times (depending on the particular implementation of the RebroadcastDecider).
 
@@ -341,7 +341,7 @@ The \cref{fig:rebroadcastdeciderseq} shows the sequence of message exchange betw
 
 \section{Adding the third dimension}
 
-The next problem was that Veins does not support three-dimensional obstacles, and therefore does not take Z coordinate into account when calculating radio signal decay. In my scenario, this is a significant drawback, since drones tend to fly above buildings, and hence their radio transmissions are less affected by buildings then \ac{V2V} transmissions. In that case, one could make the radio transmissions between drones simply ignore the buildings. However, such a strategy would not process correctly radio signals between drones and vehicles. Drone-vehicle communication cannot be described by simple rules from 2D space with at least acceptable accuracy. Because of this, I decided to implement three-dimensional buildings and, accordingly, a three-dimensional algorithm for signal shadowing.
+The next problem was that Veins does not support three-dimensional obstacles, and therefore does not take Z coordinate into account when calculating radio signal attenuation. In my scenario, this is a significant drawback, since drones tend to fly above buildings, and hence their radio transmissions are less affected by buildings then \ac{V2V} transmissions. In that case, one could make the radio transmissions between drones simply ignore the buildings. However, such a strategy would not process correctly radio signals between drones and vehicles. Drone-vehicle communication cannot be described by simple rules from 2D space with at least acceptable accuracy. Because of this, I decided to implement three-dimensional buildings and, accordingly, a three-dimensional algorithm for signal shadowing.
 
 
 
@@ -362,7 +362,7 @@ This way a 3D shadowing algorithm can be extended from Veins' Simple Obstacle Sh
 \begin{figure}
 	\centering
 	\includegraphics[width=1\textwidth]{figures/Obstacle3d-classes.pdf}
-	\caption{UML-diagram of 3D Obstacles subsystem. This subsystem is built upon Veins' 2D obstacles and can be used interchangeably.}
+	\caption{Diagram of 3D Obstacles subsystem. This subsystem is built upon Veins' 2D obstacles and can be used interchangeably.}
 	\label{fig:obstacle3d-classes}
 \end{figure}
 
@@ -387,7 +387,7 @@ The central modules that are responsible for 3D visualization in my project are:
 
 \item \emph{Obstacle3d} - in addition to methods for finding intersections with a prism, also draws a prism on the \ac{OSG} canvas.
 
-\item \emph{ObstacleShadowingVisualizer} - draws radio transmission as 3D lines on the \ac{OSG} canvas. Also shows intersections with 3D obstacles. Work example showed on \cref{fig:ObstacleShadowingVisualizer}.
+\item \emph{ObstacleShadowingVisualizer} - draws radio transmissions as 3D lines on the \ac{OSG} canvas. Also shows intersections with 3D obstacles. Work example showed on \cref{fig:ObstacleShadowingVisualizer}.
 
 \end{itemize}
 
@@ -418,7 +418,7 @@ In my project, a single broadcast message is defined, which the vehicles send to
 
 \item \emph{Sender Address} - integer field, representing a unique address of a network node. The jammed vehicle sets this field to its address upon initial broadcast.
 
-\item \emph{Serial} - integer field, monotonically increasing counter locally handled by each vehicle. Together with Sender Address makes sure, that each CarJammingAnnouncement is unique.
+\item \emph{Serial} - integer field, monotonically increasing counter locally handled by each vehicle. Upon each broadcast (but not rebroadcast) the vehicle increases this counter by 1. Together with Sender Address makes sure, that each CarJammingAnnouncement is unique.
 
 \item \emph{Car Road ID} - SUMO ID of a road, on which the vehicle is jammed. Its real-life equivalent can be the name of a street.
 
@@ -468,7 +468,7 @@ Now it is time to describe the setup of the experiment, the input and output par
 
 \section{Road Network}
 
-For simulating a high-density urban environment the Manhattan Grid was selected. The road network is a square grid of streets with crossroads in the grid nodes. The buildings are located between the roads in places called city blocks. The global schematic view on the road map can be seen on \cref{fig:manhattangrid}. \cref{fig:manhattangridblock} explains some parameters. The grid's parameters are based on the real Manhattan, the \cref{tab:manhattangrid} shows the exact values used in my simulation and \cref{fig:manhattangridblock} explains these parameters visually. A 3D view of the simulation environment can be seen on \cref{fig:manhattangrid3d} and \cref{fig:manhattangrid3dblock}. On these pictures building heights can be seen.
+For simulating a high-density urban environment the Manhattan Grid was selected. The road network is a square grid of streets with crossroads in the grid nodes. The buildings are located between the roads in places called city blocks. The global schematic view on the road map can be seen on \cref{fig:manhattangrid}. The grid's parameters are based on the real Manhattan, the \cref{tab:manhattangrid} shows the exact values used in my simulation and \cref{fig:manhattangridblock} explains these parameters visually. A 3D view of the simulation environment can be seen on \cref{fig:manhattangrid3d} and \cref{fig:manhattangrid3dblock}. On these pictures building heights can be seen.
 
 \begin{figure}
 	\centering
@@ -526,10 +526,10 @@ The simulation starts with SUMO loading the road network and buildings. Next sim
 \begin{enumerate}
 	\item Drones are spawned by the DroneManager. Number of drones is a parametric studies input. Drones start with random height, speed and angle. See \cref{tab:simulationparams} for value ranges of height and speed.
 	\item Vehicles are spawned by SUMO. Number of vehicles is a parametric studies input. Each vehicle starts following a random route. The routes are ensured to be so long, that no vehicle finishes the route before the simulation ends.
-	\item The simulator waits for a couple of seconds, determined by the warm-up period (see \cref{tab:simulationparams}).
+	\item The simulator waits for a couple of seconds, determined by the warm-up period (see \cref{tab:simulationparams}). During this time no statistics are collected.
 	\item After the Vehicle Breakdown start time is reached (see \cref{tab:simulationparams}), some vehicles break down. The probability of a break-down is called Accident Probability and is an input parameter.
   	\item The broken vehicles broadcast a single CarJammingAnnouncement each and stay at the accident location until the end of the simulation. They still participate in rebroadcasting.
-	\item Not broken vehicles receive the broadcasts of broken vehicles and try to adjust there routes to avoid the broken vehicles.
+	\item Not broken vehicles receive the broadcasts of broken vehicles and try to adjust their routes to avoid the broken ones.
 	\item If a vehicle drives into a broken vehicle (or any other stationary vehicle) it is considered jammed. This vehicle broadcasts a single CarJammingAnnouncement and stands still until the end of the simulation. Jammed vehicles still participate in rebroadcasting.
 \end{enumerate}
 
@@ -584,7 +584,7 @@ For parametric studies the following input parameters were selected:
     \label{tab:simulationparams}
 \end{table}
 
-The simulation also has static parameters, that do not change during parametric studies. These values are shown and explained on \cref{tab:simulationparams}.
+The simulation also has static parameters, that do not change during parametric studies. These values are shown and explained in \cref{tab:simulationparams}.
 
 \section{Output values}
 
@@ -703,7 +703,7 @@ In conclusion, it is clear that the drones improve the network connectivity in a
 
 Average Vehicle Speed, Number of jammed vehicles and Total time in jam metrics are not as good to evaluate the network connectivity and drone contribution as the Received Announcements Ratio. The reason is that these metrics heavily depend not only on the network performance, but also on vehicle positions and routes. For example, a vehicle can successfully receive a jamming announcement, but do not contribute anything to the metrics, because its route did not include the jam location anyway. The same thing happens if this vehicle does not receive anything. Opposite situation is also common: if it is too late for a vehicle to change the route, it does not matter, if it received a message or not. However, these values are direct indicators of the traffic flow performance, therefore they will be used in this way.
 
-These three metrics are closely connected to each other, therefore they will be discussed together. \cref{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA} shows how Average Vehicle Speed depends on Number of Vehicles and Number of Drones with fixed Accident Probability. \cref{fig:Evaluation-AccidentProbability-VehicleSpeed-NA} shows how vehicle speed depends on Number of Drones and Accident Probability with fixed Number of Vehicles. The analogues dependencies for number of jammed vehicles can be seen on \cref{fig:Evaluation-NumberOfVehicles-JammedNumber-NA} and \cref{fig:Evaluation-AccidentProbability-JammedNumber-NA}. Time in jam is depicted on \cref{fig:Evaluation-NumberOfVehicles-JamTime-NA} and \cref{fig:Evaluation-AccidentProbability-JamTime-NA}.
+These three metrics are closely connected to each other, therefore they will be discussed together. \cref{fig:Evaluation-NumberOfVehicles-VehicleSpeed-NA} shows how Average Vehicle Speed depends on Number of Vehicles and Number of Drones with fixed Accident Probability. \cref{fig:Evaluation-AccidentProbability-VehicleSpeed-NA} shows how vehicle speed depends on Number of Drones and Accident Probability with fixed Number of Vehicles. The analogous dependencies for number of jammed vehicles can be seen on \cref{fig:Evaluation-NumberOfVehicles-JammedNumber-NA} and \cref{fig:Evaluation-AccidentProbability-JammedNumber-NA}. Time in jam is depicted on \cref{fig:Evaluation-NumberOfVehicles-JamTime-NA} and \cref{fig:Evaluation-AccidentProbability-JamTime-NA}.
 
 It is clearly seen, that the average speed increases with increase in Number of Drones. However, the increase in average speed is not linear: it increases quicker when the number of drones is low than when the number of drones is closer to 100. It is pretty safe to assume that the average speed is increasing due to drones contributing to the network connectivity, as discussed in \cref{sec:ReceivedAnnouncementsRatio}. The more jam announcements reach the vehicles, the more vehicles will avoid the jam, which leads to less jammed vehicles. The same behavior is observed in time in jam and number of jammed vehicles.
 
@@ -802,7 +802,7 @@ Nevertheless, the most important observation here is that across all input param
 
 In addition to the main experiments I have also conducted a separate simulation to determine the optimal flight altitude for the drones. The results will also justify the selection of values for this parameter in the main part (see \cref{tab:simulationparams}).
 
-Simulation setup is the same as earlier, but number of vehicles and number of drones is fixed to 60 (average across all simulations). Accident probability set to 0.3. The resulting dependencies can be seen on \cref{fig:Evaluation-DroneHeight}. On this picture X axis determines the average altitude for each drone. The actual height of a drone is uniformly distributed in range [X - \SI{50}{\meter}, X + \SI{50}{\meter}].
+Simulation setup is the same as earlier, but number of vehicles and number of drones is fixed to 60 (average across all simulations). Accident probability set to 0.3. The resulting dependencies can be seen on \cref{fig:Evaluation-DroneHeight}. On this picture X axis determines the average altitude for each drone. The actual altitude of a drone is uniformly distributed in range [X - \SI{50}{\meter}, X + \SI{50}{\meter}].
 
 In my setup drones cannot fly lower than \SI{50}{\meter}, because this is the maximum height of a building and collision avoidance is not implemented. Therefore, the experiment's minimum start at \SI{50}{\meter}. \cref{fig:Evaluation-DroneHeight-ReceivedAnnouncements} shows that maximum connectivity is reached at \SI{225}{\meter} average altitude. Two main factors have influence on drone efficiency: buildings and transmission power. Building block signals more when drones fly low, therefore the line rises at the start with increase in altitude. At some point the increase in height stops providing more benefit, this happens around \SI{150}{\meter}. Then the second factor starts to play role. Increasing flight height leads to increase in distance between drones and vehicles. After height of \SI{300}{\meter} the transmission power influence becomes significant, leading to rapid worsening in connectivity. Additionally, \cref{fig:Evaluation-DroneHeight-JammedNumber} shows number of jammed vehicles dependency from drone altitude. This dependency is consistent with received announcement ratio: situation is the best when drones fly in range from \SI{150}{\meter} to \SI{350}{\meter}. When the altitude reaches \SI{600}{\meter} the drones loose any ability to communicate with the vehicles, which is clearly visible on the plots. 
 
@@ -824,7 +824,7 @@ In conclusion, it is clear that in my scenario the best efficiency of drones is 
 
 \chapter{Conclusion}
 
-In this work I have developed a software simulation of a \ac{DAVN} and investigated the drones' impact on the vehicle traffic flow in a dense urban environment. In my scenario, the drones help to spread jam announcement message among the vehicles in order to enable them to change their routes to avoid the jams. The drones fly opportunistically and rebroadcast messages, received from vehicles or other drones, enabling multi-hop broadcasts. To evaluate the traffic flow improvements, some vehicles break down and broadcast a jamming announcement, which is rebroadcast be other vehicles and drones. The simulation was conducted as parametric studies with number of drones, number of vehicles, accident probability as input parameters. The effect was measured using output values like number of jammed vehicles, average vehicle speed, time spent in jam, etc.
+In this work I have developed a software simulation of a \ac{DAVN} and investigated the drones' impact on the vehicle traffic flow in a dense urban environment. In my scenario, the drones help to spread jam announcement message among the vehicles in order to enable them to change their routes to avoid the jams. The drones fly opportunistically and rebroadcast messages, received from vehicles or other drones, enabling multi-hop broadcasts. To evaluate the traffic flow improvements, some vehicles break down and broadcast a jamming announcement, which is rebroadcast by other vehicles and drones. The simulation was conducted as parametric studies with number of drones, number of vehicles, accident probability as input parameters. The effect was measured using output values like number of jammed vehicles, average vehicle speed, time spent in jam, etc.
 
 Broadcast storm suppression techniques were discussed and used in my work. Broadcast storm suppression effectiveness was confirmed experimentally using channel busy time ratio output value.
 
