@@ -110,11 +110,10 @@ Eval comments:
 + Drone height describe in more detail the height range (move range into text from caption)
 
 
-~ Handing in:
++ Handing in:
 	https://tu-dresden.de/ing/informatik/studium/beratung/faq/abschlussarbeiten?set_language=en
 	
-Add Mario, Sommer, Hensel to copies of thesis submission
-	http://www.cms-labs.org/people/hensel/contact/
-	
-	https://tu-dresden.de/ing/informatik/ressourcen/dateien/studium/formulare/master/master-dse/2023-01-31-Master-Thesis-Defence-DSE-2020.pdf?lang=en
++ Add reviewers and supervisors to copies of thesis submission
+
+https://tu-dresden.de/ing/informatik/ressourcen/dateien/studium/formulare/master/master-dse/2023-01-31-Master-Thesis-Defence-DSE-2020.pdf?lang=en
 	
