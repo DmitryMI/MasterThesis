@@ -9,7 +9,6 @@
 ! Fundamentals
 	+ Ad-hoc networks
 	+ Related work: another examples of merging VANETs and DroneNETs
-		! Examples of network configurations
 	+ Challenge: broadcast storm
 	+ Broadcast-storm suppression techiques in literature
 	+ Why I will use weighted-p-persistence (because it is enough in my setup)
@@ -26,7 +25,7 @@
 		+ Simulated hardware:
 			+ Wave short message protocol: implemented by Veins
 		
-~ Implementation
++ Implementation
 	+ DroneScenario scheme
 	+ Veins does not support drones. Implementing drones for Veins
 		+ Drones are implemented as a OMNeT++ module.
@@ -81,13 +80,13 @@ Plotting:
 	+ Title goes to caption
 	+ Remove the background entirely
 	+ Add axis (lines or arrows)
-	> (optional) match the font with Thesis
-	> Ensure the font size is readable
+	! (optional) match the font with Thesis
+	+ Ensure the font size is readable
 	+ Move legend to plot space
 	
 Text:
 	+ Figure captions UNDER the picture (change the order of \caption command!)
-	~ ALWAYS REFERENCE A FIGURE FROM THE TEXT!
+	+ ALWAYS REFERENCE A FIGURE FROM THE TEXT!
 	+ Related work: what is new in my work
 		
 Eval comments:
@@ -100,23 +99,22 @@ Eval comments:
 	+ Busy time ratio - change of slope explaination.
 	+ Busy time - time when signal strength is higher than threshould (-65 dbm?), no matter who is transmitting
 	
-> Drone altitude minimum -> Drone altitude average
++ Drone altitude minimum -> Drone altitude average
 + Remove German abstact
-! Merge input params and output values
-~ Handing in:
-	https://tu-dresden.de/ing/informatik/studium/beratung/faq/abschlussarbeiten?set_language=en
+
 	
 	
 + Figure 3.4 make a loop for events
 + Figure 4.5 Y-axis cropped
 
-Drone height describe in more detail the height range (move range into text from caption)
++ Drone height describe in more detail the height range (move range into text from caption)
 
+
+~ Handing in:
+	https://tu-dresden.de/ing/informatik/studium/beratung/faq/abschlussarbeiten?set_language=en
+	
 Add Mario, Sommer, Hensel to copies of thesis submission
 	http://www.cms-labs.org/people/hensel/contact/
 	
 	https://tu-dresden.de/ing/informatik/ressourcen/dateien/studium/formulare/master/master-dse/2023-01-31-Master-Thesis-Defence-DSE-2020.pdf?lang=en
 	
-	Also footnotes?
-		> SUMO Documentation - TraCI
-		> OMNeT++ documentation.
