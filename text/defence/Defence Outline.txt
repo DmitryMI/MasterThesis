@@ -16,7 +16,7 @@ Presentation
 	2. Simulation environment
 	3. Protocol
 	4. Drones, 3D shadowing
-	5. Visualization
+	5. Visualization (Used as validation! Ephasize)
 	
 4. Evaluation
 	1. Input parameters: Number of drones, number of vehicles, accident probability
@@ -32,5 +32,15 @@ Presentation
 6. Bonus: Drone flight altitude
 	Most optimal range was selected
 	
-7. Conclusion
+7. Conclusion of Thank you slide
 	Significant improvement in urban traffic flow can be achieved
+	Short recap
+	Connectivity improved, so it traffic
+	
+
+Secretary: ask about room APB-1096
+	https://www.cms-labs.org/people/brauny/
+	I am  student of Mario Franke, I want to...
+	
+	Beamer should 16:9 aspect ratio! If not, change slides!
+	
