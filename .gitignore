@@ -416,19 +416,4 @@ FodyWeavers.xsd
 **.cmdenv-log
 
 .Rproj.user
-text/*/*.aux
-text/*/*.bbl
-text/*/*.bcf
-text/*/*.blg
-text/*/*.fdb_latexmk
-text/*/*.fls
-text/*/*.lof
-text/*/*.lot
-text/*/*.out
-text/*/*.pdf
-text/*/*.run.xml
-text/*/*.tdo
-text/*/*.toc
-text/nsm-thesis/thesis.synctex(busy)
-text/nsm-thesis/texput.pipe
-text/nsm-thesis/texput.lgpl
+

@@ -1,0 +1,5 @@
+nsm-thesis/*
+!nsm-thesis/figures
+!nsm-thesis/nsm-thesis.cls
+!nsm-thesis/references.bib
+!nsm-thesis/thesis.tex

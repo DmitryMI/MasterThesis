@@ -1,0 +1,119 @@
++ Introduction
+	+ Global goal: cooperative autonomous vehicles
+	+ Problem: obstacles in cities block radio
+	+ I will check if there is any benifit in connecting drone-net and vehicle-net
+		regarding assistance in urban traffic
+	+ Strategy: real-life experiment too expensive
+		+ Use software-simulation
+	
+! Fundamentals
+	+ Ad-hoc networks
+	+ Related work: another examples of merging VANETs and DroneNETs
+	+ Challenge: broadcast storm
+	+ Broadcast-storm suppression techiques in literature
+	+ Why I will use weighted-p-persistence (because it is enough in my setup)
+	+ Simulation software:
+		+ What is a discrete-event simulator
+		+ Brief list of software solutions: ns-3, OMNeT++
+	+ Veins: my solution is based on it
+		+ Brief description, picture from Veins' web-site
+		+ OpenSceneGraph for 3D visualization 
+		+ Veins' native road visualizer
+		+ Veins Scenario
+		+ Veins Car structure (UML)
+		+ Veins 2D simple shadowing
+		+ Simulated hardware:
+			+ Wave short message protocol: implemented by Veins
+		
++ Implementation
+	+ DroneScenario scheme
+	+ Veins does not support drones. Implementing drones for Veins
+		+ Drones are implemented as a OMNeT++ module.
+		+ Scheme of drone-module (layers, app, rebroadcaster, etc.)
+		+ Drone Manager and Drone Mobility
+	+ Car module: enhancements
+	+ BaseApplicationLayer: base class for CarAppl and DroneAppl
+	+ Broadcasting and suppressing Broadcast-storm
+		+ RebroadcastDecider - OMNeT++ layer for abstact rebroadcast decision making
+		+ Weighed p-persistence
+	+ Veins does not support 3D building and shadowing
+		+ All buildings can be approximated as right prisms
+		+ Implementing 3D obstacles		
+		+ Implementing line-prism intersection algorithm
+		+ Extending Veins' simple shadowing to support 3D obstacles
+		+ Debugging: debug lines and intersection points
+	+ Implementing 3D visualization for debugging
+	+ Protocol
+		+ WSM-based CarJammingAnnouncement
+	+ Pathfinder
+	
+
++ Evaluation
+	+ Manhatten Grid
+		+ Dimensions, street length, building sizes
+	+ Input parameters
+		+ Number of drones (drone density)
+		+ Number of vehicles (vehicle density)
+		+ Breakdown probability
+	+ Output values:
+		+ From proposal: Average vehicle speed
+		+ From proposal: Time of a vehicle being stuck in a jam
+		+ From proposal: Channel busy time ratio
+		+ From proposal: End-to-end latency of broadcasts
+		+ New: received announcements ratio
+	+ Results, graphs, discussion.
+		
+	
++ Conclusion
+	+ "Drones definitely help"
+	+ Future work:
+		+ Test different broadcast-suppression techniques
+		+ Test another map
+		+ Test other flight heights
+		
+		
++ Add Software versions
++ Redraw not my own pictures
++ Add hop counter
+
+Plotting:	
+	+ Title goes to caption
+	+ Remove the background entirely
+	+ Add axis (lines or arrows)
+	! (optional) match the font with Thesis
+	+ Ensure the font size is readable
+	+ Move legend to plot space
+	
+Text:
+	+ Figure captions UNDER the picture (change the order of \caption command!)
+	+ ALWAYS REFERENCE A FIGURE FROM THE TEXT!
+	+ Related work: what is new in my work
+		
+Eval comments:
+	+ Plot origin to bottom-left corner exactly
+	+ use percentages for Y on ReceivedAnnouncements
+	+ Add 100% percentage
+	+ Legend: remove background
+	+ Increase line marker sizes
+	+ Move legend to empty space
+	+ Busy time ratio - change of slope explaination.
+	+ Busy time - time when signal strength is higher than threshould (-65 dbm?), no matter who is transmitting
+	
++ Drone altitude minimum -> Drone altitude average
++ Remove German abstact
+
+	
+	
++ Figure 3.4 make a loop for events
++ Figure 4.5 Y-axis cropped
+
++ Drone height describe in more detail the height range (move range into text from caption)
+
+
++ Handing in:
+	https://tu-dresden.de/ing/informatik/studium/beratung/faq/abschlussarbeiten?set_language=en
+	
++ Add reviewers and supervisors to copies of thesis submission
+
+https://tu-dresden.de/ing/informatik/ressourcen/dateien/studium/formulare/master/master-dse/2023-01-31-Master-Thesis-Defence-DSE-2020.pdf?lang=en
+	

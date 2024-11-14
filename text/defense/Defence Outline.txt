@@ -1,0 +1,46 @@
+Small presentation about your thesis and your results. 
+The final talk should be 20min - 30min (maximum) long.
+
+Presentation
+
+1. Motivation
+	1. Cities of the future will be populated by autonomous vehicles and drones
+	2. Most other works focus on other aspects: network architecture, infrastructure integration, drone pathfinding, drone allocation, etc.
+	3. Very few works discuss urban environments
+	
+2. Goals
+	In my work I assess the benefits of using drones in order to spread traffic information between vehicles in the urban environment
+	
+3. Implementation
+	1. Network architecture
+	2. Simulation environment
+	3. Protocol
+	4. Drones, 3D shadowing
+	5. Visualization (Used as validation! Ephasize)
+	
+4. Evaluation
+	1. Input parameters: Number of drones, number of vehicles, accident probability
+	2. Received Announcements Ratio
+		Can be used as network connectivity metric
+		Explains all other results
+	3. Traffic flow improvement: Average vehicle speed, number of jammed vehicles
+
+5. Broadcast storm suppression
+	Algorithm used
+	Proof: latency, number of hops, busy time ratio
+	
+6. Bonus: Drone flight altitude
+	Most optimal range was selected
+	
+7. Conclusion of Thank you slide
+	Significant improvement in urban traffic flow can be achieved
+	Short recap
+	Connectivity improved, so it traffic
+	
+
+Secretary: ask about room APB-1096
+	https://www.cms-labs.org/people/brauny/
+	I am  student of Mario Franke, I want to...
+	
+	Beamer should 16:9 aspect ratio! If not, change slides!
+	

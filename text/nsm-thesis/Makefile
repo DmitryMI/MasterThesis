@@ -3,12 +3,24 @@
 all: thesis.pdf
 
 clean:
-	rm -f thesis.pdf nsm-thesis.zip
+	del *.pdf
+	del *.lgpl
+	del *.log
+	del *.pipe
+	del *.aux
+	del *.bbl
+	del *.blg
+	del *.fdb_latexmk
+	del *.fls
+	del *.lof
+	del *.lot
+	del *.out
+	del *.xml
+	del *.synctex(busy)
+	del *.tdo
+	del *.toc
 
 zip: nsm-thesis.zip
 
 thesis.pdf: thesis.tex references.bib
 	latexmk -pdf thesis
-
-nsm-thesis.zip: ./Makefile ./nsm-thesis.cls ./figures ./figures/connectivity-50-0-static1.pdf ./figures/coverage-30--0-static1.pdf ./figures/related_work.pdf ./references.bib ./thesis.pdf ./thesis.tex
-	zip "$@" $^
